@@ -1,10 +1,11 @@
-import {Geist, Geist_Mono, Inter } from "next/font/google";
+import {Geist, Geist_Mono, Inter} from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { cn } from "@/lib/utils";
+import {cn} from "@/lib/utils";
+import {Toaster} from "@/components/ui/sonner";
 
-const inter = Inter({subsets:['latin'],variable:'--font-sans'});
+const inter = Inter({subsets: ["latin"], variable: "--font-sans"});
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,13 +26,23 @@ export default function RootLayout({children}) {
   return (
     <html
       lang="en"
-      className={cn("h-full", "antialiased", "dark", geistSans.variable, geistMono.variable, "font-sans", inter.variable)}
+      className={cn(
+        "h-full",
+        "antialiased",
+        "dark",
+        geistSans.variable,
+        geistMono.variable,
+        "font-sans",
+        inter.variable,
+      )}
       suppressHydrationWarning
     >
       <body className="min-h-full">
         <Navbar />
         <main className="flex-1 container mx-auto">{children}</main>
         <Footer />
+
+        <Toaster position="top-center" richColors />
       </body>
     </html>
   );

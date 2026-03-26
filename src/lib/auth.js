@@ -18,6 +18,42 @@ export const auth = betterAuth({
 
   trustedOrigins: ["**"],
 
+  user: {
+    additionalFields: {
+      role: {
+        type: "string",
+        defaultValue: "student",
+        input: true,
+      },
+      university: {
+        type: "string",
+        input: true,
+      },
+      bio: {
+        type: "string",
+        input: true,
+      },
+      researchInterests: {
+        type: "string[]",
+        defaultValue: [],
+        input: true,
+      },
+      socialLinks: {
+        type: "string",
+        input: true,
+      },
+      profileImage: {
+        type: "string",
+        input: true,
+      },
+      isApproved: {
+        type: "boolean",
+        defaultValue: false,
+        input: false,
+      },
+    },
+  },
+
   session: {
     cookieCache: {
       enabled: true,
@@ -25,7 +61,7 @@ export const auth = betterAuth({
     },
   },
 
-  plugins: [nextCookies(), admin({defaultRole: "user"})],
+  plugins: [nextCookies()],
 
   emailAndPassword: {
     enabled: true,
@@ -52,16 +88,13 @@ export async function getCurrentUser() {
 
 // Get all the users.
 export const getAllUsers = async () => {
-  const data = await auth.api.listUsers({
-    headers: await headers(),
-    query: {
-      limit: 100,
-      sortBy: "createdAt",
-      sortOrder: "desc",
-    },
-  });
-
-  return data?.users ?? [];
+  const database = client.db();
+  const users = await database
+    .collection("user")
+    .find({})
+    .sort({createdAt: -1})
+    .toArray();
+  return users;
 };
 
 //Sign out the user
