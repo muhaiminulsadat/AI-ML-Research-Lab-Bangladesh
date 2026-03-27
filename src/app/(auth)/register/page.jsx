@@ -59,7 +59,7 @@ export default function RegisterPage() {
     const {name, email, password, role, university} = formData;
 
     await authClient.signUp.email(
-      {name, email, password, role, university},
+      {name, email, password, university},
       {
         onRequest: () => setLoading(true),
         onSuccess: () => {

@@ -20,7 +20,15 @@ export default function ApplyPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(form.email)) {
+      toast.error("Please enter a valid email address.");
+      return;
+    }
+
     setLoading(true);
+
     try {
       const result = await submitApplication(form);
       if (result.success) {

@@ -17,10 +17,10 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    role: {
+    memberType: {
       type: String,
-      enum: ["student", "researcher"],
-      default: "student",
+      enum: ["student", "researcher", null],
+      default: null,
     },
     university: {
       type: String,

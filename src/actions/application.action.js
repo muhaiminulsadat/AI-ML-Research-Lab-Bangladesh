@@ -4,15 +4,26 @@ import connectDB from "@/lib/db";
 import {Application} from "@/models/application.model";
 import {auth} from "@/lib/auth";
 import {headers} from "next/headers";
-import {MongoClient} from "mongodb";
 import {User} from "@/models/user.model";
-import { requireAdmin } from "@/lib/utility";
+import {requireAdmin} from "@/lib/utility";
 
 export async function submitApplication(formData) {
   try {
     await connectDB();
 
-    const existing = await Application.findOne({email: formData.email});
+    const {applicantName, email, university, applyingAs, motivation} = formData;
+
+    if (!applicantName || !email || !university || !applyingAs || !motivation) {
+      return {success: false, message: "All fields are required."};
+    }
+
+    // Email validation check
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return {success: false, message: "Please enter a valid email address."};
+    }
+
+    const existing = await Application.findOne({email});
     if (existing) {
       return {
         success: false,
@@ -21,11 +32,11 @@ export async function submitApplication(formData) {
     }
 
     await Application.create({
-      applicantName: formData.applicantName,
-      email: formData.email,
-      university: formData.university,
-      applyingAs: formData.applyingAs,
-      
+      applicantName,
+      email,
+      university,
+      applyingAs,
+      motivation,
     });
     return {success: true, message: "Application submitted successfully."};
   } catch (error) {
@@ -51,16 +62,12 @@ export async function approveApplication(applicationId) {
     const {authorized, response} = await requireAdmin();
     if (!authorized) return response;
 
-    const {user} = await getCurrentUser();
-    if (!user || user.role !== "admin") {
-      return {success: false, message: "Unauthorized."};
-    }
-
     const application = await Application.findById(applicationId);
     if (!application)
       return {success: false, message: "Application not found."};
 
     const tempPassword = "123456";
+
     // TODO: Wrap in MongoDB transaction
     const result = await auth.api.signUpEmail({
       body: {
@@ -68,13 +75,22 @@ export async function approveApplication(applicationId) {
         email: application.email,
         password: tempPassword,
       },
+      headers: await headers(),
     });
 
     if (!result?.user)
       return {success: false, message: "Failed to create user account."};
 
+    await auth.api.setRole({
+      body: {
+        userId: result.user.id,
+        role: "member",
+      },
+      headers: await headers(),
+    });
+
     await User.findByIdAndUpdate(result.user.id, {
-      role: application.applyingAs,
+      memberType: application.applyingAs,
       isApproved: true,
       university: application.university,
     });

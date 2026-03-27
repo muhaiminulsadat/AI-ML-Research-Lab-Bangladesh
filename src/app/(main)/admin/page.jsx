@@ -1,13 +1,22 @@
+import {getApplications} from "@/actions/application.action";
+import {getApprovedMembers} from "@/actions/user.action";
+import AdminView from "./_components/AdminView";
 import {getCurrentUser} from "@/lib/auth";
 import {redirect} from "next/navigation";
-import AdminView from "./_components/AdminView";
-import {getApplications} from "@/actions/application.action";
 
 export default async function AdminPage() {
   const {user} = await getCurrentUser();
   if (!user || user.role !== "admin") redirect("/dashboard");
 
-  const applications = await getApplications();
+  const [applicationsResult, membersResult] = await Promise.all([
+    getApplications(),
+    getApprovedMembers(),
+  ]);
 
-  return <AdminView applications={applications} />;
+  return (
+    <AdminView
+      applications={applicationsResult}
+      members={membersResult.data || []}
+    />
+  );
 }

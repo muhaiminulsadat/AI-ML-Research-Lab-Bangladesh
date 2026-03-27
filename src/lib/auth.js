@@ -6,6 +6,7 @@ import {redirect} from "next/navigation";
 import {nextCookies} from "better-auth/next-js";
 import connectDB from "./db";
 import {admin} from "better-auth/plugins";
+import {ac, generalRole, memberRole, adminRole} from "@/lib/permissions";
 
 const mongooseInstance = await connectDB();
 const client = mongooseInstance.connection.getClient();
@@ -20,9 +21,9 @@ export const auth = betterAuth({
 
   user: {
     additionalFields: {
-      role: {
+      memberType: {
         type: "string",
-        defaultValue: "general",
+        defaultValue: null,
         input: false,
       },
       university: {
@@ -61,7 +62,19 @@ export const auth = betterAuth({
     },
   },
 
-  plugins: [nextCookies()],
+  plugins: [
+    nextCookies(),
+    admin({
+      defaultRole: "general",
+      adminRoles: ["admin"],
+      ac,
+      roles: {
+        general: generalRole,
+        member: memberRole,
+        admin: adminRole,
+      },
+    }),
+  ],
 
   emailAndPassword: {
     enabled: true,

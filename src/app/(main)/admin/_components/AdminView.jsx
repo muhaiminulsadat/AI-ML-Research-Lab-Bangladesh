@@ -5,10 +5,12 @@ import {
   approveApplication,
   rejectApplication,
 } from "@/actions/application.action";
+import {revokeMember} from "@/actions/user.action";
 import {toast} from "sonner";
 
-export default function AdminView({applications}) {
+export default function AdminView({applications, members}) {
   const [list, setList] = useState(applications);
+  const [memberList, setMemberList] = useState(members);
   const [loadingId, setLoadingId] = useState(null);
 
   const handleApprove = async (id) => {
@@ -21,7 +23,7 @@ export default function AdminView({applications}) {
       } else {
         toast.error(result.message);
       }
-    } catch (error) {
+    } catch {
       toast.error("Something went wrong.");
     } finally {
       setLoadingId(null);
@@ -38,7 +40,24 @@ export default function AdminView({applications}) {
       } else {
         toast.error(result.message);
       }
-    } catch (error) {
+    } catch {
+      toast.error("Something went wrong.");
+    } finally {
+      setLoadingId(null);
+    }
+  };
+
+  const handleRevoke = async (id) => {
+    setLoadingId(id);
+    try {
+      const result = await revokeMember(id);
+      if (result.success) {
+        toast.success(result.message);
+        setMemberList((prev) => prev.filter((m) => m._id !== id));
+      } else {
+        toast.error(result.message);
+      }
+    } catch {
       toast.error("Something went wrong.");
     } finally {
       setLoadingId(null);
@@ -48,18 +67,19 @@ export default function AdminView({applications}) {
   const pending = list.filter((a) => a.status === "pending");
 
   return (
-    <div className="max-w-4xl mx-auto mt-16 p-6">
-      <h1 className="text-2xl font-bold mb-6">Admin — Applications</h1>
-      {pending.length === 0 ? (
-        <p className="text-gray-500">No pending applications.</p>
-      ) : (
-        <div className="flex flex-col gap-4">
-          {pending.map((app) => (
-            <div
-              key={app._id}
-              className="border rounded p-4 flex flex-col gap-2"
-            >
-              <div className="flex justify-between items-start">
+    <div className="max-w-4xl mx-auto mt-16 p-6 flex flex-col gap-12">
+      {/* Applications */}
+      <section>
+        <h2 className="text-xl font-bold mb-4">Pending Applications</h2>
+        {pending.length === 0 ? (
+          <p className="text-gray-500">No pending applications.</p>
+        ) : (
+          <div className="flex flex-col gap-4">
+            {pending.map((app) => (
+              <div
+                key={app._id}
+                className="border rounded p-4 flex justify-between items-start"
+              >
                 <div>
                   <p className="font-semibold">{app.applicantName}</p>
                   <p className="text-sm text-gray-500">
@@ -88,10 +108,47 @@ export default function AdminView({applications}) {
                   </button>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
-      )}
+            ))}
+          </div>
+        )}
+      </section>
+
+      {/* Members */}
+      <section>
+        <h2 className="text-xl font-bold mb-4">Approved Members</h2>
+        {memberList.length === 0 ? (
+          <p className="text-gray-500">No approved members yet.</p>
+        ) : (
+          <div className="flex flex-col gap-4">
+            {memberList.map((member) => (
+              <div
+                key={member._id}
+                className="border rounded p-4 flex justify-between items-center"
+              >
+                <div>
+                  <p className="font-semibold">{member.name}</p>
+                  <p className="text-sm text-gray-500">
+                    {member.email} — {member.university}
+                  </p>
+                  <p className="text-sm">
+                    Type:{" "}
+                    <span className="font-medium">
+                      {member.memberType || "—"}
+                    </span>
+                  </p>
+                </div>
+                <button
+                  onClick={() => handleRevoke(member._id)}
+                  disabled={loadingId === member._id}
+                  className="bg-rose-500 text-white px-3 py-1 rounded text-sm hover:bg-rose-600"
+                >
+                  Revoke
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+      </section>
     </div>
   );
 }
