@@ -115,10 +115,20 @@ export async function revokeMember(userId) {
       headers: await headers(),
     });
 
-    await User.findByIdAndUpdate(userId, {
-      isApproved: false,
-      memberType: null,
-    });
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      {isApproved: false, memberType: null},
+      {new: true},
+    );
+
+    if (!updatedUser) {
+      console.error("User not found, attempting to restore role");
+      await auth.api.setRole({
+        body: {userId, role: "member"},
+        headers: await headers(),
+      });
+      return {success: false, message: "User not found."};
+    }
 
     return {success: true, message: "Member revoked successfully."};
   } catch (error) {

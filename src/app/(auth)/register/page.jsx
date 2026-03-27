@@ -56,7 +56,7 @@ export default function RegisterPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const {name, email, password, role, university} = formData;
+    const {name, email, password, university} = formData;
 
     await authClient.signUp.email(
       {name, email, password, university},
