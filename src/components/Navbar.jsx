@@ -34,6 +34,7 @@ const publicLinks = [
   {href: "/", label: "Home"},
   // {href: "/about", label: "About"},
   {href: "/members", label: "Members"},
+  {href: "/apply", label: "Apply Now"},
 ];
 
 const roleLinks = {
