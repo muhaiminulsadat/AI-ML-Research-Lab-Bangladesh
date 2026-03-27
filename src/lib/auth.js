@@ -22,8 +22,8 @@ export const auth = betterAuth({
     additionalFields: {
       role: {
         type: "string",
-        defaultValue: "student",
-        input: true,
+        defaultValue: "general",
+        input: false,
       },
       university: {
         type: "string",

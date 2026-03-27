@@ -1,6 +1,7 @@
 "use server";
 import {auth, getAllUsers} from "@/lib/auth";
 import {convertToObject} from "@/lib/utility";
+import {revalidatePath} from "next/cache";
 import {headers} from "next/headers";
 
 export async function registerUser(formData) {
@@ -50,6 +51,8 @@ export async function updateProfile(data) {
         profileImage: data.profileImage,
       },
     });
+
+    revalidatePath("/profile");
     return {success: true, data: response};
   } catch (error) {
     return {success: false, error: error.message};
