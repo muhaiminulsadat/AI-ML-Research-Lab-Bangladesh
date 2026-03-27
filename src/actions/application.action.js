@@ -17,17 +17,24 @@ export async function submitApplication(formData) {
       return {success: false, message: "All fields are required."};
     }
 
-    // Email validation check
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       return {success: false, message: "Please enter a valid email address."};
     }
 
-    const existing = await Application.findOne({email});
-    if (existing) {
+    const existingApplication = await Application.findOne({email});
+    if (existingApplication) {
       return {
         success: false,
         message: "An application with this email already exists.",
+      };
+    }
+
+    const existingUser = await User.findOne({email});
+    if (existingUser) {
+      return {
+        success: false,
+        message: "An account with this email already exists.",
       };
     }
 
