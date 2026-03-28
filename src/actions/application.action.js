@@ -17,9 +17,16 @@ export async function submitApplication(formData) {
       return {success: false, message: "All fields are required."};
     }
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       return {success: false, message: "Please enter a valid email address."};
+    }
+
+    const existingUser = await User.findOne({email});
+    if (existingUser && existingUser.isApproved) {
+      return {
+        success: false,
+        message: "An approved account with this email already exists.",
+      };
     }
 
     const existingApplication = await Application.findOne({email});
@@ -27,14 +34,6 @@ export async function submitApplication(formData) {
       return {
         success: false,
         message: "An application with this email already exists.",
-      };
-    }
-
-    const existingUser = await User.findOne({email});
-    if (existingUser) {
-      return {
-        success: false,
-        message: "An account with this email already exists.",
       };
     }
 
@@ -47,7 +46,6 @@ export async function submitApplication(formData) {
     });
     return {success: true, message: "Application submitted successfully."};
   } catch (error) {
-    console.error("submitApplication error:", error);
     return {success: false, message: error.message || "Something went wrong."};
   }
 }
@@ -70,45 +68,48 @@ export async function approveApplication(applicationId) {
     if (!authorized) return response;
 
     const application = await Application.findById(applicationId);
-    if (!application)
+    if (!application) {
       return {success: false, message: "Application not found."};
+    }
 
+    let existingUser = await User.findOne({email: application.email});
+    let userId = existingUser ? existingUser._id : null;
     const tempPassword = "123456";
 
-    // TODO: Wrap in MongoDB transaction
-    const result = await auth.api.signUpEmail({
-      body: {
-        name: application.applicantName,
-        email: application.email,
-        password: tempPassword,
-      },
-      headers: await headers(),
-    });
+    if (!existingUser) {
+      const result = await auth.api.signUpEmail({
+        body: {
+          name: application.applicantName,
+          email: application.email,
+          password: tempPassword,
+        },
+        headers: await headers(),
+      });
 
-    if (!result?.user)
-      return {success: false, message: "Failed to create user account."};
+      if (!result?.user) {
+        return {success: false, message: "Failed to create user account."};
+      }
 
-    await auth.api.setRole({
-      body: {
-        userId: result.user.id,
-        role: "member",
-      },
-      headers: await headers(),
-    });
+      userId = result.user.id;
 
-    await User.findByIdAndUpdate(result.user.id, {
+      await auth.api.setRole({
+        body: {userId, role: "member"},
+        headers: await headers(),
+      });
+    }
+
+    await User.findByIdAndUpdate(userId, {
       memberType: application.applyingAs,
       isApproved: true,
       university: application.university,
     });
 
     application.status = "approved";
-    application.userId = result.user.id;
+    application.userId = userId;
     await application.save();
 
     return {success: true, message: `Approved. Temp password: ${tempPassword}`};
   } catch (error) {
-    console.error("approveApplication error:", error);
     return {success: false, message: error.message || "Something went wrong."};
   }
 }

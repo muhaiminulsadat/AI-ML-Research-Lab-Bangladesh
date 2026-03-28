@@ -136,3 +136,27 @@ export async function revokeMember(userId) {
     return {success: false, message: error.message || "Something went wrong."};
   }
 }
+
+export async function changeRole(userId, role) {
+  try {
+    await connectDB();
+
+    const {authorized, response} = await requireAdmin();
+    if (!authorized) return response;
+
+    await auth.api.setRole({
+      body: {userId, role},
+      headers: await headers(),
+    });
+
+    await User.findByIdAndUpdate(userId, {
+      isApproved: role === "general" ? false : true,
+      memberType: role === "general" ? null : undefined,
+    });
+
+    return {success: true, message: `Role updated to ${role}.`};
+  } catch (error) {
+    console.error("changeRole error:", error);
+    return {success: false, message: error.message || "Something went wrong."};
+  }
+}

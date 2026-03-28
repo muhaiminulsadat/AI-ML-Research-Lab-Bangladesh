@@ -5,7 +5,7 @@ import {
   approveApplication,
   rejectApplication,
 } from "@/actions/application.action";
-import {revokeMember} from "@/actions/user.action";
+import {revokeMember, changeRole} from "@/actions/user.action";
 import {toast} from "sonner";
 
 export default function AdminView({applications, members}) {
@@ -54,6 +54,32 @@ export default function AdminView({applications, members}) {
       if (result.success) {
         toast.success(result.message);
         setMemberList((prev) => prev.filter((m) => m._id !== id));
+      } else {
+        toast.error(result.message);
+      }
+    } catch {
+      toast.error("Something went wrong.");
+    } finally {
+      setLoadingId(null);
+    }
+  };
+
+  const handleRoleChange = async (id, role) => {
+    if (role === "admin") {
+      const confirmed = window.confirm(
+        "Are you sure you want to promote this user to Admin?",
+      );
+      if (!confirmed) return;
+    }
+
+    setLoadingId(id);
+    try {
+      const result = await changeRole(id, role);
+      if (result.success) {
+        toast.success(result.message);
+        setMemberList((prev) =>
+          prev.map((m) => (m._id === id ? {...m, role} : m)),
+        );
       } else {
         toast.error(result.message);
       }
@@ -137,13 +163,27 @@ export default function AdminView({applications, members}) {
                     </span>
                   </p>
                 </div>
-                <button
-                  onClick={() => handleRevoke(member._id)}
-                  disabled={loadingId === member._id}
-                  className="bg-rose-500 text-white px-3 py-1 rounded text-sm hover:bg-rose-600"
-                >
-                  Revoke
-                </button>
+                <div className="flex gap-2 items-center">
+                  <select
+                    defaultValue={member.role}
+                    onChange={(e) =>
+                      handleRoleChange(member._id, e.target.value)
+                    }
+                    disabled={loadingId === member._id}
+                    className="border rounded px-2 py-1 text-sm"
+                  >
+                    <option value="general">General</option>
+                    <option value="member">Member</option>
+                    <option value="admin">Admin</option>
+                  </select>
+                  <button
+                    onClick={() => handleRevoke(member._id)}
+                    disabled={loadingId === member._id}
+                    className="bg-rose-500 text-white px-3 py-1 rounded text-sm hover:bg-rose-600"
+                  >
+                    Revoke
+                  </button>
+                </div>
               </div>
             ))}
           </div>
