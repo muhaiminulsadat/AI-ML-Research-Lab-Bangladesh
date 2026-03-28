@@ -29,11 +29,6 @@ const roleConfig = {
     label: "Researcher",
     badge: "bg-emerald-500/10 text-emerald-600 border-emerald-200",
   },
-  admin: {
-    icon: Briefcase,
-    label: "Admin",
-    badge: "bg-rose-500/10 text-rose-600 border-rose-200",
-  },
 };
 
 const FILTERS = [
@@ -43,7 +38,7 @@ const FILTERS = [
 ];
 
 function MemberCard({member}) {
-  const role = roleConfig[member?.role] ?? roleConfig.student;
+  const role = roleConfig[member?.memberType] ?? roleConfig.student;
   const RoleIcon = role.icon;
 
   const socialLinks = (() => {
@@ -186,16 +181,17 @@ export default function MembersView({members}) {
         m.researchInterests?.some((t) =>
           t.toLowerCase().includes(search.toLowerCase()),
         );
-      const matchesRole = activeFilter === "all" || m.role === activeFilter;
-      return matchesSearch && matchesRole;
+      const matchesFilter =
+        activeFilter === "all" || m.memberType === activeFilter;
+      return matchesSearch && matchesFilter;
     });
   }, [members, search, activeFilter]);
 
   const counts = useMemo(
     () => ({
       all: members.length,
-      student: members.filter((m) => m.role === "student").length,
-      researcher: members.filter((m) => m.role === "researcher").length,
+      student: members.filter((m) => m.memberType === "student").length,
+      researcher: members.filter((m) => m.memberType === "researcher").length,
     }),
     [members],
   );

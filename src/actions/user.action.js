@@ -79,7 +79,10 @@ export async function getMemberStats() {
 
 export async function getMembers() {
   try {
-    const users = await getAllUsers();
+    await connectDB();
+    const users = await User.find({isApproved: true})
+      .sort({createdAt: -1})
+      .lean();
     return {success: true, data: convertToObject(users)};
   } catch (error) {
     return {success: false, error: error.message};
