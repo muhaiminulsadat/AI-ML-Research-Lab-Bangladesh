@@ -10,6 +10,8 @@ import {
   BookOpen,
   Bell,
   Sparkles,
+  ShieldCheck,
+  ClipboardList,
 } from "lucide-react";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import {Badge} from "@/components/ui/badge";
@@ -18,20 +20,20 @@ import {Card, CardContent} from "@/components/ui/card";
 import {cn} from "@/lib/utils";
 
 const roleConfig = {
-  student: {
+  general: {
+    icon: UserCircle,
+    label: "General",
+    badge: "bg-gray-500/10 text-gray-600 border-gray-200",
+    greeting: "Welcome! Apply to become a member.",
+  },
+  member: {
     icon: GraduationCap,
-    label: "Student",
+    label: "Member",
     badge: "bg-blue-500/10 text-blue-600 border-blue-200",
     greeting: "Keep learning, keep growing.",
   },
-  researcher: {
-    icon: Briefcase,
-    label: "Researcher / Faculty",
-    badge: "bg-emerald-500/10 text-emerald-600 border-emerald-200",
-    greeting: "Your next breakthrough starts here.",
-  },
   admin: {
-    icon: FlaskConical,
+    icon: ShieldCheck,
     label: "Admin",
     badge: "bg-rose-500/10 text-rose-600 border-rose-200",
     greeting: "The lab is yours to shape.",
@@ -62,7 +64,7 @@ const statCards = (stats) => [
   },
 ];
 
-const quickLinks = [
+const memberQuickLinks = [
   {
     href: "/profile",
     icon: UserCircle,
@@ -89,9 +91,25 @@ const quickLinks = [
   },
 ];
 
+const adminQuickLinks = [
+  ...memberQuickLinks,
+  {
+    href: "/admin",
+    icon: ClipboardList,
+    label: "Admin Panel",
+    description: "Manage members and applications",
+    color: "group-hover:text-rose-500",
+    bg: "group-hover:bg-rose-500/10",
+  },
+];
+
 export default function DashboardView({user, stats}) {
-  const role = roleConfig[user?.role] ?? roleConfig.student;
+  const role = roleConfig[user?.role] ?? roleConfig.general;
   const RoleIcon = role.icon;
+  const isGeneral = user?.role === "general";
+  const isMember = user?.role === "member";
+  const isAdmin = user?.role === "admin";
+  const quickLinks = isAdmin ? adminQuickLinks : memberQuickLinks;
 
   const userInitials = user?.name
     ? user.name
@@ -142,6 +160,11 @@ export default function DashboardView({user, stats}) {
                   <RoleIcon className="h-3 w-3" />
                   {role.label}
                 </Badge>
+                {user?.memberType && (
+                  <Badge variant="outline" className="text-xs capitalize">
+                    {user.memberType}
+                  </Badge>
+                )}
                 {user?.university && (
                   <span className="text-xs text-muted-foreground">
                     {user.university}
@@ -157,88 +180,110 @@ export default function DashboardView({user, stats}) {
         </div>
       </div>
 
-      {/* Stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        {statCards(stats).map((stat) => {
-          const Icon = stat.icon;
-          return (
-            <Card key={stat.label} className="shadow-sm">
-              <CardContent className="pt-5 pb-5 flex items-center gap-4">
-                <div
-                  className={cn(
-                    "flex h-10 w-10 items-center justify-center rounded-xl shrink-0",
-                    stat.bg,
-                  )}
-                >
-                  <Icon className={cn("h-5 w-5", stat.color)} />
-                </div>
-                <div>
-                  <p className="text-2xl font-bold">{stat.value}</p>
-                  <p className="text-xs text-muted-foreground">{stat.label}</p>
-                </div>
-              </CardContent>
-            </Card>
-          );
-        })}
-      </div>
+      {/* General — Apply CTA */}
+      {isGeneral && (
+        <div className="rounded-2xl border bg-card shadow-sm p-6 flex flex-col items-center gap-4 text-center">
+          <ClipboardList className="h-10 w-10 text-orange-400" />
+          <div>
+            <h2 className="text-lg font-semibold">You're not a member yet</h2>
+            <p className="text-sm text-muted-foreground mt-1">
+              Apply to join the lab and get access to all features.
+            </p>
+          </div>
+          <Link href="/apply">
+            <Button className="bg-orange-400 hover:bg-orange-500 text-white">
+              Apply Now
+            </Button>
+          </Link>
+        </div>
+      )}
 
-      {/* Quick Links + Announcements */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* Quick Links */}
-        <div className="rounded-2xl border bg-card shadow-sm p-6 space-y-4">
-          <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-            Quick Access
-          </p>
-          <div className="space-y-2">
-            {quickLinks.map((link) => {
-              const Icon = link.icon;
-              return (
-                <Link key={link.href} href={link.href}>
-                  <div className="group flex items-center gap-3 p-3 rounded-xl hover:bg-muted/60 transition-colors cursor-pointer">
-                    <div
-                      className={cn(
-                        "flex h-9 w-9 items-center justify-center rounded-lg border bg-muted transition-colors shrink-0",
-                        link.bg,
-                      )}
-                    >
-                      <Icon
-                        className={cn(
-                          "h-4 w-4 text-muted-foreground transition-colors",
-                          link.color,
-                        )}
-                      />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium">{link.label}</p>
-                      <p className="text-xs text-muted-foreground">
-                        {link.description}
-                      </p>
-                    </div>
-                    <ArrowRight className="h-4 w-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
+      {/* Stats — member and admin only */}
+      {(isMember || isAdmin) && (
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          {statCards(stats).map((stat) => {
+            const Icon = stat.icon;
+            return (
+              <Card key={stat.label} className="shadow-sm">
+                <CardContent className="pt-5 pb-5 flex items-center gap-4">
+                  <div
+                    className={cn(
+                      "flex h-10 w-10 items-center justify-center rounded-xl shrink-0",
+                      stat.bg,
+                    )}
+                  >
+                    <Icon className={cn("h-5 w-5", stat.color)} />
                   </div>
-                </Link>
-              );
-            })}
-          </div>
+                  <div>
+                    <p className="text-2xl font-bold">{stat.value}</p>
+                    <p className="text-xs text-muted-foreground">
+                      {stat.label}
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            );
+          })}
         </div>
+      )}
 
-        {/* Announcements Placeholder */}
-        <div className="rounded-2xl border bg-card shadow-sm p-6 space-y-4">
-          <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground flex items-center gap-2">
-            <Bell className="h-3.5 w-3.5" />
-            Announcements
-          </p>
-          <div className="flex flex-col items-center justify-center h-32 gap-2 text-center">
-            <Bell className="h-8 w-8 text-muted-foreground/30" />
-            <p className="text-sm text-muted-foreground">
-              No announcements yet.
+      {/* Quick Links + Announcements — member and admin only */}
+      {(isMember || isAdmin) && (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="rounded-2xl border bg-card shadow-sm p-6 space-y-4">
+            <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+              Quick Access
             </p>
-            <p className="text-xs text-muted-foreground/60">
-              Check back soon for updates.
+            <div className="space-y-2">
+              {quickLinks.map((link) => {
+                const Icon = link.icon;
+                return (
+                  <Link key={link.href} href={link.href}>
+                    <div className="group flex items-center gap-3 p-3 rounded-xl hover:bg-muted/60 transition-colors cursor-pointer">
+                      <div
+                        className={cn(
+                          "flex h-9 w-9 items-center justify-center rounded-lg border bg-muted transition-colors shrink-0",
+                          link.bg,
+                        )}
+                      >
+                        <Icon
+                          className={cn(
+                            "h-4 w-4 text-muted-foreground transition-colors",
+                            link.color,
+                          )}
+                        />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium">{link.label}</p>
+                        <p className="text-xs text-muted-foreground">
+                          {link.description}
+                        </p>
+                      </div>
+                      <ArrowRight className="h-4 w-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="rounded-2xl border bg-card shadow-sm p-6 space-y-4">
+            <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground flex items-center gap-2">
+              <Bell className="h-3.5 w-3.5" />
+              Announcements
             </p>
+            <div className="flex flex-col items-center justify-center h-32 gap-2 text-center">
+              <Bell className="h-8 w-8 text-muted-foreground/30" />
+              <p className="text-sm text-muted-foreground">
+                No announcements yet.
+              </p>
+              <p className="text-xs text-muted-foreground/60">
+                Check back soon for updates.
+              </p>
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
