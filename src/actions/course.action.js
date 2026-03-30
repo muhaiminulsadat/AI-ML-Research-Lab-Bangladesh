@@ -265,3 +265,191 @@ export async function addLectureToModule(courseId, moduleId, data) {
     };
   }
 }
+
+export async function updateCourse(courseId, data) {
+  try {
+    const adminCheck = await requireAdmin();
+    if (!adminCheck.authorized) return adminCheck.response;
+
+    await connectDB();
+
+    const {title, description, thumbnail, tags, difficulty} = data;
+
+    if (!title || !description) {
+      return {success: false, message: "Title and description are required."};
+    }
+
+    const updatedCourse = await Course.findByIdAndUpdate(
+      courseId,
+      {
+        title,
+        description,
+        thumbnail: thumbnail || undefined,
+        tags: tags || [],
+        difficulty: difficulty || "beginner",
+      },
+      {new: true},
+    )
+      .populate("instructor", "name email profileImage")
+      .lean();
+
+    if (!updatedCourse) {
+      return {success: false, message: "Course not found."};
+    }
+
+    return {
+      success: true,
+      message: "Course updated successfully.",
+      data: convertToObject(updatedCourse),
+    };
+  } catch (error) {
+    console.error("Error updating course:", error);
+    return {success: false, message: "Failed to update course."};
+  }
+}
+
+export async function deleteCourse(courseId) {
+  try {
+    const adminCheck = await requireAdmin();
+    if (!adminCheck.authorized) return adminCheck.response;
+
+    await connectDB();
+
+    const deleted = await Course.findByIdAndDelete(courseId);
+
+    if (!deleted) {
+      return {success: false, message: "Course not found."};
+    }
+
+    return {success: true, message: "Course deleted successfully."};
+  } catch (error) {
+    console.error("Error deleting course:", error);
+    return {success: false, message: "Failed to delete course."};
+  }
+}
+
+export async function updateModule(courseId, moduleId, data) {
+  try {
+    const adminCheck = await requireAdmin();
+    if (!adminCheck.authorized) return adminCheck.response;
+
+    await connectDB();
+
+    const {title} = data;
+
+    if (!title) {
+      return {success: false, message: "Module title is required."};
+    }
+
+    const course = await Course.findById(courseId);
+    if (!course) return {success: false, message: "Course not found."};
+
+    const module = course.modules.id(moduleId);
+    if (!module) return {success: false, message: "Module not found."};
+
+    module.title = title;
+    await course.save();
+
+    return {
+      success: true,
+      message: "Module updated successfully.",
+      data: convertToObject(course),
+    };
+  } catch (error) {
+    console.error("Error updating module:", error);
+    return {success: false, message: "Failed to update module."};
+  }
+}
+
+export async function deleteModule(courseId, moduleId) {
+  try {
+    const adminCheck = await requireAdmin();
+    if (!adminCheck.authorized) return adminCheck.response;
+
+    await connectDB();
+
+    const course = await Course.findById(courseId);
+    if (!course) return {success: false, message: "Course not found."};
+
+    const module = course.modules.id(moduleId);
+    if (!module) return {success: false, message: "Module not found."};
+
+    course.modules.pull(moduleId);
+    await course.save();
+
+    return {
+      success: true,
+      message: "Module deleted successfully.",
+      data: convertToObject(course),
+    };
+  } catch (error) {
+    console.error("Error deleting module:", error);
+    return {success: false, message: "Failed to delete module."};
+  }
+}
+
+export async function updateLecture(courseId, moduleId, lectureId, data) {
+  try {
+    const adminCheck = await requireAdmin();
+    if (!adminCheck.authorized) return adminCheck.response;
+
+    await connectDB();
+
+    const {title, youtubeId, duration} = data;
+
+    if (!title || !youtubeId) {
+      return {success: false, message: "Title and YouTube ID are required."};
+    }
+
+    const course = await Course.findById(courseId);
+    if (!course) return {success: false, message: "Course not found."};
+
+    const module = course.modules.id(moduleId);
+    if (!module) return {success: false, message: "Module not found."};
+
+    const lecture = module.lectures.id(lectureId);
+    if (!lecture) return {success: false, message: "Lecture not found."};
+
+    lecture.title = title;
+    lecture.youtubeId = youtubeId;
+    lecture.duration = duration || 0;
+
+    await course.save();
+
+    return {
+      success: true,
+      message: "Lecture updated successfully.",
+      data: convertToObject(course),
+    };
+  } catch (error) {
+    console.error("Error updating lecture:", error);
+    return {success: false, message: "Failed to update lecture."};
+  }
+}
+
+export async function deleteLecture(courseId, moduleId, lectureId) {
+  try {
+    const adminCheck = await requireAdmin();
+    if (!adminCheck.authorized) return adminCheck.response;
+
+    await connectDB();
+
+    const course = await Course.findById(courseId);
+    if (!course) return {success: false, message: "Course not found."};
+
+    const module = course.modules.id(moduleId);
+    if (!module) return {success: false, message: "Module not found."};
+
+    module.lectures.pull(lectureId);
+    await course.save();
+
+    return {
+      success: true,
+      message: "Lecture deleted successfully.",
+      data: convertToObject(course),
+    };
+  } catch (error) {
+    console.error("Error deleting lecture:", error);
+    return {success: false, message: "Failed to delete lecture."};
+  }
+}

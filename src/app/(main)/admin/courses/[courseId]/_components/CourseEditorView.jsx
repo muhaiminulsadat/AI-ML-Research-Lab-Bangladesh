@@ -2,12 +2,14 @@
 
 import {useState} from "react";
 import Link from "next/link";
-import {ArrowLeft, Edit, Plus, Trash, PlayCircle, Clock} from "lucide-react";
+import {ArrowLeft, Edit, Plus, Trash, PlayCircle, Clock, Pencil} from "lucide-react";
 import {Button} from "@/components/ui/button";
 import {Badge} from "@/components/ui/badge";
 import {toast} from "sonner";
-import {toggleCoursePublish} from "@/actions/course.action";
+import {toggleCoursePublish, deleteModule} from "@/actions/course.action";
+import {useConfirm} from "@/hooks/useConfirm";
 import CreateModuleDialog from "./CreateModuleDialog";
+import EditModuleDialog from "./EditModuleDialog";
 import CreateLectureDialog from "./CreateLectureDialog";
 import {
   Card,
@@ -21,9 +23,12 @@ import {Separator} from "@/components/ui/separator";
 export default function CourseEditorView({initialCourse}) {
   const [course, setCourse] = useState(initialCourse);
   const [isModuleOpen, setIsModuleOpen] = useState(false);
+  const [isEditModuleOpen, setIsEditModuleOpen] = useState(false);
+  const [editingModule, setEditingModule] = useState(null);
   const [isLectureOpen, setIsLectureOpen] = useState(false);
   const [activeModuleId, setActiveModuleId] = useState(null);
   const [isPublishing, setIsPublishing] = useState(false);
+  const {confirm, ConfirmationDialog} = useConfirm();
 
   const handleTogglePublish = async () => {
     setIsPublishing(true);
@@ -39,16 +44,37 @@ export default function CourseEditorView({initialCourse}) {
     setIsPublishing(false);
   };
 
+  const handleDeleteModule = (module) => {
+    confirm({
+      title: `Delete "${module.title}"?`,
+      description: `This will permanently remove this module and all ${module.lectures?.length || 0} lecture(s) inside it. This action cannot be undone.`,
+      confirmText: "Delete Module",
+      onConfirm: async () => {
+        const res = await deleteModule(course._id, module._id);
+        if (res.success) {
+          setCourse(res.data);
+          toast.success(res.message);
+        } else {
+          toast.error(res.message);
+        }
+      },
+    });
+  };
+
+  const handleEditModule = (module) => {
+    setEditingModule(module);
+    setIsEditModuleOpen(true);
+  };
+
   return (
     <div className="space-y-6">
-      {/* Header */}
       <div className="flex flex-col gap-4">
         <div>
           <Button
             variant="ghost"
             size="sm"
             asChild
-            className="-ml-3 mb-2 text-muted-foreground"
+            className="-ml-3 mb-2 text-muted-foreground cursor-pointer"
           >
             <Link href="/admin/courses">
               <ArrowLeft className="mr-2 h-4 w-4" />
@@ -70,11 +96,11 @@ export default function CourseEditorView({initialCourse}) {
               </p>
             </div>
             <div className="flex items-center gap-2">
-              <Button variant="outline">
+              <Button variant="outline" className="cursor-pointer">
                 <Edit className="mr-2 h-4 w-4 text-muted-foreground" />
                 Edit Details
               </Button>
-              <Button onClick={handleTogglePublish} disabled={isPublishing}>
+              <Button onClick={handleTogglePublish} disabled={isPublishing} className="cursor-pointer">
                 {course.isPublished ? "Unpublish" : "Publish"}
               </Button>
             </div>
@@ -85,7 +111,6 @@ export default function CourseEditorView({initialCourse}) {
       <Separator />
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Main Content: Modules */}
         <div className="lg:col-span-2 space-y-6">
           <div className="flex items-center justify-between">
             <div>
@@ -94,7 +119,7 @@ export default function CourseEditorView({initialCourse}) {
                 Organize your course content into modules and lectures.
               </p>
             </div>
-            <Button size="sm" onClick={() => setIsModuleOpen(true)}>
+            <Button size="sm" onClick={() => setIsModuleOpen(true)} className="cursor-pointer">
               <Plus className="mr-2 h-4 w-4" /> Add Module
             </Button>
           </div>
@@ -114,7 +139,7 @@ export default function CourseEditorView({initialCourse}) {
                 </p>
                 <Button
                   variant="outline"
-                  className="mt-4"
+                  className="mt-4 cursor-pointer"
                   onClick={() => setIsModuleOpen(true)}
                 >
                   Create First Module
@@ -136,13 +161,24 @@ export default function CourseEditorView({initialCourse}) {
                           {module.lectures?.length || 0} Lectures
                         </CardDescription>
                       </div>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="text-destructive hover:text-destructive"
-                      >
-                        <Trash className="h-4 w-4" />
-                      </Button>
+                      <div className="flex items-center gap-1">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="text-muted-foreground hover:text-foreground cursor-pointer"
+                          onClick={() => handleEditModule(module)}
+                        >
+                          <Pencil className="h-3.5 w-3.5" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="text-destructive hover:text-destructive cursor-pointer"
+                          onClick={() => handleDeleteModule(module)}
+                        >
+                          <Trash className="h-3.5 w-3.5" />
+                        </Button>
+                      </div>
                     </CardHeader>
                     <CardContent>
                       {module.lectures?.length > 0 && (
@@ -165,10 +201,10 @@ export default function CourseEditorView({initialCourse}) {
                           ))}
                         </div>
                       )}
-                      <Button 
-                        variant="outline" 
-                        size="sm" 
-                        className="w-full border-dashed"
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="w-full border-dashed cursor-pointer"
                         onClick={() => {
                           setActiveModuleId(module._id);
                           setIsLectureOpen(true);
@@ -183,7 +219,6 @@ export default function CourseEditorView({initialCourse}) {
           )}
         </div>
 
-        {/* Sidebar: Course Meta info */}
         <div className="space-y-6">
           <Card>
             <CardHeader>
@@ -243,6 +278,14 @@ export default function CourseEditorView({initialCourse}) {
         onSuccess={(updatedCourse) => setCourse(updatedCourse)}
       />
 
+      <EditModuleDialog
+        courseId={course._id}
+        module={editingModule}
+        open={isEditModuleOpen}
+        onOpenChange={setIsEditModuleOpen}
+        onSuccess={(updatedCourse) => setCourse(updatedCourse)}
+      />
+
       <CreateLectureDialog
         courseId={course._id}
         moduleId={activeModuleId}
@@ -250,6 +293,8 @@ export default function CourseEditorView({initialCourse}) {
         onOpenChange={setIsLectureOpen}
         onSuccess={(updatedCourse) => setCourse(updatedCourse)}
       />
+
+      <ConfirmationDialog />
     </div>
   );
 }

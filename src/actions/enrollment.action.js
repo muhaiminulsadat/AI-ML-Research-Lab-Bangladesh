@@ -92,22 +92,26 @@ export async function toggleLectureComplete(courseId, lectureId) {
       return { success: false, message: "You must enroll in the course first to save progress." };
     }
 
-    // Check if the lecture is already completed
     const isCompleted = enrollment.completedLectures.includes(lectureId);
 
     if (isCompleted) {
-      // Remove it
       enrollment.completedLectures = enrollment.completedLectures.filter(
         (id) => id.toString() !== lectureId.toString()
       );
     } else {
-      // Add it
       enrollment.completedLectures.push(lectureId);
     }
 
-    // Note: If you want to check if all lectures are completed to set `isCompleted: true`,
-    // you would fetch the course modules, count total lectures, and compare here.
-    // For now, we'll just handle lecture progress.
+    const course = await Course.findById(courseId);
+    if (course) {
+      const totalLectures = course.modules.reduce(
+        (acc, mod) => acc + (mod.lectures?.length || 0),
+        0,
+      );
+      const allDone = enrollment.completedLectures.length >= totalLectures && totalLectures > 0;
+      enrollment.isCompleted = allDone;
+      enrollment.completedAt = allDone ? new Date() : null;
+    }
 
     await enrollment.save();
 
