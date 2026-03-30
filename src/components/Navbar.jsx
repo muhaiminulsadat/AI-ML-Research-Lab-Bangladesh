@@ -12,6 +12,7 @@ import {
   LayoutDashboard,
   Users,
   ClipboardList,
+  BookOpen,
 } from "lucide-react";
 import {Button} from "@/components/ui/button";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
@@ -43,10 +44,12 @@ const roleLinks = {
   general: [{href: "/dashboard", label: "Dashboard", icon: LayoutDashboard}],
   member: [
     {href: "/dashboard", label: "Dashboard", icon: LayoutDashboard},
+    {href: "/courses", label: "Courses", icon: BookOpen},
     {href: "/members", label: "Members", icon: Users},
   ],
   admin: [
     {href: "/dashboard", label: "Dashboard", icon: LayoutDashboard},
+    {href: "/courses", label: "Courses", icon: BookOpen},
     {href: "/members", label: "Members", icon: Users},
     {href: "/admin", label: "Admin", icon: ShieldCheck},
   ],

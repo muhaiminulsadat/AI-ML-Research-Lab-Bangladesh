@@ -1,0 +1,17 @@
+import { getCourses } from "@/actions/course.action";
+import CoursesAdminView from "./_components/CoursesAdminView";
+
+export const metadata = {
+  title: "Manage Courses | Admin",
+};
+
+export default async function AdminCoursesPage() {
+  const res = await getCourses(true);
+  const courses = res.success ? res.data : [];
+
+  return (
+    <div className="container mx-auto p-6 max-w-7xl">
+      <CoursesAdminView initialCourses={courses} />
+    </div>
+  );
+}
