@@ -1,4 +1,4 @@
-import { getCourses } from "@/actions/course.action";
+import {getCourses} from "@/actions/course.action";
 import CoursesAdminView from "./_components/CoursesAdminView";
 
 export const metadata = {

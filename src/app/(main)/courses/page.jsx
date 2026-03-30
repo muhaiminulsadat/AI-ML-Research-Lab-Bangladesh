@@ -1,7 +1,7 @@
-import { getCourses } from "@/actions/course.action";
+import {getCourses} from "@/actions/course.action";
 import CoursesView from "./_components/CoursesView";
-import { getCurrentUser } from "@/lib/auth";
-import { redirect } from "next/navigation";
+import {getCurrentUser} from "@/lib/auth";
+import {redirect} from "next/navigation";
 
 export const metadata = {
   title: "Browse Courses | AI/ML Lab",
@@ -9,7 +9,7 @@ export const metadata = {
 };
 
 export default async function CoursesPage() {
-  const { user } = await getCurrentUser();
+  const {user} = await getCurrentUser();
 
   // Role check: Only 'member' or 'admin' can access
   if (!user || user.role === "general") {
@@ -20,7 +20,5 @@ export default async function CoursesPage() {
   const res = await getCourses(false);
   const courses = res.success ? res.data : [];
 
-  return (
-    <CoursesView initialCourses={courses} />
-  );
+  return <CoursesView initialCourses={courses} />;
 }
