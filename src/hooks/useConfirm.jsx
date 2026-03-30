@@ -1,7 +1,7 @@
 "use client";
 
 import {useState} from "react";
-import {Loader2, AlertTriangle} from "lucide-react";
+import {Loader2} from "lucide-react";
 import {Button} from "@/components/ui/button";
 import {
   Dialog,
@@ -46,38 +46,30 @@ export function useConfirm() {
 
   const ConfirmationDialog = () => (
     <Dialog open={isOpen} onOpenChange={(open) => !loading && setIsOpen(open)}>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent showCloseButton={false} className="sm:max-w-[380px]">
         <DialogHeader>
-          <div className="flex items-center gap-3 mb-2">
-            <div className="h-10 w-10 rounded-full bg-destructive/10 flex items-center justify-center shrink-0">
-              <AlertTriangle className="h-5 w-5 text-destructive" />
-            </div>
-            <DialogTitle>{config.title}</DialogTitle>
-          </div>
-          <DialogDescription className="pl-13">
-            {config.description}
-          </DialogDescription>
+          <DialogTitle>{config.title}</DialogTitle>
+          <DialogDescription>{config.description}</DialogDescription>
         </DialogHeader>
-        <DialogFooter className="mt-4">
+        <DialogFooter>
           <Button
             variant="outline"
+            size="sm"
             onClick={() => setIsOpen(false)}
             disabled={loading}
+            className="cursor-pointer"
           >
             {config.cancelText}
           </Button>
           <Button
             variant="destructive"
+            size="sm"
             onClick={handleConfirm}
             disabled={loading}
+            className="cursor-pointer"
           >
-            {loading ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Processing...
-              </>
-            ) : (
-              config.confirmText
-            )}
+            {loading && <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" />}
+            {loading ? "Deleting..." : config.confirmText}
           </Button>
         </DialogFooter>
       </DialogContent>

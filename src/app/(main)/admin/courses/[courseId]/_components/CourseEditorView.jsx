@@ -2,14 +2,16 @@
 
 import {useState} from "react";
 import Link from "next/link";
+import {useRouter} from "next/navigation";
 import {ArrowLeft, Edit, Plus, Trash2, PlayCircle, Clock, Pencil} from "lucide-react";
 import {Button} from "@/components/ui/button";
 import {Badge} from "@/components/ui/badge";
 import {toast} from "sonner";
-import {toggleCoursePublish, deleteModule, deleteLecture} from "@/actions/course.action";
+import {toggleCoursePublish, deleteModule, deleteLecture, deleteCourse} from "@/actions/course.action";
 import {useConfirm} from "@/hooks/useConfirm";
 import CreateModuleDialog from "./CreateModuleDialog";
 import EditModuleDialog from "./EditModuleDialog";
+import EditCourseDialog from "./EditCourseDialog";
 import CreateLectureDialog from "./CreateLectureDialog";
 import EditLectureDialog from "./EditLectureDialog";
 import {
@@ -22,9 +24,11 @@ import {
 import {Separator} from "@/components/ui/separator";
 
 export default function CourseEditorView({initialCourse}) {
+  const router = useRouter();
   const [course, setCourse] = useState(initialCourse);
   const [isModuleOpen, setIsModuleOpen] = useState(false);
   const [isEditModuleOpen, setIsEditModuleOpen] = useState(false);
+  const [isEditCourseOpen, setIsEditCourseOpen] = useState(false);
   const [editingModule, setEditingModule] = useState(null);
   const [isLectureOpen, setIsLectureOpen] = useState(false);
   const [isEditLectureOpen, setIsEditLectureOpen] = useState(false);
@@ -93,6 +97,23 @@ export default function CourseEditorView({initialCourse}) {
     });
   };
 
+  const handleDeleteCourse = () => {
+    confirm({
+      title: `Delete "${course.title}"?`,
+      description: "This will permanently delete this course, all its modules, and all lectures. This action cannot be undone.",
+      confirmText: "Delete Course",
+      onConfirm: async () => {
+        const res = await deleteCourse(course._id);
+        if (res.success) {
+          toast.success(res.message);
+          router.push("/admin/courses");
+        } else {
+          toast.error(res.message);
+        }
+      },
+    });
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col gap-4">
@@ -123,7 +144,11 @@ export default function CourseEditorView({initialCourse}) {
               </p>
             </div>
             <div className="flex items-center gap-2 shrink-0">
-              <Button variant="outline" className="cursor-pointer">
+              <Button
+                variant="outline"
+                className="cursor-pointer"
+                onClick={() => setIsEditCourseOpen(true)}
+              >
                 <Edit className="mr-2 h-4 w-4 text-muted-foreground" />
                 Edit Details
               </Button>
@@ -133,6 +158,14 @@ export default function CourseEditorView({initialCourse}) {
                 className="cursor-pointer"
               >
                 {course.isPublished ? "Unpublish" : "Publish"}
+              </Button>
+              <Button
+                variant="outline"
+                size="icon"
+                className="cursor-pointer text-destructive/70 hover:text-destructive"
+                onClick={handleDeleteCourse}
+              >
+                <Trash2 className="h-4 w-4" />
               </Button>
             </div>
           </div>
@@ -331,6 +364,13 @@ export default function CourseEditorView({initialCourse}) {
           </Card>
         </div>
       </div>
+
+      <EditCourseDialog
+        course={course}
+        open={isEditCourseOpen}
+        onOpenChange={setIsEditCourseOpen}
+        onSuccess={(updatedCourse) => setCourse(updatedCourse)}
+      />
 
       <CreateModuleDialog
         courseId={course._id}
