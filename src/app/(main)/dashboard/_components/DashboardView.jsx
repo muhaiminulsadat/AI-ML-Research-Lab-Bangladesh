@@ -12,6 +12,8 @@ import {
   Sparkles,
   ShieldCheck,
   ClipboardList,
+  PlayCircle,
+  CheckCircle2,
 } from "lucide-react";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import {Badge} from "@/components/ui/badge";
@@ -103,7 +105,7 @@ const adminQuickLinks = [
   },
 ];
 
-export default function DashboardView({user, stats}) {
+export default function DashboardView({user, stats, enrollments = []}) {
   const role = roleConfig[user?.role] ?? roleConfig.general;
   const RoleIcon = role.icon;
   const isGeneral = user?.role === "general";
@@ -224,6 +226,76 @@ export default function DashboardView({user, stats}) {
               </Card>
             );
           })}
+        </div>
+      )}
+
+      {(isMember || isAdmin) && (
+        <div className="rounded-2xl border bg-card shadow-sm p-6 space-y-4">
+          <div className="flex items-center justify-between">
+            <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground flex items-center gap-2">
+              <PlayCircle className="h-3.5 w-3.5" />
+              My Courses
+            </p>
+            <Link href="/courses">
+              <span className="text-xs font-medium text-muted-foreground hover:text-foreground transition-colors cursor-pointer">
+                Browse All
+              </span>
+            </Link>
+          </div>
+
+          {enrollments.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-8 gap-2 text-center">
+              <BookOpen className="h-8 w-8 text-muted-foreground/30" />
+              <p className="text-sm text-muted-foreground">
+                You haven&apos;t enrolled in any courses yet.
+              </p>
+              <Link href="/courses">
+                <Button variant="outline" size="sm" className="mt-1 cursor-pointer">
+                  Explore Courses
+                </Button>
+              </Link>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+              {enrollments.map((enrollment) => (
+                <Link
+                  key={enrollment._id}
+                  href={`/courses/${enrollment.course._id}`}
+                  className="cursor-pointer"
+                >
+                  <div className="group rounded-xl border border-border/50 p-4 hover:bg-muted/40 transition-colors space-y-3">
+                    <div className="flex items-start justify-between gap-2">
+                      <h4 className="text-sm font-medium leading-tight line-clamp-2 group-hover:text-primary transition-colors">
+                        {enrollment.course.title}
+                      </h4>
+                      {enrollment.isCompleted && (
+                        <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0 mt-0.5" />
+                      )}
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="inline-flex items-center text-[10px] font-medium px-1.5 py-0.5 rounded bg-muted text-muted-foreground border border-border/40 capitalize">
+                        {enrollment.course.difficulty}
+                      </span>
+                      <span className="text-[10px] text-muted-foreground">
+                        {enrollment.completedLectures?.length || 0}/{enrollment.totalLectures} lectures
+                      </span>
+                    </div>
+                    <div className="space-y-1">
+                      <div className="h-1.5 w-full bg-muted rounded-full overflow-hidden">
+                        <div
+                          className="h-full bg-primary rounded-full transition-all duration-300"
+                          style={{width: `${enrollment.progress}%`}}
+                        />
+                      </div>
+                      <p className="text-[10px] text-muted-foreground text-right">
+                        {enrollment.progress}%
+                      </p>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          )}
         </div>
       )}
 

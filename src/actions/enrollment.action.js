@@ -31,6 +31,50 @@ export async function getEnrollment(courseId) {
   }
 }
 
+export async function getUserEnrollments() {
+  try {
+    const session = await getCurrentUser();
+    const user = session?.user;
+    if (!user) {
+      return { success: false, message: "Unauthorized", data: [] };
+    }
+
+    await connectDB();
+
+    const enrollments = await Enrollment.find({ user: user.id })
+      .populate({
+        path: "course",
+        select: "title thumbnail difficulty modules tags",
+      })
+      .sort({ updatedAt: -1 })
+      .lean();
+
+    const enriched = enrollments
+      .filter((e) => e.course)
+      .map((e) => {
+        const totalLectures = e.course.modules?.reduce(
+          (acc, mod) => acc + (mod.lectures?.length || 0),
+          0,
+        ) || 0;
+        return {
+          ...e,
+          totalLectures,
+          progress: totalLectures > 0
+            ? Math.round((e.completedLectures.length / totalLectures) * 100)
+            : 0,
+        };
+      });
+
+    return {
+      success: true,
+      data: convertToObject(enriched),
+    };
+  } catch (error) {
+    console.error("Error fetching user enrollments:", error);
+    return { success: false, message: error.message, data: [] };
+  }
+}
+
 // Enroll in a Course
 export async function enrollUser(courseId) {
   try {

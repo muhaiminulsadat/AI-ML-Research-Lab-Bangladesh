@@ -2,7 +2,7 @@
 
 import {useState} from "react";
 import {toast} from "sonner";
-import {Loader2} from "lucide-react";
+import {Loader2, X} from "lucide-react";
 import {authClient} from "@/lib/auth-client";
 import {createCourse} from "@/actions/course.action";
 
@@ -29,12 +29,14 @@ import {
 export default function CreateCourseDialog({open, onOpenChange, onSuccess}) {
   const {data: session} = authClient.useSession();
   const [loading, setLoading] = useState(false);
+  const [tagInput, setTagInput] = useState("");
 
   const [formData, setFormData] = useState({
     title: "",
     description: "",
     thumbnail: "",
     difficulty: "beginner",
+    tags: [],
   });
 
   const handleChange = (e) => {
@@ -44,6 +46,24 @@ export default function CreateCourseDialog({open, onOpenChange, onSuccess}) {
 
   const handleSelectChange = (value) => {
     setFormData((prev) => ({...prev, difficulty: value}));
+  };
+
+  const handleAddTag = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      const tag = tagInput.trim();
+      if (tag && !formData.tags.includes(tag)) {
+        setFormData((prev) => ({...prev, tags: [...prev.tags, tag]}));
+      }
+      setTagInput("");
+    }
+  };
+
+  const handleRemoveTag = (tagToRemove) => {
+    setFormData((prev) => ({
+      ...prev,
+      tags: prev.tags.filter((t) => t !== tagToRemove),
+    }));
   };
 
   const handleSubmit = async (e) => {
@@ -78,7 +98,9 @@ export default function CreateCourseDialog({open, onOpenChange, onSuccess}) {
         description: "",
         thumbnail: "",
         difficulty: "beginner",
+        tags: [],
       });
+      setTagInput("");
     } else {
       toast.error(res.message);
     }
@@ -159,6 +181,42 @@ export default function CreateCourseDialog({open, onOpenChange, onSuccess}) {
                 </SelectContent>
               </Select>
             </div>
+
+            <div className="grid gap-2">
+              <Label htmlFor="create-course-tags" className="text-sm font-medium">
+                Tags{" "}
+                <span className="text-muted-foreground text-xs font-normal">
+                  (Press Enter to add)
+                </span>
+              </Label>
+              <Input
+                id="create-course-tags"
+                placeholder="e.g. machine-learning"
+                value={tagInput}
+                onChange={(e) => setTagInput(e.target.value)}
+                onKeyDown={handleAddTag}
+                disabled={loading}
+              />
+              {formData.tags.length > 0 && (
+                <div className="flex flex-wrap gap-1.5 mt-1">
+                  {formData.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded-md bg-muted text-muted-foreground border border-border/40"
+                    >
+                      {tag}
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveTag(tag)}
+                        className="hover:text-foreground transition-colors cursor-pointer"
+                      >
+                        <X className="h-3 w-3" />
+                      </button>
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
 
           <DialogFooter>
@@ -167,10 +225,11 @@ export default function CreateCourseDialog({open, onOpenChange, onSuccess}) {
               variant="outline"
               onClick={() => onOpenChange(false)}
               disabled={loading}
+              className="cursor-pointer"
             >
               Cancel
             </Button>
-            <Button type="submit" disabled={loading}>
+            <Button type="submit" disabled={loading} className="cursor-pointer">
               {loading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Creating...
