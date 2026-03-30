@@ -1,6 +1,10 @@
+"use client";
+
 import Link from "next/link";
-import {ArrowLeft, ChevronRight, Share2, Loader2} from "lucide-react";
+import {ArrowLeft, ChevronRight, Share2, Loader2, Check} from "lucide-react";
 import {Button} from "@/components/ui/button";
+import {useState} from "react";
+import {toast} from "sonner";
 
 export default function CourseMetaHeader({
   course,
@@ -9,6 +13,28 @@ export default function CourseMetaHeader({
   isPending,
   onEnroll,
 }) {
+  const [copied, setCopied] = useState(false);
+
+  const handleShare = async () => {
+    const url = window.location.href;
+
+    if (navigator.share) {
+      try {
+        await navigator.share({title: course.title, url});
+        return;
+      } catch {}
+    }
+
+    try {
+      await navigator.clipboard.writeText(url);
+      setCopied(true);
+      toast.success("Link copied to clipboard");
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      toast.error("Failed to copy link");
+    }
+  };
+
   return (
     <div className="w-full border-b border-border/40 bg-background/80 backdrop-blur-xl sticky top-0 z-50">
       <div className="w-full max-w-[1400px] mx-auto h-14 flex items-center justify-between px-4 sm:px-6 lg:px-10">
@@ -51,8 +77,17 @@ export default function CourseMetaHeader({
             variant="outline"
             size="sm"
             className="hidden sm:flex bg-transparent border-border/60 h-8 text-xs cursor-pointer"
+            onClick={handleShare}
           >
-            <Share2 className="h-3 w-3 mr-1.5" /> Share
+            {copied ? (
+              <>
+                <Check className="h-3 w-3 mr-1.5" /> Copied
+              </>
+            ) : (
+              <>
+                <Share2 className="h-3 w-3 mr-1.5" /> Share
+              </>
+            )}
           </Button>
         </div>
       </div>

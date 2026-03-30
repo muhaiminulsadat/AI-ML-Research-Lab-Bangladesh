@@ -13,6 +13,7 @@ import {
   PanelLeftClose,
   PanelLeft,
   GraduationCap,
+  FileText,
 } from "lucide-react";
 import {cn} from "@/lib/utils";
 import {Button} from "@/components/ui/button";
@@ -23,6 +24,7 @@ const getLinks = (role) => {
   const baseLinks = [
     {href: "/dashboard", label: "Dashboard", icon: LayoutDashboard},
     {href: "/courses", label: "Courses", icon: BookOpen},
+    {href: "/research", label: "Research", icon: FileText},
     {href: "/members", label: "Members", icon: Users},
   ];
 
@@ -30,6 +32,7 @@ const getLinks = (role) => {
     baseLinks.push(
       {href: "/admin", label: "Admin Panel", icon: ShieldCheck},
       {href: "/admin/courses", label: "Manage Courses", icon: GraduationCap},
+      {href: "/admin/publications", label: "Manage Publications", icon: FileText},
     );
   }
 

@@ -28,7 +28,7 @@ export default function ClientAppShell({ children }) {
   };
   
   // Decide what routes are part of the "App" (which gets the Sidebar instead of top Navbar)
-  const appRoutes = ["/dashboard", "/admin", "/courses", "/members", "/profile"];
+  const appRoutes = ["/dashboard", "/admin", "/courses", "/members", "/profile", "/research"];
   const isAppRoute = appRoutes.some(r => pathname.startsWith(r));
 
   if (isAppRoute) {

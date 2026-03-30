@@ -139,7 +139,7 @@ export default function EditProfileModal({open, onClose, user}) {
             <Input
               id="university"
               name="university"
-              placeholder="Your university"
+              placeholder="e.g. BUET"
               value={form.university}
               onChange={handleChange}
               disabled={loading}
@@ -154,7 +154,7 @@ export default function EditProfileModal({open, onClose, user}) {
             <Textarea
               id="bio"
               name="bio"
-              placeholder="Tell us about yourself..."
+              placeholder="e.g. Student at Civil Engineering..."
               value={form.bio}
               onChange={handleChange}
               rows={3}

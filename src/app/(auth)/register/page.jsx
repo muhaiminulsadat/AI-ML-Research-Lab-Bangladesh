@@ -93,7 +93,7 @@ export default function RegisterPage() {
               name="name"
               label="Full Name"
               icon={User}
-              placeholder="Muhaiminul Sadat"
+              placeholder="Muhaiminul Islam Sadat"
               value={formData.name}
               onChange={handleChange}
               disabled={loading}
@@ -118,7 +118,7 @@ export default function RegisterPage() {
               name="university"
               label="University"
               icon={Building2}
-              placeholder="Bangladesh University of Engineering and Technology"
+              placeholder="BUET"
               value={formData.university}
               onChange={handleChange}
               disabled={loading}
