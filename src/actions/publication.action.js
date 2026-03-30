@@ -9,7 +9,7 @@ import {revalidatePath} from "next/cache";
 export async function createPublication(data) {
   try {
     const adminCheck = await requireAdmin();
-    if (!adminCheck.success) return adminCheck;
+    if (!adminCheck.authorized) return adminCheck.response;
 
     await connectDB();
 
@@ -52,7 +52,7 @@ export async function getPublications(statusFilter = null) {
 export async function updatePublication(id, data) {
   try {
     const adminCheck = await requireAdmin();
-    if (!adminCheck.success) return adminCheck;
+    if (!adminCheck.authorized) return adminCheck.response;
 
     await connectDB();
 
@@ -83,7 +83,7 @@ export async function updatePublication(id, data) {
 export async function deletePublication(id) {
   try {
     const adminCheck = await requireAdmin();
-    if (!adminCheck.success) return adminCheck;
+    if (!adminCheck.authorized) return adminCheck.response;
 
     await connectDB();
 
