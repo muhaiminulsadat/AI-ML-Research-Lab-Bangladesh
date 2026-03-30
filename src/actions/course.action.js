@@ -2,6 +2,7 @@
 
 import connectDB from "@/lib/db";
 import Course from "@/models/course.model";
+import User from "@/models/user.model";
 import {requireAdmin, convertToObject} from "@/lib/utility";
 import {getCurrentUser} from "@/lib/auth";
 
