@@ -28,7 +28,7 @@ export default function CoursesView({initialCourses}) {
   );
 
   return (
-    <div className="space-y-8 pb-12 w-full max-w-[1600px] px-6 lg:px-12 mx-auto pt-6">
+    <div className="w-full max-w-[1600px] mx-auto px-4 lg:px-12 py-10 space-y-8">
       {/* Clean, Functional Header */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6 border-b border-border/40">
         <div className="space-y-2">

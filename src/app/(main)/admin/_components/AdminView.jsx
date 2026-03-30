@@ -93,7 +93,7 @@ export default function AdminView({applications, members}) {
   const pending = list.filter((a) => a.status === "pending");
 
   return (
-    <div className="w-full max-w-[1600px] mx-auto mt-12 p-6 lg:px-12 flex flex-col gap-12">
+    <div className="w-full max-w-[1600px] mx-auto px-4 lg:px-12 py-10 flex flex-col gap-12">
       {/* Applications */}
       <section>
         <h2 className="text-xl font-bold mb-4">Pending Applications</h2>

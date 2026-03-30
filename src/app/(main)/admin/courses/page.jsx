@@ -10,7 +10,7 @@ export default async function AdminCoursesPage() {
   const courses = res.success ? res.data : [];
 
   return (
-    <div className="w-full max-w-[1600px] mx-auto p-6 lg:p-10">
+    <div className="w-full max-w-[1600px] mx-auto px-4 lg:px-12 py-10">
       <CoursesAdminView initialCourses={courses} />
     </div>
   );

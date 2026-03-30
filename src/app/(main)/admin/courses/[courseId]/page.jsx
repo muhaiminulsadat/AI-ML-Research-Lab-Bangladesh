@@ -16,7 +16,7 @@ export default async function EditCoursePage({ params }) {
   }
 
   return (
-    <div className="w-full max-w-[1600px] mx-auto p-6 lg:p-10">
+    <div className="w-full max-w-[1600px] mx-auto px-4 lg:px-12 py-10">
       <CourseEditorView initialCourse={res.data} />
     </div>
   );
