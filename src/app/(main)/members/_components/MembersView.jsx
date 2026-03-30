@@ -197,7 +197,7 @@ export default function MembersView({members}) {
   );
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-10 space-y-6">
+    <div className="w-full max-w-[1600px] mx-auto px-4 lg:px-12 py-10 space-y-6">
       {/* Header */}
       <div className="space-y-1">
         <h1 className="text-3xl font-bold tracking-tight">Members</h1>

@@ -77,17 +77,17 @@ export default function ProfileView({user}) {
     : "?";
 
   return (
-    <div className="max-w-3xl mx-auto px-4 py-10 space-y-4">
+    <div className="w-full max-w-5xl mx-auto px-4 lg:px-12 py-10 space-y-6">
       {/* Hero Card */}
       <div className="relative rounded-2xl overflow-hidden border bg-card shadow-sm">
         <div
           className={cn(
-            "h-32 w-full bg-gradient-to-br opacity-80",
+            "h-40 lg:h-48 w-full bg-gradient-to-br opacity-80",
             role.accent,
           )}
         >
           <div
-            className="absolute inset-0 h-32 opacity-10"
+            className="absolute inset-0 h-40 lg:h-48 opacity-10"
             style={{
               backgroundImage: `radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)`,
               backgroundSize: "24px 24px",
@@ -96,10 +96,10 @@ export default function ProfileView({user}) {
         </div>
 
         <div className="px-6 pb-6">
-          <div className="flex items-end justify-between -mt-10 mb-4">
+          <div className="flex items-end justify-between -mt-12 lg:-mt-16 mb-6">
             <Avatar
               className={cn(
-                "h-20 w-20 ring-4 ring-background shadow-lg",
+                "h-24 w-24 lg:h-32 lg:w-32 ring-4 lg:ring-8 ring-background shadow-lg",
                 role.ring,
               )}
             >
@@ -188,7 +188,8 @@ export default function ProfileView({user}) {
 
       {/* Member & Admin — full profile sections */}
       {(isMember || isAdmin) && (
-        <>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="md:col-span-2 space-y-6">
           {user?.bio && (
             <div className="rounded-2xl border bg-card p-6 shadow-sm space-y-2">
               <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
@@ -217,7 +218,9 @@ export default function ProfileView({user}) {
               </div>
             </div>
           )}
-
+          </div>
+          
+          <div className="md:col-span-1 space-y-6">
           {(user?.socialLinks?.github ||
             user?.socialLinks?.linkedin ||
             user?.socialLinks?.googleScholar) && (
@@ -271,7 +274,8 @@ export default function ProfileView({user}) {
               </div>
             </div>
           )}
-        </>
+          </div>
+        </div>
       )}
 
       {/* Admin — quick link to admin panel */}

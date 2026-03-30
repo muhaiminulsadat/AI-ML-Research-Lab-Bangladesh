@@ -11,7 +11,7 @@ export default function CourseMetaHeader({
 }) {
   return (
     <div className="w-full border-b border-border/40 bg-background/80 backdrop-blur-xl sticky top-0 z-50 shadow-sm">
-      <div className="container mx-auto max-w-[1400px] h-16 flex items-center justify-between px-4 lg:px-8">
+      <div className="w-full max-w-[1600px] mx-auto h-16 flex items-center justify-between px-4 lg:px-12">
         <Button variant="ghost" size="sm" asChild className="text-muted-foreground hover:text-foreground font-medium">
           <Link href="/courses">
             <ArrowLeft className="mr-2 h-4 w-4" />

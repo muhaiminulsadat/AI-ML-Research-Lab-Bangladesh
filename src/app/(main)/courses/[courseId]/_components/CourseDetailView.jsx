@@ -83,7 +83,7 @@ export default function CourseDetailView({course, initialEnrollment}) {
       />
 
       {/* Main Layout Area */}
-      <div className="container max-w-[1400px] mx-auto pt-6 lg:pt-8 px-4 lg:px-8 flex-1">
+      <div className="w-full max-w-[1600px] mx-auto pt-6 lg:pt-8 px-4 lg:px-12 flex-1">
         <div className="flex flex-col xl:flex-row gap-8 lg:gap-12">
           {/* Left Column (Video & Content Details) */}
           <div className="flex-1 xl:w-[65%] 2xl:w-[70%] space-y-8">

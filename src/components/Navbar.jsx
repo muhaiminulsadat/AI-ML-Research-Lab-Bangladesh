@@ -114,7 +114,7 @@ function NavLink({href, label, onClick, mobile = false}) {
   );
 }
 
-export default function Navbar() {
+export default function Navbar({ isMobileOnly = false }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const {user} = useGetCurrentUser();
   const {logout} = useLogOut();
@@ -140,7 +140,7 @@ export default function Navbar() {
     : "?";
 
   return (
-    <nav className="sticky top-0 z-50 w-full border-b border-border/50 bg-background/80 backdrop-blur-md">
+    <nav className={cn("sticky top-0 z-50 w-full border-b border-border/50 bg-background/80 backdrop-blur-md", isMobileOnly && "lg:hidden")}>
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between gap-8">
           {/* Logo */}

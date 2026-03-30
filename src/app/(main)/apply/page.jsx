@@ -50,7 +50,7 @@ export default function ApplyPage() {
     }
   };
   return (
-    <div className="max-w-lg mx-auto mt-16 p-6">
+    <div className="w-full max-w-lg mx-auto mt-16 px-4 lg:px-12 py-10">
       <h1 className="text-2xl font-bold mb-6">Apply to Join</h1>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <input

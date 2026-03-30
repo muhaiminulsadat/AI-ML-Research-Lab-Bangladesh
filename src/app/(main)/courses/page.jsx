@@ -21,7 +21,7 @@ export default async function CoursesPage() {
   const courses = res.success ? res.data : [];
 
   return (
-    <div className="container mx-auto p-6 max-w-7xl">
+    <div className="w-full max-w-[1600px] mx-auto p-6 lg:p-10">
       <CoursesView initialCourses={courses} />
     </div>
   );

@@ -125,7 +125,7 @@ export default function DashboardView({user, stats}) {
     hour < 12 ? "Good morning" : hour < 17 ? "Good afternoon" : "Good evening";
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-10 space-y-6">
+    <div className="w-full max-w-[1600px] mx-auto px-4 lg:px-12 py-10 space-y-6">
       {/* Welcome Hero */}
       <div className="relative rounded-2xl overflow-hidden border bg-card shadow-sm p-6 md:p-8">
         <div className="absolute inset-0 bg-gradient-to-br from-orange-400/10 to-amber-500/5 pointer-events-none" />
