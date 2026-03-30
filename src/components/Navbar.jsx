@@ -80,7 +80,7 @@ function NavLink({href, label, onClick, mobile = false}) {
         href={href}
         onClick={onClick}
         className={cn(
-          "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-150",
+          "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-150 cursor-pointer",
           isActive
             ? "bg-primary/10 text-primary"
             : "text-muted-foreground hover:text-foreground hover:bg-muted",
@@ -102,7 +102,7 @@ function NavLink({href, label, onClick, mobile = false}) {
       href={href}
       onClick={onClick}
       className={cn(
-        "relative text-sm font-medium transition-colors duration-200",
+        "relative text-sm font-medium transition-colors duration-200 cursor-pointer",
         "after:absolute after:-bottom-0.5 after:left-0 after:h-px after:w-0 after:bg-primary after:transition-all after:duration-300 hover:after:w-full",
         isActive
           ? "text-primary after:w-full"
@@ -114,7 +114,7 @@ function NavLink({href, label, onClick, mobile = false}) {
   );
 }
 
-export default function Navbar({ isMobileOnly = false }) {
+export default function Navbar({isMobileOnly = false}) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const {user} = useGetCurrentUser();
   const {logout} = useLogOut();
@@ -140,11 +140,19 @@ export default function Navbar({ isMobileOnly = false }) {
     : "?";
 
   return (
-    <nav className={cn("sticky top-0 z-50 w-full border-b border-border/50 bg-background/80 backdrop-blur-md", isMobileOnly && "lg:hidden")}>
+    <nav
+      className={cn(
+        "sticky top-0 z-50 w-full border-b border-border/50 bg-background/80 backdrop-blur-md",
+        isMobileOnly && "lg:hidden",
+      )}
+    >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between gap-8">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2.5 shrink-0">
+          <Link
+            href="/"
+            className="flex items-center gap-2.5 shrink-0 cursor-pointer"
+          >
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
               <FlaskConical className="h-4 w-4 text-primary-foreground" />
             </div>
@@ -173,7 +181,7 @@ export default function Navbar({ isMobileOnly = false }) {
                 <DropdownMenuTrigger asChild>
                   <Button
                     variant="ghost"
-                    className="hidden md:flex items-center gap-2 h-10 px-2.5 rounded-full hover:bg-muted/80 transition-all duration-200 group"
+                    className="hidden md:flex items-center gap-2 h-10 px-2.5 rounded-full hover:bg-muted/80 transition-all duration-200 group cursor-pointer"
                   >
                     <div className="relative">
                       <Avatar className="h-7 w-7 ring-2 ring-border ring-offset-1 ring-offset-background transition-all duration-200 group-hover:ring-primary/30">
@@ -181,7 +189,7 @@ export default function Navbar({ isMobileOnly = false }) {
                           src={user?.profileImage}
                           alt={user?.name}
                         />
-                        <AvatarFallback className="text-xs font-bold bg-gradient-to-br from-orange-400 to-amber-500 text-white">
+                        <AvatarFallback className="text-xs font-bold bg-primary text-primary-foreground">
                           {userInitials}
                         </AvatarFallback>
                       </Avatar>
@@ -200,7 +208,7 @@ export default function Navbar({ isMobileOnly = false }) {
                   className="w-64 p-0 overflow-hidden rounded-2xl border shadow-xl shadow-black/5"
                 >
                   {/* User Info Header */}
-                  <div className="relative px-4 py-4 bg-gradient-to-br from-orange-400/10 via-amber-500/5 to-transparent border-b">
+                  <div className="relative px-4 py-4 bg-primary/10 border-b">
                     <div
                       className="absolute inset-0 opacity-5"
                       style={{
@@ -210,12 +218,12 @@ export default function Navbar({ isMobileOnly = false }) {
                     />
                     <div className="relative flex items-center gap-3">
                       <div className="relative">
-                        <Avatar className="h-10 w-10 ring-2 ring-orange-400/30">
+                        <Avatar className="h-10 w-10 ring-2 ring-primary/30">
                           <AvatarImage
                             src={user?.profileImage}
                             alt={user?.name}
                           />
-                          <AvatarFallback className="text-sm font-bold bg-gradient-to-br from-orange-400 to-amber-500 text-white">
+                          <AvatarFallback className="text-sm font-bold bg-primary text-primary-foreground">
                             {userInitials}
                           </AvatarFallback>
                         </Avatar>
@@ -304,12 +312,14 @@ export default function Navbar({ isMobileOnly = false }) {
             ) : (
               <div className="hidden md:flex items-center gap-2">
                 <Link href="/login">
-                  <Button variant="ghost" size="sm">
+                  <Button variant="ghost" size="sm" className="cursor-pointer">
                     Log in
                   </Button>
                 </Link>
                 <Link href="/register">
-                  <Button size="sm">Sign Up</Button>
+                  <Button size="sm" className="cursor-pointer">
+                    Sign Up
+                  </Button>
                 </Link>
               </div>
             )}
@@ -320,7 +330,7 @@ export default function Navbar({ isMobileOnly = false }) {
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="md:hidden h-9 w-9"
+                  className="md:hidden h-9 w-9 cursor-pointer"
                 >
                   <Menu className="h-4 w-4" />
                   <span className="sr-only">Toggle menu</span>
@@ -390,7 +400,7 @@ export default function Navbar({ isMobileOnly = false }) {
                           <Button
                             variant="outline"
                             size="sm"
-                            className="w-full gap-1.5"
+                            className="w-full gap-1.5 cursor-pointer"
                           >
                             <UserCircle className="h-3.5 w-3.5" />
                             Profile
@@ -399,7 +409,7 @@ export default function Navbar({ isMobileOnly = false }) {
                         <Button
                           variant="outline"
                           size="sm"
-                          className="w-full gap-1.5 text-destructive border-destructive/30 hover:bg-destructive/5"
+                          className="w-full gap-1.5 text-destructive border-destructive/30 hover:bg-destructive/5 cursor-pointer"
                           onClick={() => {
                             logout();
                             setMobileMenuOpen(false);
@@ -417,7 +427,7 @@ export default function Navbar({ isMobileOnly = false }) {
                           <Button
                             variant="outline"
                             size="sm"
-                            className="w-full gap-1.5 text-rose-600 border-rose-200 hover:bg-rose-500/5"
+                            className="w-full gap-1.5 text-rose-600 border-rose-200 hover:bg-rose-500/5 cursor-pointer"
                           >
                             <ShieldCheck className="h-3.5 w-3.5" />
                             Admin Panel
@@ -431,7 +441,11 @@ export default function Navbar({ isMobileOnly = false }) {
                         href="/login"
                         onClick={() => setMobileMenuOpen(false)}
                       >
-                        <Button variant="outline" className="w-full" size="sm">
+                        <Button
+                          variant="outline"
+                          className="w-full cursor-pointer"
+                          size="sm"
+                        >
                           Log in
                         </Button>
                       </Link>
@@ -439,7 +453,7 @@ export default function Navbar({ isMobileOnly = false }) {
                         href="/register"
                         onClick={() => setMobileMenuOpen(false)}
                       >
-                        <Button className="w-full" size="sm">
+                        <Button className="w-full cursor-pointer" size="sm">
                           Sign Up
                         </Button>
                       </Link>
