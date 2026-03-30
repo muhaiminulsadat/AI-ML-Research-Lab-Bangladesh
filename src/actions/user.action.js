@@ -106,6 +106,51 @@ export async function getApprovedMembers() {
   }
 }
 
+export async function adminGetAllUsers() {
+  try {
+    await connectDB();
+
+    const {authorized, response} = await requireAdmin();
+    if (!authorized) return response;
+
+    const allUsers = await User.find({})
+      .sort({createdAt: -1})
+      .lean();
+    return {success: true, data: convertToObject(allUsers)};
+  } catch (error) {
+    console.error("adminGetAllUsers error:", error);
+    return {success: false, message: error.message || "Something went wrong."};
+  }
+}
+
+export async function toggleMemberApproval(userId, isApproved) {
+  try {
+    await connectDB();
+    const {authorized, response} = await requireAdmin();
+    if (!authorized) return response;
+
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      {isApproved},
+      {new: true}
+    ).lean();
+
+    if (!updatedUser) return {success: false, message: "User not found."};
+
+    revalidatePath("/admin/members");
+    revalidatePath("/members");
+
+    return {
+      success: true,
+      message: `Member ${isApproved ? "approved" : "revoked"} successfully.`,
+      data: convertToObject(updatedUser),
+    };
+  } catch (error) {
+    console.error("toggleMemberApproval error:", error);
+    return {success: false, message: error.message || "Something went wrong."};
+  }
+}
+
 export async function revokeMember(userId) {
   try {
     await connectDB();

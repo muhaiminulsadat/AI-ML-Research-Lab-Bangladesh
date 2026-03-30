@@ -1,6 +1,6 @@
 import {getCurrentUser} from "@/lib/auth";
 import {redirect} from "next/navigation";
-import {getApprovedMembers} from "@/actions/user.action";
+import {adminGetAllUsers} from "@/actions/user.action";
 import AdminMembersView from "./_components/AdminMembersView";
 
 export const metadata = {
@@ -11,7 +11,7 @@ export default async function AdminMembersPage() {
   const {user} = await getCurrentUser();
   if (!user || user.role !== "admin") redirect("/dashboard");
 
-  const memberResult = await getApprovedMembers();
+  const memberResult = await adminGetAllUsers();
   const members = 
     memberResult.success 
       ? memberResult.data 

@@ -1,7 +1,7 @@
 "use client";
 
 import {useState} from "react";
-import {Search, Users, ShieldCheck} from "lucide-react";
+import {Search, Users, ShieldCheck, CheckCircle, XCircle} from "lucide-react";
 import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
 import {Badge} from "@/components/ui/badge";
@@ -29,7 +29,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
-import {updateMemberType} from "@/actions/user.action";
+import {updateMemberType, toggleMemberApproval} from "@/actions/user.action";
 
 const MEMBER_TYPES = [
   {value: "advisor", label: "Advisor"},
@@ -58,6 +58,25 @@ export default function AdminMembersView({initialMembers}) {
       }
     } catch {
       toast.error("An error occurred while updating the role.");
+    } finally {
+      setUpdatingId(null);
+    }
+  };
+
+  const handleToggleApproval = async (userId, isApproved) => {
+    setUpdatingId(userId);
+    try {
+      const res = await toggleMemberApproval(userId, isApproved);
+      if (res.success) {
+        toast.success(res.message);
+        setMembers((prev) =>
+          prev.map((m) => (m._id === userId ? {...m, isApproved} : m)),
+        );
+      } else {
+        toast.error(res.message);
+      }
+    } catch {
+      toast.error("An error occurred while updating status.");
     } finally {
       setUpdatingId(null);
     }
@@ -111,10 +130,11 @@ export default function AdminMembersView({initialMembers}) {
               <Table>
                 <TableHeader className="bg-muted/10">
                   <TableRow>
-                    <TableHead>User</TableHead>
+                    <TableHead className="pl-6 h-12">User</TableHead>
                     <TableHead>Contact / University</TableHead>
                     <TableHead>App Role</TableHead>
-                    <TableHead className="w-[200px] text-right">Directory Role</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead className="w-[180px] pr-6 text-right">Directory Role</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -130,7 +150,7 @@ export default function AdminMembersView({initialMembers}) {
 
                     return (
                       <TableRow key={member._id} className="hover:bg-muted/30">
-                        <TableCell>
+                        <TableCell className="pl-6 py-4">
                           <div className="flex items-center gap-3">
                             <Avatar className="h-9 w-9 border border-border/50">
                               <AvatarImage src={member.profileImage} />
@@ -143,7 +163,7 @@ export default function AdminMembersView({initialMembers}) {
                             </span>
                           </div>
                         </TableCell>
-                        <TableCell>
+                        <TableCell className="py-4">
                           <div className="flex flex-col gap-1">
                             <span className="text-sm text-muted-foreground">
                               {member.email}
@@ -153,7 +173,7 @@ export default function AdminMembersView({initialMembers}) {
                             </span>
                           </div>
                         </TableCell>
-                        <TableCell>
+                        <TableCell className="py-4">
                           <Badge
                             variant={member.role === "admin" ? "default" : "secondary"}
                             className="text-xs capitalize"
@@ -164,7 +184,22 @@ export default function AdminMembersView({initialMembers}) {
                             {member.role || "Member"}
                           </Badge>
                         </TableCell>
-                        <TableCell className="text-right">
+                        <TableCell className="py-4">
+                          <Button
+                            variant={member.isApproved ? "outline" : "default"}
+                            size="sm"
+                            className="h-8 text-xs cursor-pointer"
+                            onClick={() => handleToggleApproval(member._id, !member.isApproved)}
+                            disabled={updatingId === member._id}
+                          >
+                            {member.isApproved ? (
+                              <><CheckCircle className="w-3 h-3 mr-1 text-emerald-500"/> Approved</>
+                            ) : (
+                              <><XCircle className="w-3 h-3 mr-1"/> Pending</>
+                            )}
+                          </Button>
+                        </TableCell>
+                        <TableCell className="pr-6 py-4 text-right">
                           <Select
                             disabled={updatingId === member._id}
                             value={member.memberType || ""}
