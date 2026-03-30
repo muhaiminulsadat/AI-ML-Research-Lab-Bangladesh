@@ -31,6 +31,7 @@ const getLinks = (role) => {
   if (role === "admin") {
     baseLinks.push(
       {href: "/admin", label: "Admin Panel", icon: ShieldCheck},
+      {href: "/admin/members", label: "Manage Members", icon: Users},
       {href: "/admin/courses", label: "Manage Courses", icon: GraduationCap},
       {href: "/admin/publications", label: "Manage Publications", icon: FileText},
     );

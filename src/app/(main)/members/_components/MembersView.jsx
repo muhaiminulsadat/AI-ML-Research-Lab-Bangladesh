@@ -5,6 +5,9 @@ import {
   Users,
   GraduationCap,
   Briefcase,
+  Crown,
+  Shield,
+  BookOpen,
   X,
 } from "lucide-react";
 import {Input} from "@/components/ui/input";
@@ -13,8 +16,11 @@ import MemberCard from "./MemberCard";
 
 const FILTERS = [
   {label: "All", value: "all", icon: Users},
-  {label: "Students", value: "student", icon: GraduationCap},
+  {label: "Advisors", value: "advisor", icon: Crown},
+  {label: "Core Panel", value: "core_panel", icon: Shield},
+  {label: "Instructors", value: "instructor", icon: BookOpen},
   {label: "Researchers", value: "researcher", icon: Briefcase},
+  {label: "Students", value: "student", icon: GraduationCap},
 ];
 
 export default function MembersView({members}) {
@@ -29,17 +35,20 @@ export default function MembersView({members}) {
         m.name?.toLowerCase().includes(q) ||
         m.university?.toLowerCase().includes(q) ||
         m.researchInterests?.some((t) => t.toLowerCase().includes(q));
+      const type = m.memberType || "student";
       const matchesFilter =
-        activeFilter === "all" || m.memberType === activeFilter;
+        activeFilter === "all" || type === activeFilter;
       return matchesSearch && matchesFilter;
     });
   }, [members, search, activeFilter]);
-
   const counts = useMemo(
     () => ({
       all: members.length,
-      student: members.filter((m) => m.memberType === "student").length,
+      advisor: members.filter((m) => m.memberType === "advisor").length,
+      core_panel: members.filter((m) => m.memberType === "core_panel").length,
+      instructor: members.filter((m) => m.memberType === "instructor").length,
       researcher: members.filter((m) => m.memberType === "researcher").length,
+      student: members.filter((m) => (m.memberType || "student") === "student").length,
     }),
     [members],
   );
@@ -130,10 +139,35 @@ export default function MembersView({members}) {
 
       {/* Grid */}
       {filtered.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {filtered.map((member) => (
-            <MemberCard key={member._id} member={member} />
-          ))}
+        <div className="space-y-12">
+          {["advisor", "core_panel", "instructor", "researcher", "student"].map(
+            (typeCode) => {
+              const groupLabel = FILTERS.find((f) => f.value === typeCode)?.label;
+              const typeMembers = filtered.filter(
+                (m) => (m.memberType || "student") === typeCode,
+              );
+
+              if (typeMembers.length === 0) return null;
+
+              return (
+                <div key={typeCode} className="space-y-4">
+                  {activeFilter === "all" && (
+                    <h2 className="text-xl font-bold tracking-tight border-b border-border/40 pb-2 flex items-center gap-2">
+                       {groupLabel}
+                       <div className="text-xs font-semibold bg-muted/60 text-muted-foreground px-2 py-0.5 rounded-md">
+                         {typeMembers.length}
+                       </div>
+                    </h2>
+                  )}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {typeMembers.map((member) => (
+                      <MemberCard key={member._id} member={member} />
+                    ))}
+                  </div>
+                </div>
+              );
+            },
+          )}
         </div>
       ) : (
         <div className="flex flex-col items-center justify-center py-24 gap-4 text-center">

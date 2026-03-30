@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema(
     },
     memberType: {
       type: String,
-      enum: ["student", "researcher"],
+      enum: ["student", "researcher", "advisor", "core_panel", "instructor"],
       default: null,
     },
     university: {

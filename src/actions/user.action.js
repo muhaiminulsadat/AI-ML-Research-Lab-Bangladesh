@@ -163,3 +163,39 @@ export async function changeRole(userId, role) {
     return {success: false, message: error.message || "Something went wrong."};
   }
 }
+
+export async function updateMemberType(userId, memberType) {
+  try {
+    await connectDB();
+
+    const {authorized, response} = await requireAdmin();
+    if (!authorized) return response;
+
+    const validTypes = ["student", "researcher", "advisor", "core_panel", "instructor"];
+    if (!validTypes.includes(memberType)) {
+      return {success: false, message: "Invalid member type."};
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      {memberType},
+      {new: true}
+    ).lean();
+
+    if (!updatedUser) {
+      return {success: false, message: "User not found."};
+    }
+
+    revalidatePath("/members");
+    revalidatePath("/admin/members");
+
+    return {
+      success: true,
+      message: `Member type successfully updated to ${memberType}.`,
+      data: convertToObject(updatedUser)
+    };
+  } catch (error) {
+    console.error("updateMemberType error:", error);
+    return {success: false, message: error.message || "Something went wrong."};
+  }
+}

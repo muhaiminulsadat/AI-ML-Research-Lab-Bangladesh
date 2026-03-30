@@ -7,6 +7,8 @@ import {
   GitBranch,
   GraduationCap,
   Briefcase,
+  Crown,
+  Shield,
 } from "lucide-react";
 import {cn} from "@/lib/utils";
 
@@ -26,6 +28,30 @@ const roleConfig = {
     text: "text-emerald-400",
     ring: "ring-emerald-500/20",
     gradient: "from-emerald-500/10 to-transparent",
+  },
+  advisor: {
+    icon: Crown,
+    label: "Advisor",
+    dot: "bg-fuchsia-400",
+    text: "text-fuchsia-400",
+    ring: "ring-fuchsia-500/20",
+    gradient: "from-fuchsia-500/10 to-transparent",
+  },
+  core_panel: {
+    icon: Shield,
+    label: "Core Panel",
+    dot: "bg-indigo-400",
+    text: "text-indigo-400",
+    ring: "ring-indigo-500/20",
+    gradient: "from-indigo-500/10 to-transparent",
+  },
+  instructor: {
+    icon: BookOpen,
+    label: "Instructor",
+    dot: "bg-amber-400",
+    text: "text-amber-400",
+    ring: "ring-amber-500/20",
+    gradient: "from-amber-500/10 to-transparent",
   },
 };
 
@@ -74,7 +100,15 @@ export default function MemberCard({member}) {
           "group-hover:opacity-100 transition-opacity duration-300",
           role.gradient === "from-blue-500/10 to-transparent"
             ? "from-blue-500/60 via-blue-400/30 to-transparent"
-            : "from-emerald-500/60 via-emerald-400/30 to-transparent",
+            : role.gradient === "from-emerald-500/10 to-transparent"
+            ? "from-emerald-500/60 via-emerald-400/30 to-transparent"
+            : role.gradient === "from-fuchsia-500/10 to-transparent"
+            ? "from-fuchsia-500/60 via-fuchsia-400/30 to-transparent"
+            : role.gradient === "from-indigo-500/10 to-transparent"
+            ? "from-indigo-500/60 via-indigo-400/30 to-transparent"
+            : role.gradient === "from-amber-500/10 to-transparent"
+            ? "from-amber-500/60 via-amber-400/30 to-transparent"
+            : "from-primary/60 via-primary/30 to-transparent",
         )}
       />
 
