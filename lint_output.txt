@@ -1,0 +1,160 @@
+
+> ai-ml-lab@0.1.0 lint
+> eslint
+
+
+E:\Akt\Web Development\Next JS Course\Projects\ai-ml-lab\src\actions\course.action.js
+  235:5  error  Do not assign to the variable `module`. See: https://nextjs.org/docs/messages/no-assign-module-variable  @next/next/no-assign-module-variable
+  347:5  error  Do not assign to the variable `module`. See: https://nextjs.org/docs/messages/no-assign-module-variable  @next/next/no-assign-module-variable
+  374:5  error  Do not assign to the variable `module`. See: https://nextjs.org/docs/messages/no-assign-module-variable  @next/next/no-assign-module-variable
+  407:5  error  Do not assign to the variable `module`. See: https://nextjs.org/docs/messages/no-assign-module-variable  @next/next/no-assign-module-variable
+  440:5  error  Do not assign to the variable `module`. See: https://nextjs.org/docs/messages/no-assign-module-variable  @next/next/no-assign-module-variable
+
+E:\Akt\Web Development\Next JS Course\Projects\ai-ml-lab\src\app\(auth)\profile\_components\ProfileView.jsx
+  172:20  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+
+E:\Akt\Web Development\Next JS Course\Projects\ai-ml-lab\src\app\(main)\admin\_components\AdminView.jsx
+  133:64  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+  167:23  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  167:40  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+
+E:\Akt\Web Development\Next JS Course\Projects\ai-ml-lab\src\app\(main)\admin\courses\[courseId]\_components\EditCourseDialog.jsx
+  41:7  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+  39 |   useEffect(() => {
+  40 |     if (course) {
+> 41 |       setFormData({
+     |       ^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  42 |         title: course.title || "",
+  43 |         description: course.description || "",
+  44 |         thumbnail: course.thumbnail || "",  react-hooks/set-state-in-effect
+
+E:\Akt\Web Development\Next JS Course\Projects\ai-ml-lab\src\app\(main)\admin\courses\[courseId]\_components\EditLectureDialog.jsx
+  37:7  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+  35 |   useEffect(() => {
+  36 |     if (lecture) {
+> 37 |       setFormData({
+     |       ^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  38 |         title: lecture.title || "",
+  39 |         youtubeId: lecture.youtubeId || "",
+  40 |         duration: lecture.duration ? String(lecture.duration) : "",  react-hooks/set-state-in-effect
+
+E:\Akt\Web Development\Next JS Course\Projects\ai-ml-lab\src\app\(main)\admin\courses\[courseId]\_components\EditModuleDialog.jsx
+  32:7  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+  30 |   useEffect(() => {
+  31 |     if (module) {
+> 32 |       setTitle(module.title || "");
+     |       ^^^^^^^^ Avoid calling setState() directly within an effect
+  33 |     }
+  34 |   }, [module]);
+  35 |  react-hooks/set-state-in-effect
+
+E:\Akt\Web Development\Next JS Course\Projects\ai-ml-lab\src\app\(main)\admin\members\_components\AdminMembersView.jsx
+  125:26  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+
+E:\Akt\Web Development\Next JS Course\Projects\ai-ml-lab\src\app\(main)\admin\publications\_components\EditPublicationDialog.jsx
+  57:7  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+  55 |   useEffect(() => {
+  56 |     if (publication) {
+> 57 |       setFormData({
+     |       ^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  58 |         title: publication.title || "",
+  59 |         status: publication.status || "ongoing",
+  60 |         venue: publication.venue || "",  react-hooks/set-state-in-effect
+
+E:\Akt\Web Development\Next JS Course\Projects\ai-ml-lab\src\app\(main)\admin\publications\_components\PublicationEditor.jsx
+  109:28  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+
+E:\Akt\Web Development\Next JS Course\Projects\ai-ml-lab\src\app\(main)\dashboard\_components\DashboardView.jsx
+  190:54  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+
+E:\Akt\Web Development\Next JS Course\Projects\ai-ml-lab\src\app\(main)\research\_components\ResearchView.jsx
+  126:22  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+
+E:\Akt\Web Development\Next JS Course\Projects\ai-ml-lab\src\app\page.jsx
+  6:11  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+
+E:\Akt\Web Development\Next JS Course\Projects\ai-ml-lab\src\components\layouts\ClientAppShell.jsx
+  20:7  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+  18 |     const saved = localStorage.getItem("sidebarCollapsed");
+  19 |     if (saved) {
+> 20 |       setIsCollapsed(JSON.parse(saved));
+     |       ^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  21 |     }
+  22 |   }, []);
+  23 |  react-hooks/set-state-in-effect
+
+E:\Akt\Web Development\Next JS Course\Projects\ai-ml-lab\src\hooks\useThemeConfig.jsx
+  32:9  error    Error: Cannot access variable before it is declared
+
+`applyThemeClass` is accessed before it is declared, which prevents the earlier access from updating when this value changes over time.
+
+  30 |       if (saved && THEMES.some(t => t.id === saved)) {
+  31 |         setColorThemeState(saved);
+> 32 |         applyThemeClass(saved);
+     |         ^^^^^^^^^^^^^^^ `applyThemeClass` accessed before it is declared
+  33 |       }
+  34 |     } catch {}
+  35 |   }, []);
+
+  35 |   }, []);
+  36 |
+> 37 |   const applyThemeClass = useCallback((themeId) => {
+     |   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 38 |     const root = document.documentElement;
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 39 |     // Remove all theme-* classes
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 40 |     THEMES.forEach(t => root.classList.remove(`theme-${t.id}`));
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 41 |     // Add the new one
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 42 |     if (themeId !== "zinc") {
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 43 |       root.classList.add(`theme-${themeId}`);
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 44 |     }
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 45 |   }, []);
+     | ^^^^^^^^^^ `applyThemeClass` is declared here
+  46 |
+  47 |   const setColorTheme = useCallback((themeId) => {
+  48 |     setColorThemeState(themeId);  react-hooks/immutability
+  35:6  warning  React Hook useEffect has a missing dependency: 'applyThemeClass'. Either include it or remove the dependency array                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        react-hooks/exhaustive-deps
+
+Γ£û 21 problems (20 errors, 1 warning)
+

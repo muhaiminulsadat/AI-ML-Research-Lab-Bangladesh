@@ -1,10 +1,10 @@
-import {Geist, Geist_Mono, Inter} from "next/font/google";
+import {Geist, Geist_Mono, Inter, Figtree } from "next/font/google";
 import "./globals.css";
 import {cn} from "@/lib/utils";
 import {Toaster} from "@/components/ui/sonner";
 import ClientAppShell from "@/components/layouts/ClientAppShell";
 
-const inter = Inter({subsets:['latin'],variable:'--font-sans'});
+const figtree = Figtree({subsets:['latin'],variable:'--font-sans'});
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,7 +32,7 @@ export default function RootLayout({children}) {
         geistSans.variable,
         geistMono.variable,
         "font-sans",
-        inter.variable,
+        figtree.variable,
       )}
       suppressHydrationWarning
     >
