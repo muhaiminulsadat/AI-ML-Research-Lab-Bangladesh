@@ -4,7 +4,7 @@ import {cn} from "@/lib/utils";
 import {Toaster} from "@/components/ui/sonner";
 import ClientAppShell from "@/components/layouts/ClientAppShell";
 
-const inter = Inter({subsets: ["latin"], variable: "--font-sans"});
+const inter = Inter({subsets:['latin'],variable:'--font-sans'});
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
