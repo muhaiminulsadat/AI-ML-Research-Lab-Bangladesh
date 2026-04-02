@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "AI/ML Lab Courses",
+  title: "AI/ML Lab",
   description: "Advanced Platform for Machine Learning and AI Courses",
 };
 
