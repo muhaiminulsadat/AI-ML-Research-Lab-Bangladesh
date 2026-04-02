@@ -1,10 +1,22 @@
 "use server";
 
 import connectDB from "@/lib/db";
-import Course from "@/models/course.model";
-import User from "@/models/user.model";
+import {Course} from "@/models/course.model";
+import {User} from "@/models/user.model";
 import {requireAdmin, convertToObject} from "@/lib/utility";
 import {getCurrentUser} from "@/lib/auth";
+
+import {z} from "zod";
+
+const courseSchema = z.object({
+  title: z.string().min(3, "Title must be at least 3 characters."),
+  description: z.string().min(10, "Description must be at least 10 characters."),
+  instructor: z.string().min(1, "Instructor ID is required."),
+  difficulty: z.enum(["beginner", "intermediate", "advanced"]).default("beginner"),
+  thumbnail: z.string().url("Invalid thumbnail URL.").optional().or(z.string().length(0)),
+  tags: z.array(z.string()).optional(),
+  isPublished: z.boolean().optional().default(false),
+});
 
 export async function createCourse(data) {
   try {
@@ -13,33 +25,11 @@ export async function createCourse(data) {
       return adminCheck.response;
     }
 
+    const validated = courseSchema.parse(data);
     await connectDB();
 
-    const {
-      title,
-      description,
-      instructor,
-      difficulty,
-      thumbnail,
-      tags,
-      isPublished,
-    } = data;
-
-    if (!title || !description || !instructor) {
-      return {
-        success: false,
-        message: "Title, description, and instructor are required.",
-      };
-    }
-
     const newCourse = await Course.create({
-      title,
-      description,
-      instructor,
-      difficulty: difficulty || "beginner",
-      thumbnail,
-      tags: tags || [],
-      isPublished: isPublished || false,
+      ...validated,
       modules: [],
     });
 
@@ -49,6 +39,9 @@ export async function createCourse(data) {
       data: convertToObject(newCourse),
     };
   } catch (error) {
+    if (error instanceof z.ZodError) {
+      return {success: false, message: error.errors[0].message};
+    }
     console.error("Error creating course:", error);
     return {
       success: false,

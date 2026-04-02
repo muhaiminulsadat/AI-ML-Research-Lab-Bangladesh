@@ -37,12 +37,20 @@ import {cn} from "@/lib/utils";
 
 const publicLinks = [
   {href: "/", label: "Home"},
-  {href: "/apply", label: "Apply Now"},
 ];
 
 const roleLinks = {
-  general: [{href: "/dashboard", label: "Dashboard", icon: LayoutDashboard}],
   member: [
+    {href: "/dashboard", label: "Dashboard", icon: LayoutDashboard},
+    {href: "/courses", label: "Courses", icon: BookOpen},
+    {href: "/members", label: "Members", icon: Users},
+  ],
+  advisor: [
+    {href: "/dashboard", label: "Dashboard", icon: LayoutDashboard},
+    {href: "/courses", label: "Courses", icon: BookOpen},
+    {href: "/members", label: "Members", icon: Users},
+  ],
+  core_panel: [
     {href: "/dashboard", label: "Dashboard", icon: LayoutDashboard},
     {href: "/courses", label: "Courses", icon: BookOpen},
     {href: "/members", label: "Members", icon: Users},
@@ -56,13 +64,17 @@ const roleLinks = {
 };
 
 const roleBadgeConfig = {
-  general: {
-    label: "General",
-    className: "bg-gray-500/10 text-gray-600 border-gray-200",
-  },
   member: {
     label: "Member",
     className: "bg-blue-500/10 text-blue-600 border-blue-200",
+  },
+  advisor: {
+    label: "Advisor",
+    className: "bg-emerald-500/10 text-emerald-600 border-emerald-200",
+  },
+  core_panel: {
+    label: "Core Panel",
+    className: "bg-purple-500/10 text-purple-600 border-purple-200",
   },
   admin: {
     label: "Admin",
@@ -120,15 +132,11 @@ export default function Navbar({isMobileOnly = false}) {
   const {logout} = useLogOut();
 
   const isAuthenticated = !!user;
-  const userRole = user?.role ?? "general";
-  const roleConfig = roleBadgeConfig[userRole] ?? roleBadgeConfig.general;
+  const userRole = user?.role ?? "member";
+  const roleConfig = roleBadgeConfig[userRole] ?? roleBadgeConfig.member;
   const authLinks = roleLinks[userRole] ?? [];
 
-  const publicNavLinks = publicLinks.filter(
-    (l) => !(isAuthenticated && l.href === "/apply" && userRole !== "general"),
-  );
-
-  const allLinks = [...publicNavLinks, ...(isAuthenticated ? authLinks : [])];
+  const allLinks = [...publicLinks, ...(isAuthenticated ? authLinks : [])];
 
   const userInitials = user?.name
     ? user.name

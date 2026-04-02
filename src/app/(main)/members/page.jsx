@@ -6,7 +6,6 @@ import MembersView from "./_components/MembersView";
 export default async function MembersPage() {
   const {user} = await getCurrentUser();
   if (!user) redirect("/login");
-  if (user.role === "general") redirect("/dashboard");
 
   const res = await getMembers();
   const members = res.success ? res.data : [];

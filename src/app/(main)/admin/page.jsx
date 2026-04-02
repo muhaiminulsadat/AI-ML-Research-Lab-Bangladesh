@@ -1,4 +1,3 @@
-import {getApplications} from "@/actions/application.action";
 import {adminGetAllUsers} from "@/actions/user.action";
 import {getCourses} from "@/actions/course.action";
 import {getPublications} from "@/actions/publication.action";
@@ -10,9 +9,8 @@ export default async function AdminPage() {
   const {user} = await getCurrentUser();
   if (!user || user.role !== "admin") redirect("/dashboard");
 
-  const [applicationsResult, membersResult, coursesResult, publicationsResult] =
+  const [membersResult, coursesResult, publicationsResult] =
     await Promise.all([
-      getApplications(),
       adminGetAllUsers(),
       getCourses(true),
       getPublications(),
@@ -24,10 +22,13 @@ export default async function AdminPage() {
     publicationsCount: publicationsResult.data?.length || 0,
   };
 
+  // Get last 5 registrations
+  const recentUsers = membersResult.data?.slice(0, 5) || [];
+
   return (
     <AdminView
-      applications={applicationsResult}
       stats={stats}
+      recentUsers={recentUsers}
     />
   );
 }

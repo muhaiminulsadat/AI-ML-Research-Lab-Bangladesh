@@ -8,11 +8,9 @@ import {
   Mail,
   Pencil,
   GraduationCap,
-  Briefcase,
+  Users,
   ShieldCheck,
-  UserCircle,
-  ClipboardList,
-  Lock,
+  Sparkles,
 } from "lucide-react";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import {Button} from "@/components/ui/button";
@@ -23,49 +21,42 @@ import {cn} from "@/lib/utils";
 import Link from "next/link";
 
 const roleConfig = {
-  general: {
-    icon: UserCircle,
-    label: "General",
-    accent: "from-gray-400 to-slate-500",
-    badge: "bg-gray-500/10 text-gray-600 border-gray-200",
-    ring: "ring-gray-400/30",
-  },
   member: {
     icon: GraduationCap,
     label: "Member",
-    accent: "from-blue-500 to-cyan-500",
-    badge: "bg-blue-500/10 text-blue-600 border-blue-200",
-    ring: "ring-blue-500/30",
+    accent: "from-info to-background",
+    badge: "bg-info/10 text-info border-info/20",
+    ring: "ring-info/30",
+  },
+  advisor: {
+    icon: Users,
+    label: "Advisor",
+    accent: "from-success to-background",
+    badge: "bg-success/10 text-success border-success/20",
+    ring: "ring-success/30",
+  },
+  core_panel: {
+    icon: Sparkles,
+    label: "Core Panel",
+    accent: "from-primary to-background",
+    badge: "bg-primary/10 text-primary border-primary/20",
+    ring: "ring-primary/30",
   },
   admin: {
     icon: ShieldCheck,
     label: "Admin",
-    accent: "from-rose-500 to-orange-500",
-    badge: "bg-rose-500/10 text-rose-600 border-rose-200",
-    ring: "ring-rose-500/30",
-  },
-};
-
-const memberTypeConfig = {
-  student: {
-    label: "Student",
-    badge: "bg-blue-500/10 text-blue-600 border-blue-200",
-  },
-  researcher: {
-    label: "Researcher",
-    badge: "bg-emerald-500/10 text-emerald-600 border-emerald-200",
+    accent: "from-destructive to-background",
+    badge: "bg-destructive/10 text-destructive border-destructive/20",
+    ring: "ring-destructive/30",
   },
 };
 
 export default function ProfileView({user}) {
   const [editOpen, setEditOpen] = useState(false);
 
-  const role = roleConfig[user?.role] ?? roleConfig.general;
+  const role = roleConfig[user?.role] ?? roleConfig.member;
   const RoleIcon = role.icon;
-  const isGeneral = user?.role === "general";
-  const isMember = user?.role === "member";
   const isAdmin = user?.role === "admin";
-  const memberType = memberTypeConfig[user?.memberType];
 
   const userInitials = user?.name
     ? user.name
@@ -124,6 +115,11 @@ export default function ProfileView({user}) {
               <h1 className="text-2xl font-bold tracking-tight">
                 {user?.name}
               </h1>
+              {user?.memberId && (
+                <span className="inline-flex items-center px-1.5 py-0.5 rounded-sm bg-muted text-[10px] font-bold text-muted-foreground/60 tracking-wider">
+                   {user.memberId}
+                </span>
+              )}
               <Badge
                 variant="outline"
                 className={cn(
@@ -134,14 +130,6 @@ export default function ProfileView({user}) {
                 <RoleIcon className="h-3 w-3" />
                 {role.label}
               </Badge>
-              {memberType && (
-                <Badge
-                  variant="outline"
-                  className={cn("text-xs capitalize", memberType.badge)}
-                >
-                  {memberType.label}
-                </Badge>
-              )}
             </div>
 
             <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-muted-foreground">
@@ -160,36 +148,9 @@ export default function ProfileView({user}) {
         </div>
       </div>
 
-      {/* General — Not a member yet */}
-      {isGeneral && (
-        <Card className="shadow-sm border-dashed">
-          <CardContent className="pt-6 pb-6 flex flex-col items-center gap-4 text-center">
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-orange-500/10">
-              <ClipboardList className="h-6 w-6 text-orange-500" />
-            </div>
-            <div>
-              <h2 className="text-base font-semibold">
-                You're not a member yet
-              </h2>
-              <p className="text-sm text-muted-foreground mt-1">
-                Apply to join the lab to unlock your full profile and access all
-                features.
-              </p>
-            </div>
-            <Link href="/apply">
-              <Button className="bg-orange-400 hover:bg-orange-500 text-white gap-2">
-                <ClipboardList className="h-4 w-4" />
-                Apply Now
-              </Button>
-            </Link>
-          </CardContent>
-        </Card>
-      )}
-
-      {/* Member & Admin — full profile sections */}
-      {(isMember || isAdmin) && (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="md:col-span-2 space-y-6">
+      {/* Profile Details */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="md:col-span-2 space-y-6">
           {user?.bio && (
             <div className="rounded-2xl border bg-card p-6 shadow-sm space-y-2">
               <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
@@ -218,9 +179,9 @@ export default function ProfileView({user}) {
               </div>
             </div>
           )}
-          </div>
-          
-          <div className="md:col-span-1 space-y-6">
+        </div>
+        
+        <div className="md:col-span-1 space-y-6">
           {(user?.socialLinks?.github ||
             user?.socialLinks?.linkedin ||
             user?.socialLinks?.googleScholar) && (
@@ -274,22 +235,21 @@ export default function ProfileView({user}) {
               </div>
             </div>
           )}
-          </div>
         </div>
-      )}
+      </div>
 
-      {/* Admin — quick link to admin panel */}
+      {/* Admin Panel Link */}
       {isAdmin && (
-        <Card className="shadow-sm border-rose-200/50 bg-rose-500/5">
+        <Card className="shadow-sm border-destructive/20 bg-destructive/5">
           <CardContent className="pt-5 pb-5 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-rose-500/10">
-                <ShieldCheck className="h-4 w-4 text-rose-500" />
+              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-destructive/10">
+                <ShieldCheck className="h-4 w-4 text-destructive" />
               </div>
               <div>
                 <p className="text-sm font-medium">Admin Panel</p>
                 <p className="text-xs text-muted-foreground">
-                  Manage members and applications
+                  Manage lab members and content
                 </p>
               </div>
             </div>
@@ -297,7 +257,7 @@ export default function ProfileView({user}) {
               <Button
                 size="sm"
                 variant="outline"
-                className="border-rose-200 text-rose-600 hover:bg-rose-500/10"
+                className="border-destructive/20 text-destructive hover:bg-destructive/10"
               >
                 Open Panel
               </Button>

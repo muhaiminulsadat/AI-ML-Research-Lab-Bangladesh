@@ -33,7 +33,5 @@ const enrollmentSchema = new mongoose.Schema(
 // Prevent a user from enrolling in the same course multiple times
 enrollmentSchema.index({user: 1, course: 1}, {unique: true});
 
-const Enrollment =
+export const Enrollment =
   mongoose.models.Enrollment || mongoose.model("Enrollment", enrollmentSchema);
-
-export default Enrollment;

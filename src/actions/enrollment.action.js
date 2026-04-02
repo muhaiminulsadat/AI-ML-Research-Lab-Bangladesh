@@ -1,8 +1,8 @@
 "use server";
 
 import connectDB from "@/lib/db";
-import Enrollment from "@/models/enrollment.model";
-import Course from "@/models/course.model";
+import {Enrollment} from "@/models/enrollment.model";
+import {Course} from "@/models/course.model";
 import { getCurrentUser } from "@/lib/auth";
 import { convertToObject } from "@/lib/utility";
 

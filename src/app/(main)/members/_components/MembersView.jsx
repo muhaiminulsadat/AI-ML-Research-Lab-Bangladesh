@@ -4,10 +4,8 @@ import {
   Search,
   Users,
   GraduationCap,
-  Briefcase,
-  Crown,
-  Shield,
-  BookOpen,
+  ShieldCheck,
+  Sparkles,
   X,
 } from "lucide-react";
 import {Input} from "@/components/ui/input";
@@ -16,11 +14,10 @@ import MemberCard from "./MemberCard";
 
 const FILTERS = [
   {label: "All", value: "all", icon: Users},
-  {label: "Advisors", value: "advisor", icon: Crown},
-  {label: "Core Panel", value: "core_panel", icon: Shield},
-  {label: "Instructors", value: "instructor", icon: BookOpen},
-  {label: "Researchers", value: "researcher", icon: Briefcase},
-  {label: "Students", value: "student", icon: GraduationCap},
+  {label: "Advisors", value: "advisor", icon: Users},
+  {label: "Core Panel", value: "core_panel", icon: Sparkles},
+  {label: "Members", value: "member", icon: GraduationCap},
+  {label: "Admins", value: "admin", icon: ShieldCheck},
 ];
 
 export default function MembersView({members}) {
@@ -35,20 +32,21 @@ export default function MembersView({members}) {
         m.name?.toLowerCase().includes(q) ||
         m.university?.toLowerCase().includes(q) ||
         m.researchInterests?.some((t) => t.toLowerCase().includes(q));
-      const type = m.memberType || "student";
+      
+      const role = m.role || "member";
       const matchesFilter =
-        activeFilter === "all" || type === activeFilter;
+        activeFilter === "all" || role === activeFilter;
       return matchesSearch && matchesFilter;
     });
   }, [members, search, activeFilter]);
+
   const counts = useMemo(
     () => ({
       all: members.length,
-      advisor: members.filter((m) => m.memberType === "advisor").length,
-      core_panel: members.filter((m) => m.memberType === "core_panel").length,
-      instructor: members.filter((m) => m.memberType === "instructor").length,
-      researcher: members.filter((m) => m.memberType === "researcher").length,
-      student: members.filter((m) => (m.memberType || "student") === "student").length,
+      advisor: members.filter((m) => m.role === "advisor").length,
+      core_panel: members.filter((m) => m.role === "core_panel").length,
+      member: members.filter((m) => (m.role || "member") === "member").length,
+      admin: members.filter((m) => m.role === "admin").length,
     }),
     [members],
   );
@@ -60,11 +58,11 @@ export default function MembersView({members}) {
         <div className="flex items-center gap-2.5">
           <div className="h-6 w-1 rounded-full bg-primary" />
           <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
-            Members
+            Members Directory
           </h1>
         </div>
         <p className="text-sm text-muted-foreground pl-[18px] max-w-lg">
-          Meet the researchers and students driving our AI/ML research forward.
+          Connect with the researchers, advisors, and students driving our AI/ML community forward.
         </p>
       </div>
 
@@ -74,7 +72,7 @@ export default function MembersView({members}) {
         <div className="relative flex-1 max-w-md">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground/60" />
           <Input
-            placeholder="Search members..."
+            placeholder="Search by name, university, or interests..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className={cn(
@@ -95,7 +93,7 @@ export default function MembersView({members}) {
         </div>
 
         {/* Filter pills */}
-        <div className="flex items-center gap-1 p-1 rounded-lg bg-muted/30 border border-border/40 w-fit">
+        <div className="flex items-center gap-1 p-1 rounded-lg bg-muted/30 border border-border/40 w-fit overflow-x-auto no-scrollbar">
           {FILTERS.map((f) => {
             const Icon = f.icon;
             const isActive = activeFilter === f.value;
@@ -104,7 +102,7 @@ export default function MembersView({members}) {
                 key={f.value}
                 onClick={() => setActiveFilter(f.value)}
                 className={cn(
-                  "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-all duration-200",
+                  "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-all duration-200 whitespace-nowrap",
                   isActive
                     ? "bg-card text-foreground shadow-sm border border-border/60"
                     : "text-muted-foreground hover:text-foreground/80",
@@ -121,7 +119,7 @@ export default function MembersView({members}) {
                       : "text-muted-foreground/60",
                   )}
                 >
-                  {counts[f.value]}
+                  {counts[f.value] || 0}
                 </span>
               </button>
             );
@@ -140,27 +138,27 @@ export default function MembersView({members}) {
       {/* Grid */}
       {filtered.length > 0 ? (
         <div className="space-y-12">
-          {["advisor", "core_panel", "instructor", "researcher", "student"].map(
-            (typeCode) => {
-              const groupLabel = FILTERS.find((f) => f.value === typeCode)?.label;
-              const typeMembers = filtered.filter(
-                (m) => (m.memberType || "student") === typeCode,
+          {["advisor", "core_panel", "admin", "member"].map(
+            (roleCode) => {
+              const groupLabel = FILTERS.find((f) => f.value === roleCode)?.label;
+              const roleMembers = filtered.filter(
+                (m) => (m.role || "member") === roleCode,
               );
 
-              if (typeMembers.length === 0) return null;
+              if (roleMembers.length === 0) return null;
 
               return (
-                <div key={typeCode} className="space-y-4">
+                <div key={roleCode} className="space-y-4">
                   {activeFilter === "all" && (
                     <h2 className="text-xl font-bold tracking-tight border-b border-border/40 pb-2 flex items-center gap-2">
                        {groupLabel}
                        <div className="text-xs font-semibold bg-muted/60 text-muted-foreground px-2 py-0.5 rounded-md">
-                         {typeMembers.length}
+                         {roleMembers.length}
                        </div>
                     </h2>
                   )}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {typeMembers.map((member) => (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
+                    {roleMembers.map((member) => (
                       <MemberCard key={member._id} member={member} />
                     ))}
                   </div>

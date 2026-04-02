@@ -6,57 +6,63 @@ import {
   ExternalLink,
   GitBranch,
   GraduationCap,
-  Briefcase,
-  Crown,
-  Shield,
+  Users,
+  ShieldCheck,
+  Sparkles,
 } from "lucide-react";
 import {cn} from "@/lib/utils";
 
 const roleConfig = {
-  student: {
+  member: {
     icon: GraduationCap,
-    label: "Student",
-    dot: "bg-blue-400",
-    text: "text-blue-400",
-    ring: "ring-blue-500/20",
-    gradient: "from-blue-500/10 to-transparent",
-  },
-  researcher: {
-    icon: Briefcase,
-    label: "Researcher",
-    dot: "bg-emerald-400",
-    text: "text-emerald-400",
-    ring: "ring-emerald-500/20",
-    gradient: "from-emerald-500/10 to-transparent",
+    label: "Member",
+    dot: "bg-info",
+    text: "text-info",
+    ring: "ring-info/20",
+    gradient: "from-info/10 to-transparent",
+    premium: false,
+    theme: "info",
   },
   advisor: {
-    icon: Crown,
+    icon: Users,
     label: "Advisor",
-    dot: "bg-fuchsia-400",
-    text: "text-fuchsia-400",
-    ring: "ring-fuchsia-500/20",
-    gradient: "from-fuchsia-500/10 to-transparent",
+    dot: "bg-success",
+    text: "text-success",
+    ring: "ring-success/30",
+    gradient: "from-success/20 via-success/5 to-transparent",
+    premium: true,
+    border: "border-success/20",
+    shadow: "shadow-success/5",
+    theme: "success",
   },
   core_panel: {
-    icon: Shield,
+    icon: Sparkles,
     label: "Core Panel",
-    dot: "bg-indigo-400",
-    text: "text-indigo-400",
-    ring: "ring-indigo-500/20",
-    gradient: "from-indigo-500/10 to-transparent",
+    dot: "bg-primary",
+    text: "text-primary",
+    ring: "ring-primary/30",
+    gradient: "from-primary/20 via-primary/5 to-transparent",
+    premium: true,
+    border: "border-primary/20",
+    shadow: "shadow-primary/5",
+    theme: "primary",
   },
-  instructor: {
-    icon: BookOpen,
-    label: "Instructor",
-    dot: "bg-amber-400",
-    text: "text-amber-400",
-    ring: "ring-amber-500/20",
-    gradient: "from-amber-500/10 to-transparent",
+  admin: {
+    icon: ShieldCheck,
+    label: "Admin",
+    dot: "bg-destructive",
+    text: "text-destructive",
+    ring: "ring-destructive/30",
+    gradient: "from-destructive/20 via-destructive/5 to-transparent",
+    premium: true,
+    border: "border-destructive/20",
+    shadow: "shadow-destructive/5",
+    theme: "destructive",
   },
 };
 
 export default function MemberCard({member}) {
-  const role = roleConfig[member?.memberType] ?? roleConfig.student;
+  const role = roleConfig[member?.role] ?? roleConfig.member;
   const RoleIcon = role.icon;
 
   const socialLinks = (() => {
@@ -91,6 +97,8 @@ export default function MemberCard({member}) {
         "transition-all duration-300 ease-out",
         "hover:border-border hover:shadow-lg hover:shadow-primary/5",
         "hover:-translate-y-1",
+        role.premium && role.border,
+        role.premium && role.shadow,
       )}
     >
       {/* Top gradient accent */}
@@ -98,16 +106,14 @@ export default function MemberCard({member}) {
         className={cn(
           "absolute inset-x-0 top-0 h-px bg-gradient-to-r opacity-0",
           "group-hover:opacity-100 transition-opacity duration-300",
-          role.gradient === "from-blue-500/10 to-transparent"
-            ? "from-blue-500/60 via-blue-400/30 to-transparent"
-            : role.gradient === "from-emerald-500/10 to-transparent"
-            ? "from-emerald-500/60 via-emerald-400/30 to-transparent"
-            : role.gradient === "from-fuchsia-500/10 to-transparent"
-            ? "from-fuchsia-500/60 via-fuchsia-400/30 to-transparent"
-            : role.gradient === "from-indigo-500/10 to-transparent"
-            ? "from-indigo-500/60 via-indigo-400/30 to-transparent"
-            : role.gradient === "from-amber-500/10 to-transparent"
-            ? "from-amber-500/60 via-amber-400/30 to-transparent"
+          member.role === "member"
+            ? "from-info/60 via-info/30 to-transparent"
+            : member.role === "advisor"
+            ? "from-success/60 via-success/30 to-transparent"
+            : member.role === "core_panel"
+            ? "from-primary/60 via-primary/30 to-transparent"
+            : member.role === "admin"
+            ? "from-destructive/60 via-destructive/30 to-transparent"
             : "from-primary/60 via-primary/30 to-transparent",
         )}
       />
@@ -127,6 +133,11 @@ export default function MemberCard({member}) {
                 {initials}
               </AvatarFallback>
             </Avatar>
+            {role.premium && (
+              <div className="absolute -bottom-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-background ring-1 ring-border shadow-sm">
+                 <RoleIcon className={cn("h-2.5 w-2.5", role.text)} />
+              </div>
+            )}
           </div>
 
           <div className="flex-1 min-w-0 space-y-1.5">
@@ -144,6 +155,11 @@ export default function MemberCard({member}) {
                 {role.label}
               </span>
             </div>
+            {member.memberId && (
+              <p className="text-[10px] font-bold tracking-tight text-muted-foreground/50">
+                {member.memberId}
+              </p>
+            )}
           </div>
         </div>
 

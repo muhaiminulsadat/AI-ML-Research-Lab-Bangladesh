@@ -1,7 +1,7 @@
 "use client";
 
 import {useState} from "react";
-import {Search, Users, ShieldCheck, CheckCircle, XCircle} from "lucide-react";
+import {Search, Users, ShieldCheck} from "lucide-react";
 import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
 import {Badge} from "@/components/ui/badge";
@@ -29,14 +29,14 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
-import {updateMemberType, toggleMemberApproval} from "@/actions/user.action";
+import {changeRole} from "@/actions/user.action";
+import DeleteMemberDialog from "./DeleteMemberDialog";
 
-const MEMBER_TYPES = [
+const ROLES = [
+  {value: "member", label: "Member"},
   {value: "advisor", label: "Advisor"},
   {value: "core_panel", label: "Core Panel"},
-  {value: "instructor", label: "Instructor"},
-  {value: "researcher", label: "Researcher"},
-  {value: "student", label: "Student"},
+  {value: "admin", label: "Admin"},
 ];
 
 export default function AdminMembersView({initialMembers}) {
@@ -44,14 +44,14 @@ export default function AdminMembersView({initialMembers}) {
   const [searchTerm, setSearchTerm] = useState("");
   const [updatingId, setUpdatingId] = useState(null);
 
-  const handleRoleChange = async (userId, newType) => {
+  const handleRoleChange = async (userId, newRole) => {
     setUpdatingId(userId);
     try {
-      const res = await updateMemberType(userId, newType);
+      const res = await changeRole(userId, newRole);
       if (res.success) {
         toast.success(res.message);
         setMembers((prev) =>
-          prev.map((m) => (m._id === userId ? {...m, memberType: newType} : m)),
+          prev.map((m) => (m._id === userId ? {...m, role: newRole} : m)),
         );
       } else {
         toast.error(res.message);
@@ -63,23 +63,8 @@ export default function AdminMembersView({initialMembers}) {
     }
   };
 
-  const handleToggleApproval = async (userId, isApproved) => {
-    setUpdatingId(userId);
-    try {
-      const res = await toggleMemberApproval(userId, isApproved);
-      if (res.success) {
-        toast.success(res.message);
-        setMembers((prev) =>
-          prev.map((m) => (m._id === userId ? {...m, isApproved} : m)),
-        );
-      } else {
-        toast.error(res.message);
-      }
-    } catch {
-      toast.error("An error occurred while updating status.");
-    } finally {
-      setUpdatingId(null);
-    }
+  const handleDeleteSuccess = (userId) => {
+    setMembers((prev) => prev.filter((m) => m._id !== userId));
   };
 
   const filteredMembers = members.filter(
@@ -95,7 +80,7 @@ export default function AdminMembersView({initialMembers}) {
         <div>
           <h2 className="text-2xl font-bold tracking-tight">Manage Members</h2>
           <p className="text-sm text-muted-foreground mt-1">
-            Assign Leadership roles to organize your directory.
+            Assign leadership roles to organize your directory.
           </p>
         </div>
       </div>
@@ -132,9 +117,8 @@ export default function AdminMembersView({initialMembers}) {
                   <TableRow>
                     <TableHead className="pl-6 h-12">User</TableHead>
                     <TableHead>Contact / University</TableHead>
-                    <TableHead>App Role</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead className="w-[180px] pr-6 text-right">Directory Role</TableHead>
+                    <TableHead className="w-[180px] text-right">Role</TableHead>
+                    <TableHead className="w-[80px] pr-6 text-right">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -173,53 +157,33 @@ export default function AdminMembersView({initialMembers}) {
                             </span>
                           </div>
                         </TableCell>
-                        <TableCell className="py-4">
-                          <Badge
-                            variant={member.role === "admin" ? "default" : "secondary"}
-                            className="text-xs capitalize"
-                          >
-                            {member.role === "admin" && (
-                              <ShieldCheck className="h-3 w-3 mr-1" />
-                            )}
-                            {member.role || "Member"}
-                          </Badge>
-                        </TableCell>
-                        <TableCell className="py-4">
-                          <Button
-                            variant={member.isApproved ? "outline" : "default"}
-                            size="sm"
-                            className="h-8 text-xs cursor-pointer"
-                            onClick={() => handleToggleApproval(member._id, !member.isApproved)}
-                            disabled={updatingId === member._id}
-                          >
-                            {member.isApproved ? (
-                              <><CheckCircle className="w-3 h-3 mr-1 text-emerald-500"/> Approved</>
-                            ) : (
-                              <><XCircle className="w-3 h-3 mr-1"/> Pending</>
-                            )}
-                          </Button>
-                        </TableCell>
                         <TableCell className="pr-6 py-4 text-right">
                           <Select
                             disabled={updatingId === member._id}
-                            value={member.memberType || ""}
+                            value={member.role || "member"}
                             onValueChange={(val) => handleRoleChange(member._id, val)}
                           >
-                            <SelectTrigger className="w-[160px] h-8 ml-auto text-xs font-medium cursor-pointer">
+                            <SelectTrigger className="w-[160px] h-8 ml-auto text-xs font-medium cursor-pointer hover:bg-muted/50 transition-colors">
                               <SelectValue placeholder="Assign Role" />
                             </SelectTrigger>
                             <SelectContent align="end">
-                              {MEMBER_TYPES.map((type) => (
+                              {ROLES.map((role) => (
                                 <SelectItem
-                                  key={type.value}
-                                  value={type.value}
+                                  key={role.value}
+                                  value={role.value}
                                   className="text-xs cursor-pointer"
                                 >
-                                  {type.label}
+                                  {role.label}
                                 </SelectItem>
                               ))}
                             </SelectContent>
                           </Select>
+                        </TableCell>
+                        <TableCell className="pr-6 py-4 text-right">
+                           <DeleteMemberDialog 
+                             member={member} 
+                             onDeleteSuccess={handleDeleteSuccess} 
+                           />
                         </TableCell>
                       </TableRow>
                     );

@@ -15,7 +15,7 @@ export default async function DashboardPage() {
 
   const stats = statsRes.success
     ? statsRes.data
-    : {total: 0, students: 0, researchers: 0};
+    : {total: 0, members: 0, advisors: 0, corePanel: 0};
 
   const enrollments = enrollmentsRes.success ? enrollmentsRes.data : [];
 

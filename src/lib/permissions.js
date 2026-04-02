@@ -7,17 +7,16 @@ const statement = {
   member: ["read", "revoke"],
 };
 
-export const ac = createAccessControl(statement);
-
-export const generalRole = ac.newRole({
-  application: [],
-  member: [],
-});
-
-export const memberRole = ac.newRole({
+const baseStatements = {
   application: [],
   member: ["read"],
-});
+};
+
+export const ac = createAccessControl(statement);
+
+export const memberRole = ac.newRole(baseStatements);
+export const advisorRole = ac.newRole(baseStatements);
+export const core_panelRole = ac.newRole(baseStatements);
 
 export const adminRole = ac.newRole({
   ...adminAc.statements,

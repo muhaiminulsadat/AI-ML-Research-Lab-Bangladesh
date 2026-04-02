@@ -40,7 +40,6 @@ export default function RegisterPage() {
     email: "",
     university: "",
     password: "",
-    role: "student",
   });
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -50,9 +49,6 @@ export default function RegisterPage() {
     setFormData((prev) => ({...prev, [name]: value}));
   };
 
-  const handleRoleChange = (value) => {
-    setFormData((prev) => ({...prev, role: value}));
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -123,34 +119,6 @@ export default function RegisterPage() {
               onChange={handleChange}
               disabled={loading}
             />
-
-            {/* Role */}
-            <div className="space-y-2">
-              <Label htmlFor="role">Role</Label>
-              <Select
-                value={formData.role}
-                onValueChange={handleRoleChange}
-                disabled={loading}
-              >
-                <SelectTrigger id="role" className="w-full">
-                  <SelectValue placeholder="Select your role" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="student">
-                    <div className="flex items-center gap-2">
-                      <GraduationCap className="h-4 w-4" />
-                      <span>Student</span>
-                    </div>
-                  </SelectItem>
-                  <SelectItem value="researcher">
-                    <div className="flex items-center gap-2">
-                      <Briefcase className="h-4 w-4" />
-                      <span>Researcher / Faculty</span>
-                    </div>
-                  </SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
 
             {/* Password */}
             <div className="space-y-2">

@@ -95,7 +95,7 @@ export default function ResearchView({publications}) {
             className={cn(
               "flex-1 sm:flex-none px-4 py-1.5 text-sm font-medium rounded-md transition-all cursor-pointer",
               filter === "published"
-                ? "bg-background text-emerald-600 dark:text-emerald-400 shadow-sm"
+                ? "bg-background text-success shadow-sm"
                 : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
             )}
           >
@@ -106,7 +106,7 @@ export default function ResearchView({publications}) {
             className={cn(
               "flex-1 sm:flex-none px-4 py-1.5 text-sm font-medium rounded-md transition-all cursor-pointer",
               filter === "ongoing"
-                ? "bg-background text-amber-600 dark:text-amber-400 shadow-sm"
+                ? "bg-background text-warning shadow-sm"
                 : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
             )}
           >
@@ -152,8 +152,8 @@ export default function ResearchView({publications}) {
                     className={cn(
                       "capitalize text-[10px] font-semibold tracking-wider",
                       pub.status === "published"
-                        ? "bg-emerald-500/10 text-emerald-600 border-emerald-200"
-                        : "bg-amber-500/10 text-amber-600 border-amber-200"
+                        ? "bg-success/10 text-success border-success/20"
+                        : "bg-warning/10 text-warning border-warning/20"
                     )}
                   >
                     {pub.status}
