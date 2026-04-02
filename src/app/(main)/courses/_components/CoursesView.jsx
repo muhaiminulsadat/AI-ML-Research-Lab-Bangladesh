@@ -105,93 +105,92 @@ function CourseCard({course}) {
   return (
     <Link
       href={`/courses/${course._id}`}
-      className="group block h-full outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-2xl cursor-pointer"
+      className="group block h-full outline-none transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] hover:translate-y-[-4px] cursor-pointer"
     >
       <div
         className={cn(
-          "h-full flex flex-col rounded-2xl border border-border/60",
-          "bg-card/80 backdrop-blur-sm overflow-hidden",
-          "transition-all duration-300 ease-out",
-          "hover:border-border hover:shadow-lg hover:shadow-primary/5",
-          "hover:-translate-y-1",
+          "h-full flex flex-col rounded-2xl border border-border/40 bg-card overflow-hidden",
+          "transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:shadow-2xl group-hover:shadow-primary/5 group-hover:border-primary/20",
         )}
       >
-        <div className="relative aspect-[16/9] w-full bg-muted overflow-hidden">
+        <div className="relative aspect-[16/10] w-full bg-muted overflow-hidden">
           {course.thumbnail ? (
             <Image
               src={course.thumbnail}
               alt={course.title}
               fill
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-              className="object-cover group-hover:scale-[1.03] transition-transform duration-500 ease-out"
+              className="object-cover group-hover:scale-[1.05] transition-transform duration-700 ease-[cubic-bezier(0.23,1,0.32,1)]"
             />
           ) : (
-            <div className="absolute inset-0 flex items-center justify-center">
-              <PlayCircle className="h-8 w-8 text-muted-foreground/20" />
+            <div className="absolute inset-0 flex items-center justify-center bg-muted/60">
+              <PlayCircle className="h-10 w-10 text-muted-foreground/10" />
             </div>
           )}
-          <div className="absolute top-2.5 left-2.5">
-            <span className="inline-flex items-center text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-md bg-background/90 text-foreground/80 backdrop-blur-sm border border-border/20">
+          <div className="absolute top-3 left-3 flex gap-2">
+            <span className="inline-flex items-center text-[9px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full bg-foreground text-background shadow-sm border border-foreground/10">
               {course.difficulty}
             </span>
           </div>
         </div>
 
-        <div className="flex-1 flex flex-col p-4 pb-0">
-          <div className="flex items-center gap-3 text-[11px] font-medium text-muted-foreground mb-2.5">
-            <span className="flex items-center gap-1">
-              <BookOpen className="h-3 w-3 opacity-60" /> {totalModules} Modules
-            </span>
-            <span className="w-0.5 h-0.5 rounded-full bg-border" />
-            <span className="flex items-center gap-1">
-              <BarChart className="h-3 w-3 opacity-60" /> {totalLectures} Lectures
-            </span>
+        <div className="flex-1 flex flex-col p-5">
+          <div className="flex items-center gap-2.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground/60 mb-3">
+             <div className="flex items-center gap-1">
+                <BookOpen className="h-3 w-3" />
+                <span>{totalModules} Modules</span>
+             </div>
+             <div className="w-1 h-1 rounded-full bg-border" />
+             <div className="flex items-center gap-1">
+                <BarChart className="h-3 w-3" />
+                <span>{totalLectures} Lectures</span>
+             </div>
           </div>
 
-          <h3 className="text-[15px] font-semibold leading-snug tracking-tight text-foreground line-clamp-2 group-hover:text-primary transition-colors duration-200 mb-1.5">
+          <h3 className="text-base font-bold leading-tight tracking-tight text-foreground line-clamp-2 transition-colors duration-200 mb-2 group-hover:text-primary">
             {course.title}
           </h3>
-          <p className="text-xs text-muted-foreground/80 leading-relaxed line-clamp-2 mb-3">
+          <p className="text-xs text-muted-foreground/70 leading-relaxed line-clamp-2 mb-4 font-medium">
             {course.description}
           </p>
 
-          {course.tags?.length > 0 && (
-            <div className="flex flex-wrap gap-1.5 mb-3">
-              {course.tags.slice(0, 3).map((tag) => (
+          <div className="mt-auto flex flex-wrap gap-1.5 pt-4">
+             {course.tags?.slice(0, 2).map((tag) => (
                 <span
-                  key={tag}
-                  className="inline-flex items-center text-[10px] font-medium px-2 py-0.5 rounded-md bg-muted/80 text-muted-foreground border border-border/40"
+                   key={tag}
+                   className="inline-flex items-center text-[9px] font-bold uppercase tracking-tight px-2 py-0.5 rounded-md bg-muted text-muted-foreground/80 border border-border/20"
                 >
-                  {tag}
+                   #{tag}
                 </span>
-              ))}
-              {course.tags.length > 3 && (
-                <span className="inline-flex items-center text-[10px] font-medium px-2 py-0.5 rounded-md bg-muted/50 text-muted-foreground/60">
-                  +{course.tags.length - 3}
+             ))}
+             {course.tags?.length > 2 && (
+                <span className="text-[9px] font-bold text-muted-foreground/40 self-center">
+                   +{course.tags.length - 2} more
                 </span>
-              )}
-            </div>
-          )}
+             )}
+          </div>
         </div>
 
-        <div className="mt-auto px-4 py-3 border-t border-border/40 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Avatar className="h-5 w-5">
+        <div className="px-5 py-4 border-t border-border/30 bg-muted/20 flex items-center justify-between mt-auto">
+          <div className="flex items-center gap-2.5">
+            <Avatar className="h-6 w-6 border-2 border-background shadow-sm shrink-0">
               {course.instructor?.profileImage && (
                 <AvatarImage src={course.instructor.profileImage} />
               )}
-              <AvatarFallback className="text-[8px] font-semibold bg-muted text-muted-foreground">
+              <AvatarFallback className="text-[8px] font-bold bg-muted text-muted-foreground">
                 {course.instructor?.name?.substring(0, 2).toUpperCase() || "IN"}
               </AvatarFallback>
             </Avatar>
             <span
-              className="text-[11px] font-medium text-muted-foreground/80 truncate max-w-[120px]"
+              className="text-[11px] font-bold text-foreground/70 tracking-tight truncate max-w-[140px]"
               title={course.instructor?.name}
             >
               {course.instructor?.name || "Instructor"}
             </span>
           </div>
-          <ChevronRight className="h-3.5 w-3.5 text-muted-foreground/40 group-hover:text-foreground group-hover:translate-x-0.5 transition-all duration-200" />
+          <div className="flex h-6 w-6 items-center justify-center rounded-full bg-background border border-border/50 group-hover:border-primary/20 group-hover:bg-primary/5 transition-all duration-300">
+             <ChevronRight className="h-3 w-3 text-muted-foreground group-hover:text-primary transition-transform group-hover:translate-x-0.5" />
+          </div>
         </div>
       </div>
     </Link>

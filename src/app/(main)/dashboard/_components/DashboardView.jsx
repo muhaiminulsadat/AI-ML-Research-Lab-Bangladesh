@@ -3,7 +3,6 @@ import Link from "next/link";
 import {
   Users,
   GraduationCap,
-  Briefcase,
   FlaskConical,
   ArrowRight,
   UserCircle,
@@ -16,6 +15,9 @@ import {
   CheckCircle2,
   Trophy,
   ChevronRight,
+  Clock,
+  Layout,
+  ExternalLink,
 } from "lucide-react";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import {Badge} from "@/components/ui/badge";
@@ -50,93 +52,40 @@ const roleConfig = {
   },
 };
 
-const statCards = (stats) => [
-  {
-    label: "Total Registered",
-    value: stats.total,
-    icon: Users,
-    color: "text-warning",
-    bg: "bg-warning/10",
-  },
-  {
-    label: "Advisors",
-    value: stats.advisors,
-    icon: GraduationCap,
-    color: "text-info",
-    bg: "bg-info/10",
-  },
-  {
-    label: "Core Panel",
-    value: stats.corePanel,
-    icon: Briefcase,
-    color: "text-success",
-    bg: "bg-success/10",
-  },
-];
-
-const memberQuickLinks = [
-  {
-    href: "/profile",
-    icon: UserCircle,
-    label: "My Profile",
-    description: "View and edit your profile",
-    color: "group-hover:text-warning",
-    bg: "group-hover:bg-warning/10",
-  },
-  {
-    href: "/members",
-    icon: Users,
-    label: "Members Directory",
-    description: "Browse all lab members",
-    color: "group-hover:text-info",
-    bg: "group-hover:bg-info/10",
-  },
-  {
-    href: "/research",
-    icon: BookOpen,
-    label: "Research",
-    description: "Explore research & publications",
-    color: "group-hover:text-success",
-    bg: "group-hover:bg-success/10",
-  },
-];
-
-const adminQuickLinks = [
-  ...memberQuickLinks,
-  {
-    href: "/admin",
-    icon: ClipboardList,
-    label: "Admin Panel",
-    description: "Manage lab members and content",
-    color: "group-hover:text-destructive",
-    bg: "group-hover:bg-destructive/10",
-  },
-];
+const QuickLink = ({href, icon: Icon, label, description, color, bg}) => (
+  <Link href={href} className="group block">
+    <div className="flex items-center gap-4 p-4 rounded-2xl border bg-card transition-all hover:border-primary/30 hover:shadow-sm">
+      <div className={cn("p-2.5 rounded-xl bg-muted transition-colors", bg)}>
+        <Icon className={cn("w-5 h-5 text-muted-foreground", color)} />
+      </div>
+      <div className="flex-1 min-w-0">
+        <p className="text-sm font-bold tracking-tight">{label}</p>
+        <p className="text-xs text-muted-foreground truncate">{description}</p>
+      </div>
+      <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" />
+    </div>
+  </Link>
+);
 
 export default function DashboardView({user, stats, enrollments = []}) {
   const role = roleConfig[user?.role] ?? roleConfig.member;
   const RoleIcon = role.icon;
   const isAdmin = user?.role === "admin";
-  const quickLinks = isAdmin ? adminQuickLinks : memberQuickLinks;
 
   const userInitials = user?.name
-    ? user.name
-        .split(" ")
-        .map((n) => n[0])
-        .join("")
-        .toUpperCase()
-        .slice(0, 2)
+    ? user.name.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2)
     : "?";
 
   const hour = new Date().getHours();
-  const timeGreeting =
-    hour < 12 ? "Good morning" : hour < 17 ? "Good afternoon" : "Good evening";
+  const timeGreeting = hour < 12 ? "Good morning" : hour < 17 ? "Good afternoon" : "Good evening";
 
-  // Profile Completeness
+  const activeEnrollment = enrollments
+    .filter(e => !e.isCompleted)
+    .sort((a, b) => b.progress - a.progress)[0] || enrollments[0];
+
   const profileItems = [
     {label: "Add a bio", completed: !!user?.bio},
     {label: "Add university", completed: !!user?.university},
-    {label: "Add social links", completed: Object.values(user?.socialLinks || {}).some(v => !!v)},
     {label: "Add research interests", completed: user?.researchInterests?.length > 0},
   ];
   const completedCount = profileItems.filter(i => i.completed).length;
@@ -144,267 +93,236 @@ export default function DashboardView({user, stats, enrollments = []}) {
   const showCompleteness = completedCount < profileItems.length;
 
   return (
-    <div className="w-full max-w-[1600px] mx-auto px-4 lg:px-12 py-10 space-y-6">
-      {/* Welcome Hero */}
-      <div className="relative rounded-2xl overflow-hidden border bg-card shadow-sm p-6 md:p-8">
-        <div className="absolute inset-0 bg-gradient-to-br from-orange-400/10 to-amber-500/5 pointer-events-none" />
-        <div
-          className="absolute inset-0 opacity-5 pointer-events-none"
-          style={{
-            backgroundImage: `radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)`,
-            backgroundSize: "24px 24px",
-          }}
-        />
-        <div className="relative flex items-center justify-between gap-4 flex-wrap">
-          <div className="flex items-center gap-4">
-            <Avatar className="h-14 w-14 ring-2 ring-orange-400/30 shadow">
-              <AvatarImage src={user?.profileImage} alt={user?.name} />
-              <AvatarFallback className="text-lg font-bold">
-                {userInitials}
-              </AvatarFallback>
-            </Avatar>
-            <div className="space-y-1">
-              <p className="text-sm text-muted-foreground">{timeGreeting} 👋</p>
-              <h1 className="text-2xl font-bold tracking-tight">
-                {user?.name}
-              </h1>
-              <div className="flex items-center gap-2 flex-wrap">
-                <Badge
-                  variant="outline"
-                  className={cn(
-                    "flex items-center gap-1 capitalize text-xs",
-                    role.badge,
-                  )}
-                >
-                  <RoleIcon className="h-3 w-3" />
-                  {role.label}
-                </Badge>
-                {user?.university && (
-                  <span className="text-xs text-muted-foreground">
-                    {user.university}
-                  </span>
-                )}
-              </div>
-            </div>
+    <div className="w-full max-w-7xl mx-auto px-4 lg:px-8 py-8 space-y-10">
+      <header className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
+        <div className="space-y-1.5">
+          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-primary">
+            <Layout className="w-3.5 h-3.5" />
+            Control Center
           </div>
-          <div className="flex items-center gap-1.5 text-sm text-muted-foreground bg-muted/60 px-3 py-1.5 rounded-full">
-            <Sparkles className="h-3.5 w-3.5 text-orange-400" />
-            {role.greeting}
-          </div>
-        </div>
-      </div>
-
-      {/* Profile Completeness - Senior Onboarding Overlay */}
-      {showCompleteness && (
-        <Card className="border-primary/20 bg-primary/[0.02] overflow-hidden relative group">
-           <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity">
-              <Trophy className="w-24 h-24 text-primary rotate-12" />
-           </div>
-           <CardContent className="p-6">
-              <div className="flex flex-col md:flex-row gap-6 items-start md:items-center">
-                 <div className="space-y-2 flex-1">
-                    <div className="flex items-center gap-2">
-                       <div className="p-2 rounded-lg bg-primary/10 text-primary">
-                          <UserCircle className="w-5 h-5" />
-                       </div>
-                       <h3 className="font-bold text-lg">Complete your profile</h3>
-                    </div>
-                    <p className="text-sm text-muted-foreground max-w-md">
-                       Join our research directory! Members with complete profiles are 3x more likely to find collaborators.
-                    </p>
-                 </div>
-
-                 <div className="w-full md:w-64 space-y-3">
-                    <div className="flex justify-between items-end mb-1">
-                       <span className="text-xs font-bold uppercase tracking-wider text-primary">Progress</span>
-                       <span className="text-xs font-bold">{Math.round(progressPercent)}%</span>
-                    </div>
-                    <div className="h-2 w-full bg-muted rounded-full overflow-hidden border border-border/50">
-                       <div 
-                         className="h-full bg-primary transition-all duration-1000 ease-out shadow-[0_0_12px_rgba(var(--primary),0.4)]"
-                         style={{ width: `${progressPercent}%` }}
-                       />
-                    </div>
-                    <Link href="/profile">
-                       <Button size="sm" className="w-full h-9 gap-2 mt-2 group/btn cursor-pointer">
-                          Edit Profile
-                          <ChevronRight className="w-3.5 h-3.5 group-hover/btn:translate-x-0.5 transition-transform" />
-                       </Button>
-                    </Link>
-                 </div>
-              </div>
-
-              <div className="mt-6 flex flex-wrap gap-4 pt-6 border-t border-primary/10">
-                 {profileItems.map((item, idx) => (
-                    <div key={idx} className="flex items-center gap-2">
-                       <div className={cn(
-                          "flex h-5 w-5 items-center justify-center rounded-full border transition-colors",
-                          item.completed ? "bg-emerald-500 border-emerald-500 text-white" : "border-muted-foreground/30 text-transparent"
-                       )}>
-                          <CheckCircle2 className="h-3 w-3" />
-                       </div>
-                       <span className={cn(
-                          "text-xs font-medium",
-                          item.completed ? "text-foreground" : "text-muted-foreground"
-                       )}>
-                          {item.label}
-                       </span>
-                    </div>
-                 ))}
-              </div>
-           </CardContent>
-        </Card>
-      )}
-
-      {/* Stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        {statCards(stats).map((stat) => {
-          const Icon = stat.icon;
-          return (
-            <Card key={stat.label} className="shadow-sm">
-              <CardContent className="pt-5 pb-5 flex items-center gap-4">
-                <div
-                  className={cn(
-                    "flex h-10 w-10 items-center justify-center rounded-xl shrink-0",
-                    stat.bg,
-                  )}
-                >
-                  <Icon className={cn("h-5 w-5", stat.color)} />
-                </div>
-                <div>
-                  <p className="text-2xl font-bold">{stat.value}</p>
-                  <p className="text-xs text-muted-foreground">
-                    {stat.label}
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-          );
-        })}
-      </div>
-
-      {/* My Courses */}
-      <div className="rounded-2xl border bg-card shadow-sm p-6 space-y-4">
-        <div className="flex items-center justify-between">
-          <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground flex items-center gap-2">
-            <PlayCircle className="h-3.5 w-3.5" />
-            My Courses
-          </p>
-          <Link href="/courses">
-            <span className="text-xs font-medium text-muted-foreground hover:text-foreground transition-colors cursor-pointer">
-              Browse All
+          <h1 className="text-3xl font-bold tracking-tight flex items-baseline gap-3">
+            {timeGreeting}, {user?.name.split(" ")[0]}
+            <span className="text-sm font-medium text-muted-foreground tracking-normal block md:inline font-sans capitalize">
+              — {role.label} @ AI/ML Lab
             </span>
-          </Link>
+          </h1>
         </div>
 
-        {enrollments.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-8 gap-2 text-center">
-            <BookOpen className="h-8 w-8 text-muted-foreground/30" />
-            <p className="text-sm text-muted-foreground">
-              You haven&apos;t enrolled in any courses yet.
-            </p>
-            <Link href="/courses">
-              <Button variant="outline" size="sm" className="mt-1 cursor-pointer">
-                Explore Courses
-              </Button>
-            </Link>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-            {enrollments.map((enrollment) => (
-              <Link
-                key={enrollment._id}
-                href={`/courses/${enrollment.course._id}`}
-                className="cursor-pointer"
-              >
-                <div className="group rounded-xl border border-border/50 p-4 hover:bg-muted/40 transition-colors space-y-3">
-                  <div className="flex items-start justify-between gap-2">
-                    <h4 className="text-sm font-medium leading-tight line-clamp-2 group-hover:text-primary transition-colors">
-                      {enrollment.course.title}
-                    </h4>
-                    {enrollment.isCompleted && (
-                      <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0 mt-0.5" />
+        <div className="flex items-center gap-3">
+          <Badge variant="outline" className={cn("px-3 py-1 text-xs gap-1.5 font-bold", role.badge)}>
+            <RoleIcon className="w-3 h-3" />
+            {role.label}
+          </Badge>
+          <div className="h-10 w-px bg-border hidden md:block mx-1" />
+          <Avatar className="h-10 w-10 ring-2 ring-primary/20 shadow-sm">
+            <AvatarImage src={user?.profileImage} />
+            <AvatarFallback className="font-bold text-xs">{userInitials}</AvatarFallback>
+          </Avatar>
+        </div>
+      </header>
+
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <div className="lg:col-span-8 space-y-8">
+          {activeEnrollment ? (
+            <section className="space-y-4">
+              <div className="flex items-center justify-between">
+                <h3 className="text-sm font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
+                  <Clock className="w-4 h-4" />
+                  Recent Session
+                </h3>
+              </div>
+              <div className="relative group overflow-hidden rounded-3xl border bg-card p-1">
+                <div className="absolute inset-0 bg-primary/[0.03] transition-colors group-hover:bg-primary/[0.05]" />
+                <div className="relative p-6 md:p-8 flex flex-col md:flex-row gap-8 items-center">
+                  <div className="relative w-full md:w-48 aspect-video rounded-2xl overflow-hidden border shadow-inner shrink-0 bg-muted">
+                    {activeEnrollment.course.thumbnail ? (
+                       <img src={activeEnrollment.course.thumbnail} className="w-full h-full object-cover" alt="" />
+                    ) : (
+                       <div className="w-full h-full flex items-center justify-center">
+                          <FlaskConical className="w-10 h-10 text-muted-foreground/20" />
+                       </div>
                     )}
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="inline-flex items-center text-[10px] font-medium px-1.5 py-0.5 rounded bg-muted text-muted-foreground border border-border/40 capitalize">
-                      {enrollment.course.difficulty}
-                    </span>
-                    <span className="text-[10px] text-muted-foreground">
-                      {enrollment.completedLectures?.length || 0}/{enrollment.totalLectures} lectures
-                    </span>
-                  </div>
-                  <div className="space-y-1">
-                    <div className="h-1.5 w-full bg-muted rounded-full overflow-hidden">
-                      <div
-                        className="h-full bg-primary rounded-full transition-all duration-300"
-                        style={{width: `${enrollment.progress}%`}}
-                      />
+                    <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors" />
+                    <div className="absolute bottom-2 right-2 px-2 py-1 rounded bg-black/60 text-[10px] text-white font-bold backdrop-blur">
+                       {activeEnrollment.progress}%
                     </div>
-                    <p className="text-[10px] text-muted-foreground text-right">
-                      {enrollment.progress}%
-                    </p>
+                  </div>
+
+                  <div className="flex-1 space-y-4 text-center md:text-left">
+                    <div>
+                       <h2 className="text-xl md:text-2xl font-bold tracking-tight group-hover:text-primary transition-colors">
+                          {activeEnrollment.course.title}
+                       </h2>
+                       <p className="text-sm text-muted-foreground mt-1 max-w-lg">
+                          Continue where you left off. You&apos;ve completed {activeEnrollment.completedLectures?.length || 0} of {activeEnrollment.totalLectures} lectures.
+                       </p>
+                    </div>
+
+                    <div className="flex flex-wrap items-center justify-center md:justify-start gap-3">
+                      <Link href={`/courses/${activeEnrollment.course._id}`}>
+                        <Button className="h-11 px-6 rounded-xl font-bold gap-2 shadow-lg shadow-primary/20 cursor-pointer active:scale-95 transition-all">
+                           Resume Course
+                           <ArrowRight className="w-4 h-4" />
+                        </Button>
+                      </Link>
+                      <Badge variant="secondary" className="h-11 px-4 rounded-xl text-xs border border-border/50 uppercase tracking-widest opacity-80">
+                         {activeEnrollment.course.difficulty}
+                      </Badge>
+                    </div>
                   </div>
                 </div>
-              </Link>
-            ))}
-          </div>
-        )}
-      </div>
+              </div>
+            </section>
+          ) : (
+            <div className="rounded-3xl border border-dashed border-muted-foreground/20 p-12 text-center space-y-4">
+               <div className="mx-auto w-16 h-16 rounded-2xl bg-muted flex items-center justify-center mb-2">
+                  <BookOpen className="w-8 h-8 text-muted-foreground/30" />
+               </div>
+               <h3 className="text-lg font-bold">No active enrollments</h3>
+               <p className="text-sm text-muted-foreground max-w-xs mx-auto">
+                  Start your journey into AI and Machine Learning by exploring our curated courses.
+               </p>
+               <Link href="/courses">
+                  <Button variant="outline" className="rounded-xl h-10 cursor-pointer">Explore Catalog</Button>
+               </Link>
+            </div>
+          )}
 
-      {/* Quick Links + Announcements */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="rounded-2xl border bg-card shadow-sm p-6 space-y-4">
-          <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-            Quick Access
-          </p>
-          <div className="space-y-2">
-            {quickLinks.map((link) => {
-              const Icon = link.icon;
-              return (
-                <Link key={link.href} href={link.href}>
-                  <div className="group flex items-center gap-3 p-3 rounded-xl hover:bg-muted/60 transition-colors cursor-pointer">
-                    <div
-                      className={cn(
-                        "flex h-9 w-9 items-center justify-center rounded-lg border bg-muted transition-colors shrink-0",
-                        link.bg,
-                      )}
-                    >
-                      <Icon
-                        className={cn(
-                          "h-4 w-4 text-muted-foreground transition-colors",
-                          link.color,
-                        )}
-                      />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium">{link.label}</p>
-                      <p className="text-xs text-muted-foreground">
-                        {link.description}
-                      </p>
-                    </div>
-                    <ArrowRight className="h-4 w-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
-                  </div>
+          <section className="space-y-4">
+             <div className="flex items-center justify-between">
+                <h3 className="text-sm font-bold uppercase tracking-wider text-muted-foreground">My Research Path</h3>
+                <Link href="/courses" className="text-xs font-bold text-primary hover:underline underline-offset-4 flex items-center gap-1">
+                   View All <ExternalLink className="w-3 h-3" />
                 </Link>
-              );
-            })}
-          </div>
+             </div>
+             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {enrollments.slice(0, 4).map((e) => (
+                   <Link key={e._id} href={`/courses/${e.course._id}`}>
+                      <div className="group p-5 rounded-2xl border bg-card hover:border-primary/40 transition-all cursor-pointer">
+                         <div className="flex justify-between items-start mb-4">
+                            <h4 className="text-[15px] font-bold leading-snug truncate pr-4 group-hover:text-primary transition-colors">
+                               {e.course.title}
+                            </h4>
+                            {e.isCompleted ? (
+                               <div className="p-1 px-2 rounded bg-success/10 text-success border border-success/20 text-[9px] font-bold uppercase tracking-tighter">
+                                  Done
+                               </div>
+                            ) : (
+                               <span className="text-[10px] font-bold text-muted-foreground">{e.progress}%</span>
+                            )}
+                         </div>
+                         <div className="space-y-2">
+                            <div className="h-1 w-full bg-muted rounded-full overflow-hidden">
+                               <div 
+                                 className={cn(
+                                   "h-full transition-all duration-700 rounded-full",
+                                   e.isCompleted ? "bg-success" : "bg-primary"
+                                 )}
+                                 style={{width: `${e.progress}%`}}
+                               />
+                            </div>
+                            <div className="flex justify-between items-center text-[10px] text-muted-foreground font-medium">
+                               <span>{e.completedLectures?.length || 0}/{e.totalLectures} Lectures</span>
+                               <span className="capitalize">{e.course.difficulty}</span>
+                            </div>
+                         </div>
+                      </div>
+                   </Link>
+                ))}
+             </div>
+          </section>
         </div>
 
-        <div className="rounded-2xl border bg-card shadow-sm p-6 space-y-4">
-          <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground flex items-center gap-2">
-            <Bell className="h-3.5 w-3.5" />
-            Announcements
-          </p>
-          <div className="flex flex-col items-center justify-center h-32 gap-2 text-center">
-            <Bell className="h-8 w-8 text-muted-foreground/30" />
-            <p className="text-sm text-muted-foreground">
-              No announcements yet.
-            </p>
-            <p className="text-xs text-muted-foreground/60">
-              Check back soon for updates.
-            </p>
-          </div>
+        <div className="lg:col-span-4 space-y-8">
+          <aside className="space-y-8">
+            <div className="space-y-4">
+               <h3 className="text-sm font-bold uppercase tracking-wider text-muted-foreground">Lab Progress</h3>
+               {showCompleteness ? (
+                 <Card className="rounded-2xl border-primary/20 bg-primary/[0.02] border overflow-hidden">
+                   <CardContent className="p-5 space-y-4">
+                      <div>
+                         <div className="flex justify-between items-end mb-2">
+                            <p className="text-xs font-bold text-primary italic lowercase">Completing profile...</p>
+                            <p className="text-xs font-bold uppercase tracking-tighter text-muted-foreground">{completedCount}/3 items</p>
+                         </div>
+                         <div className="h-1.5 w-full bg-muted rounded-full overflow-hidden p-0.5 border">
+                            <div 
+                              className="h-full bg-primary rounded-full shadow-[0_0_8px_rgba(var(--primary),0.3)] transition-all duration-1000"
+                              style={{width: `${progressPercent}%`}}
+                            />
+                         </div>
+                      </div>
+                      <Link href="/profile">
+                         <Button variant="outline" size="sm" className="w-full text-[11px] font-bold h-8 rounded-lg cursor-pointer">
+                            Complete Profile Setup
+                         </Button>
+                      </Link>
+                   </CardContent>
+                 </Card>
+               ) : (
+                 <div className="p-5 rounded-2xl bg-success/5 border border-success/20 flex items-center gap-3">
+                    <div className="h-8 w-8 rounded-full bg-success/20 flex items-center justify-center">
+                       <Trophy className="w-4 h-4 text-success" />
+                    </div>
+                    <div>
+                       <p className="text-xs font-bold text-success">Profile 100%</p>
+                       <p className="text-[10px] text-success/70">Member status verified.</p>
+                    </div>
+                 </div>
+               )}
+            </div>
+
+            <div className="space-y-4">
+               <h3 className="text-sm font-bold uppercase tracking-wider text-muted-foreground">Lab Resources</h3>
+               <div className="space-y-3">
+                 <QuickLink 
+                   href="/profile" 
+                   icon={UserCircle} 
+                   label="My Journal" 
+                   description="Update your researcher profile"
+                   color="text-warning"
+                   bg="bg-warning/10"
+                 />
+                 <QuickLink 
+                   href="/members" 
+                   icon={Users} 
+                   label="Directory" 
+                   description="Find your collaborators"
+                   color="text-info"
+                   bg="bg-info/10"
+                 />
+                 <QuickLink 
+                   href="/research" 
+                   icon={FlaskConical} 
+                   label="Publications" 
+                   description="Latest works from the lab"
+                   color="text-success"
+                   bg="bg-success/10"
+                 />
+                 {isAdmin && (
+                    <QuickLink 
+                      href="/admin" 
+                      icon={ShieldCheck} 
+                      label="Admin Hub" 
+                      description="Lab systems management"
+                      color="text-destructive"
+                      bg="bg-destructive/10"
+                    />
+                 )}
+               </div>
+            </div>
+
+            <div className="space-y-4">
+               <h3 className="text-sm font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
+                  <Bell className="w-3.5 h-3.5" />
+                  Notices
+               </h3>
+               <div className="p-10 rounded-2xl border border-dashed text-center space-y-2 opacity-50">
+                  <p className="text-xs font-bold">No New Data</p>
+                  <p className="text-[10px] text-muted-foreground">Updates appear here.</p>
+               </div>
+            </div>
+          </aside>
         </div>
       </div>
     </div>
