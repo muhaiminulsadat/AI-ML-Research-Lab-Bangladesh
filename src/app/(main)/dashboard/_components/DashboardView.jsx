@@ -95,9 +95,9 @@ export default function DashboardView({user, stats, enrollments = []}) {
   return (
     <div className="w-full max-w-7xl mx-auto px-4 lg:px-8 py-8 space-y-10">
       <header className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
-        <div className="space-y-1.5">
-          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-primary">
-            <Layout className="w-3.5 h-3.5" />
+        <div className="space-y-2">
+          <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest text-primary">
+            <Layout className="w-4 h-4" />
             Control Center
           </div>
           <h1 className="text-3xl font-bold tracking-tight flex items-baseline gap-3">
@@ -143,7 +143,7 @@ export default function DashboardView({user, stats, enrollments = []}) {
                        </div>
                     )}
                     <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors" />
-                    <div className="absolute bottom-2 right-2 px-2 py-1 rounded bg-black/60 text-[10px] text-white font-bold backdrop-blur">
+                    <div className="absolute bottom-2 right-2 px-2.5 py-1 rounded bg-black/60 text-[11px] text-white font-bold backdrop-blur">
                        {activeEnrollment.progress}%
                     </div>
                   </div>
@@ -204,14 +204,14 @@ export default function DashboardView({user, stats, enrollments = []}) {
                                {e.course.title}
                             </h4>
                             {e.isCompleted ? (
-                               <div className="p-1 px-2 rounded bg-success/10 text-success border border-success/20 text-[9px] font-bold uppercase tracking-tighter">
+                               <div className="p-1 px-2.5 rounded bg-success/10 text-success border border-success/20 text-[10px] font-bold uppercase tracking-tight">
                                   Done
                                </div>
                             ) : (
-                               <span className="text-[10px] font-bold text-muted-foreground">{e.progress}%</span>
+                               <span className="text-[11px] font-bold text-muted-foreground">{e.progress}%</span>
                             )}
                          </div>
-                         <div className="space-y-2">
+                         <div className="space-y-3">
                             <div className="h-1 w-full bg-muted rounded-full overflow-hidden">
                                <div 
                                  className={cn(
@@ -221,7 +221,7 @@ export default function DashboardView({user, stats, enrollments = []}) {
                                  style={{width: `${e.progress}%`}}
                                />
                             </div>
-                            <div className="flex justify-between items-center text-[10px] text-muted-foreground font-medium">
+                            <div className="flex justify-between items-center text-[11px] text-muted-foreground font-bold uppercase tracking-tight">
                                <span>{e.completedLectures?.length || 0}/{e.totalLectures} Lectures</span>
                                <span className="capitalize">{e.course.difficulty}</span>
                             </div>
@@ -242,10 +242,10 @@ export default function DashboardView({user, stats, enrollments = []}) {
                    <CardContent className="p-5 space-y-4">
                       <div>
                          <div className="flex justify-between items-end mb-2">
-                            <p className="text-xs font-bold text-primary italic lowercase">Completing profile...</p>
-                            <p className="text-xs font-bold uppercase tracking-tighter text-muted-foreground">{completedCount}/3 items</p>
+                            <p className="text-[11px] font-bold text-primary italic lowercase">Completing profile...</p>
+                            <p className="text-[11px] font-bold uppercase tracking-tighter text-muted-foreground">{completedCount}/3 items</p>
                          </div>
-                         <div className="h-1.5 w-full bg-muted rounded-full overflow-hidden p-0.5 border">
+                         <div className="h-2 w-full bg-muted rounded-full overflow-hidden p-0.5 border">
                             <div 
                               className="h-full bg-primary rounded-full shadow-[0_0_8px_rgba(var(--primary),0.3)] transition-all duration-1000"
                               style={{width: `${progressPercent}%`}}
@@ -253,7 +253,7 @@ export default function DashboardView({user, stats, enrollments = []}) {
                          </div>
                       </div>
                       <Link href="/profile">
-                         <Button variant="outline" size="sm" className="w-full text-[11px] font-bold h-8 rounded-lg cursor-pointer">
+                         <Button variant="outline" size="sm" className="w-full text-xs font-bold h-9 rounded-lg cursor-pointer">
                             Complete Profile Setup
                          </Button>
                       </Link>
@@ -266,7 +266,7 @@ export default function DashboardView({user, stats, enrollments = []}) {
                     </div>
                     <div>
                        <p className="text-xs font-bold text-success">Profile 100%</p>
-                       <p className="text-[10px] text-success/70">Member status verified.</p>
+                       <p className="text-[11px] text-success/70">Member status verified.</p>
                     </div>
                  </div>
                )}
@@ -313,13 +313,13 @@ export default function DashboardView({user, stats, enrollments = []}) {
             </div>
 
             <div className="space-y-4">
-               <h3 className="text-sm font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
-                  <Bell className="w-3.5 h-3.5" />
+               <h3 className="text-[13px] font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
+                  <Bell className="w-4 h-4" />
                   Notices
                </h3>
                <div className="p-10 rounded-2xl border border-dashed text-center space-y-2 opacity-50">
                   <p className="text-xs font-bold">No New Data</p>
-                  <p className="text-[10px] text-muted-foreground">Updates appear here.</p>
+                  <p className="text-[11px] text-muted-foreground">Updates appear here.</p>
                </div>
             </div>
           </aside>

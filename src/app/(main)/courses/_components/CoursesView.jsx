@@ -128,14 +128,14 @@ function CourseCard({course}) {
             </div>
           )}
           <div className="absolute top-3 left-3 flex gap-2">
-            <span className="inline-flex items-center text-[9px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full bg-foreground text-background shadow-sm border border-foreground/10">
+            <span className="inline-flex items-center text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full bg-foreground text-background shadow-sm border border-foreground/10">
               {course.difficulty}
             </span>
           </div>
         </div>
 
         <div className="flex-1 flex flex-col p-5">
-          <div className="flex items-center gap-2.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground/60 mb-3">
+          <div className="flex items-center gap-2.5 text-[11px] font-bold uppercase tracking-wider text-muted-foreground/50 mb-3">
              <div className="flex items-center gap-1">
                 <BookOpen className="h-3 w-3" />
                 <span>{totalModules} Modules</span>
@@ -158,13 +158,13 @@ function CourseCard({course}) {
              {course.tags?.slice(0, 2).map((tag) => (
                 <span
                    key={tag}
-                   className="inline-flex items-center text-[9px] font-bold uppercase tracking-tight px-2 py-0.5 rounded-md bg-muted text-muted-foreground/80 border border-border/20"
+                   className="inline-flex items-center text-[10px] font-bold uppercase tracking-tight px-2 py-0.5 rounded-md bg-muted text-muted-foreground/80 border border-border/20"
                 >
                    #{tag}
                 </span>
              ))}
              {course.tags?.length > 2 && (
-                <span className="text-[9px] font-bold text-muted-foreground/40 self-center">
+                <span className="text-[10px] font-bold text-muted-foreground/40 self-center">
                    +{course.tags.length - 2} more
                 </span>
              )}
@@ -182,7 +182,7 @@ function CourseCard({course}) {
               </AvatarFallback>
             </Avatar>
             <span
-              className="text-[11px] font-bold text-foreground/70 tracking-tight truncate max-w-[140px]"
+              className="text-xs font-bold text-foreground/70 tracking-tight truncate max-w-[140px]"
               title={course.instructor?.name}
             >
               {course.instructor?.name || "Instructor"}
