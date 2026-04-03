@@ -97,7 +97,7 @@ export default function ProfileView({user}) {
                 role.ring,
               )}
             >
-              <AvatarImage src={user?.profileImage} alt={user?.name} />
+              <AvatarImage src={user?.profileImage || undefined} alt={user?.name} />
               <AvatarFallback className="text-2xl font-bold bg-muted">
                 {userInitials}
               </AvatarFallback>

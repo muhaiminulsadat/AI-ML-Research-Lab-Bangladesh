@@ -14,6 +14,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
@@ -23,6 +24,7 @@ import {Badge} from "@/components/ui/badge";
 import {toast} from "sonner";
 import {updateProfile} from "@/actions/user.action";
 import {authClient} from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
 
 export default function EditProfileModal({open, onClose, user}) {
   const [loading, setLoading] = useState(false);
@@ -39,6 +41,9 @@ export default function EditProfileModal({open, onClose, user}) {
       googleScholar: user?.socialLinks?.googleScholar ?? "",
     },
   });
+
+  const router = useRouter();
+
 
   const handleChange = (e) => {
     setForm((prev) => ({...prev, [e.target.name]: e.target.value}));
@@ -83,10 +88,11 @@ export default function EditProfileModal({open, onClose, user}) {
       return;
     }
 
-    // Refresh session so useGetCurrentUser reflects changes
+  
     await authClient.getSession({fetchOptions: {cache: "no-store"}});
     toast.success("Profile updated!");
     setLoading(false);
+    router.refresh();
     onClose();
   };
 
@@ -97,8 +103,9 @@ export default function EditProfileModal({open, onClose, user}) {
           <DialogTitle className="flex items-center gap-2 font-bold text-xl">
             <User className="h-4 w-4" />
             Edit Profile
-          </DialogTitle>
-        </DialogHeader>
+          </DialogTitle>          <DialogDescription className="sr-only">
+            Edit your profile details
+          </DialogDescription>        </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4 mt-2">
           {/* Name */}
