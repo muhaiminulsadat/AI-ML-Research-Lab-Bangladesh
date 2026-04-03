@@ -1,35 +1,22 @@
-import {Geist, Geist_Mono, Inter, Figtree} from "next/font/google";
 import "./globals.css";
 import {cn} from "@/lib/utils";
 import {Toaster} from "@/components/ui/sonner";
 import ClientAppShell from "@/components/layouts/ClientAppShell";
-import {Bebas_Neue, Outfit, JetBrains_Mono} from "next/font/google";
 
-const figtree = Figtree({subsets: ["latin"], variable: "--font-sans"});
+import {Inter, JetBrains_Mono} from "next/font/google";
 
-const bebasNeue = Bebas_Neue({
-  weight: "400",
+const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-bebas",
+  variable: "--font-inter",
 });
-const outfit = Outfit({subsets: ["latin"], variable: "--font-outfit"});
+
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
-  variable: "--font-mono-brand",
-});
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  variable: "--font-jetbrains-mono",
 });
 
 export const metadata = {
-  title: "AI/ML Lab",
+  title: "AI/ML Lab | Research & Education",
   description: "Advanced Platform for Machine Learning and AI Courses",
 };
 
@@ -37,23 +24,11 @@ export default function RootLayout({children}) {
   return (
     <html
       lang="en"
-      className={cn(
-        "h-full",
-        "antialiased",
-        "dark",
-        geistSans.variable,
-        geistMono.variable,
-        "font-sans",
-        figtree.variable,
-        bebasNeue.variable,
-        outfit.variable,
-        jetbrainsMono.variable,
-      )}
+      className={cn(inter.variable, jetbrainsMono.variable, "antialiased dark")}
       suppressHydrationWarning
     >
-      <body className="min-h-full" suppressHydrationWarning>
+      <body className="min-h-screen bg-background font-sans">
         <ClientAppShell>{children}</ClientAppShell>
-
         <Toaster position="top-center" richColors />
       </body>
     </html>

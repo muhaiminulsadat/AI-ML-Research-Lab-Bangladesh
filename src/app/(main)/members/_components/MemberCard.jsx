@@ -92,11 +92,9 @@ export default function MemberCard({member}) {
   return (
     <div
       className={cn(
-        "group relative flex flex-col rounded-2xl border border-border/60",
+        "group relative flex flex-col rounded-2xl border border-border/60 card-lift",
         "bg-card/80 backdrop-blur-sm",
-        "transition-all duration-300 ease-out",
-        "hover:border-border hover:shadow-lg hover:shadow-primary/5",
-        "hover:-translate-y-1",
+        "transition-all duration-300 ease-out hover:border-border hover:shadow-lg hover:shadow-primary/5",
         role.premium && role.border,
         role.premium && role.shadow,
       )}
@@ -104,21 +102,29 @@ export default function MemberCard({member}) {
       {/* Top gradient accent */}
       <div
         className={cn(
-          "absolute inset-x-0 top-0 h-px bg-gradient-to-r opacity-0",
+          "absolute inset-x-0 top-0 h-px bg-linear-to-r opacity-0",
           "group-hover:opacity-100 transition-opacity duration-300",
           member.role === "member"
             ? "from-info/60 via-info/30 to-transparent"
             : member.role === "advisor"
-            ? "from-success/60 via-success/30 to-transparent"
-            : member.role === "core_panel"
-            ? "from-primary/60 via-primary/30 to-transparent"
-            : member.role === "admin"
-            ? "from-destructive/60 via-destructive/30 to-transparent"
-            : "from-primary/60 via-primary/30 to-transparent",
+              ? "from-success/60 via-success/30 to-transparent"
+              : member.role === "core_panel"
+                ? "from-primary/60 via-primary/30 to-transparent"
+                : member.role === "admin"
+                  ? "from-destructive/60 via-destructive/30 to-transparent"
+                  : "from-primary/60 via-primary/30 to-transparent",
+        )}
+      />
+      {/* Role-tinted hover wash */}
+      <div
+        className={cn(
+          "pointer-events-none absolute inset-0 rounded-2xl bg-linear-to-br opacity-0",
+          "group-hover:opacity-100 transition-opacity duration-300",
+          role.gradient,
         )}
       />
 
-      <div className="p-5 pb-0">
+      <div className="relative p-5 pb-0 z-1">
         {/* Header: Avatar + Name + Role */}
         <div className="flex items-start gap-3.5">
           <div className="relative shrink-0">
@@ -135,7 +141,7 @@ export default function MemberCard({member}) {
             </Avatar>
             {role.premium && (
               <div className="absolute -bottom-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-background ring-1 ring-border shadow-sm">
-                 <RoleIcon className={cn("h-2.5 w-2.5", role.text)} />
+                <RoleIcon className={cn("h-2.5 w-2.5", role.text)} />
               </div>
             )}
           </div>
@@ -200,7 +206,7 @@ export default function MemberCard({member}) {
 
       {/* Social Links Footer */}
       {hasSocials && (
-        <div className="mt-auto px-5 py-3 border-t border-border/40 flex items-center gap-1">
+        <div className="relative z-1 mt-auto px-5 py-3 border-t border-border/40 flex items-center gap-1 bg-card/60 backdrop-blur-sm">
           {socialLinks.github && (
             <a
               href={socialLinks.github}
