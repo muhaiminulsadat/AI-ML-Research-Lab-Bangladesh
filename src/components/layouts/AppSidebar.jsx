@@ -33,7 +33,11 @@ const getLinks = (role) => {
       {href: "/admin", label: "Admin Panel", icon: ShieldCheck},
       {href: "/admin/members", label: "Manage Members", icon: Users},
       {href: "/admin/courses", label: "Manage Courses", icon: GraduationCap},
-      {href: "/admin/publications", label: "Manage Publications", icon: FileText},
+      {
+        href: "/admin/publications",
+        label: "Manage Publications",
+        icon: FileText,
+      },
     );
   }
 
@@ -161,10 +165,11 @@ export default function AppSidebar({user, isCollapsed, onToggleCollapse}) {
           isCollapsed ? "items-center flex flex-col px-2 gap-4" : "",
         )}
       >
-        <div
+        <Link
+          href="/profile"
           className={cn(
-            "flex items-center gap-3 mb-3",
-            isCollapsed ? "justify-center" : "px-2 py-2",
+            "flex items-center gap-3 mb-3 rounded-lg hover:bg-secondary/40 p-2 transition-colors cursor-pointer",
+            isCollapsed ? "justify-center" : "",
           )}
         >
           <Avatar className="h-9 w-9 border border-border/50 shadow-sm shrink-0">
@@ -175,7 +180,7 @@ export default function AppSidebar({user, isCollapsed, onToggleCollapse}) {
           </Avatar>
           {!isCollapsed && (
             <div className="flex flex-col overflow-hidden">
-              <span className="text-sm font-bold truncate tracking-tight leading-none">
+              <span className="text-sm font-bold truncate tracking-tight leading-none group-hover:text-primary transition-colors">
                 {user?.name}
               </span>
               <span className="text-[11px] text-muted-foreground truncate leading-snug mt-1 capitalize">
@@ -183,17 +188,10 @@ export default function AppSidebar({user, isCollapsed, onToggleCollapse}) {
               </span>
             </div>
           )}
-        </div>
+        </Link>
 
         {!isCollapsed ? (
           <>
-            <Link
-              href="/profile"
-              className="flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-muted-foreground rounded-lg hover:bg-secondary/60 hover:text-foreground transition-colors mb-1 cursor-pointer"
-            >
-              <UserCircle className="h-4 w-4 shrink-0" />
-              Account Settings
-            </Link>
             <button
               onClick={logout}
               disabled={isLoggingOut}

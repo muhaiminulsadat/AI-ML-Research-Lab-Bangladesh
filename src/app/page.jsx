@@ -11,13 +11,13 @@ export default function HomePage() {
     <div className="relative min-h-screen bg-background text-foreground overflow-hidden selection:bg-primary/20 selection:text-foreground">
       <HeroBackground />
 
-      <main className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-20 pb-32 space-y-40">
+      <main className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-20 pb-32 space-y-16">
         <HeroSection />
         <MissionSection />
         <DomainsSection />
         <ProjectsShowcase />
         <TeamSection />
-        <CTASection /> 
+        <CTASection />
       </main>
     </div>
   );

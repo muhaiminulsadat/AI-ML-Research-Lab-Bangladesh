@@ -14,7 +14,7 @@ export default function HeroSection() {
         AI &amp; ML Research Lab
       </Badge>
 
-      <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-[5.5rem] font-bold tracking-tighter max-w-5xl text-balance leading-[1.05] text-transparent bg-clip-text bg-linear-to-b from-foreground to-foreground/80">
+      <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-[5.5rem] font-extrabold tracking-tighter max-w-5xl text-balance leading-[1.05] text-transparent bg-clip-text bg-linear-to-b from-foreground to-foreground/80">
         Pioneering the Next Generation of{" "}
         <span className="text-transparent bg-clip-text bg-linear-to-br from-primary via-primary/80 to-primary/40 drop-shadow-sm">
           Machine Intelligence

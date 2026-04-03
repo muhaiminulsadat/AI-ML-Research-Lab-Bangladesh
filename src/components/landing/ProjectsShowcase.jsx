@@ -5,29 +5,27 @@ import {Badge} from "@/components/ui/badge";
 export default function ProjectsShowcase() {
   return (
     <section className="space-y-12">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-6">
-        <div className="space-y-4">
-          <h2 className="text-3xl font-semibold tracking-tight text-foreground">
-            Featured Work
-          </h2>
-          <p className="text-muted-foreground">
-            Breakthrough implementations and operational architecture.
+      <div className="flex flex-col items-center text-center sm:text-left sm:flex-row justify-between sm:items-end gap-6">
+        <div className="space-y-4 flex flex-col items-center sm:items-start">
+          <p className="font-mono text-[11px] tracking-[0.22em] text-primary/70 uppercase">
+            // Featured Works
           </p>
+          <h2 className="text-3xl sm:text-4xl font-bold tracking-tighter text-foreground leading-none">
+            Breakthrough
+            <br className="hidden sm:block" /> implementations
+          </h2>
         </div>
-        <Link
-          href="/research"
-          className="hidden sm:inline-flex group items-center text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-        >
-          View all works{" "}
-          <ArrowRight className="w-4 h-4 ml-1.5 group-hover:translate-x-1 transition-transform" />
-        </Link>
+        <p className="text-muted-foreground max-w-xs text-sm leading-relaxed text-center sm:text-right">
+          Showcasing our latest operational architectures and foundational
+          models.
+        </p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Primary Project Card */}
         <Link
           href="/research"
-          className="lg:col-span-2 group p-8 sm:p-12 rounded-[2.5rem] bg-card border border-border/30 hover:border-primary/30 transition-all duration-500 overflow-hidden relative flex flex-col justify-end min-h-[400px]"
+          className="lg:col-span-2 group p-8 sm:p-12 rounded-[2.5rem] bg-[#090A0F] border border-white/5 hover:bg-[#0D0F14] hover:border-white/10 transition-all duration-300 overflow-hidden relative flex flex-col justify-end min-h-[400px] hover:shadow-2xl hover:-translate-y-1 block"
         >
           <div className="absolute inset-0 bg-linear-to-b from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
 
@@ -41,10 +39,10 @@ export default function ProjectsShowcase() {
                   OPEN SOURCE
                 </Badge>
               </div>
-              <h3 className="text-3xl sm:text-4xl font-semibold tracking-tight text-foreground group-hover:text-primary transition-colors">
+              <h3 className="text-3xl sm:text-4xl font-bold tracking-tight text-white/90 group-hover:text-white transition-colors">
                 Synapse-7B Foundation
               </h3>
-              <p className="text-muted-foreground text-lg leading-relaxed">
+              <p className="text-white/50 text-lg leading-relaxed font-normal">
                 Our latest dense model trained entirely on hyper-curated
                 academic sets. Surpasses comparable parameter weights on
                 standard reasoning markers and logic verification tasks.
@@ -72,9 +70,10 @@ export default function ProjectsShowcase() {
         {/* Minor project - 1 */}
         <Link
           href="/research"
-          className="group p-8 rounded-[2rem] bg-secondary/10 border border-border/30 justify-between flex flex-col min-h-[300px] hover:bg-secondary/20 transition-all duration-500"
+          className="group p-8 rounded-[2rem] bg-[#090A0F] border border-white/5 hover:bg-[#0D0F14] hover:border-white/10 shadow-lg hover:-translate-y-1 hover:shadow-xl justify-between flex flex-col min-h-[300px] transition-all duration-300 relative overflow-hidden block"
         >
-          <div className="flex justify-between items-start mb-12">
+          <div className="absolute top-0 right-0 p-32 bg-blue-500/5 rounded-full blur-3xl" />
+          <div className="flex justify-between items-start mb-12 relative z-10">
             <Badge
               variant="outline"
               className="border-border/40 font-mono text-[10px] uppercase tracking-widest bg-transparent text-muted-foreground"
@@ -83,11 +82,11 @@ export default function ProjectsShowcase() {
             </Badge>
             <ArrowUpRight className="w-5 h-5 text-muted-foreground group-hover:text-foreground transition-colors" />
           </div>
-          <div className="space-y-4">
-            <h3 className="text-2xl font-semibold tracking-tight text-foreground">
+          <div className="space-y-3">
+            <h3 className="text-[20px] font-bold tracking-tight text-white/90 group-hover:text-white transition-colors">
               Neuro-Visual Interfaces
             </h3>
-            <p className="text-muted-foreground text-[15px] leading-relaxed">
+            <p className="text-[14px] text-white/50 leading-relaxed font-normal">
               A cross-modal semantic bridge projecting raw EEG waveforms
               directly into controllable stable diffusion latent states.
             </p>
@@ -97,9 +96,10 @@ export default function ProjectsShowcase() {
         {/* Minor project - 2 */}
         <Link
           href="/research"
-          className="group p-8 rounded-[2rem] bg-secondary/10 border border-border/30 justify-between flex flex-col min-h-[300px] hover:bg-secondary/20 transition-all duration-500"
+          className="group p-8 rounded-[2rem] bg-[#090A0F] border border-white/5 hover:bg-[#0D0F14] hover:border-white/10 shadow-lg hover:-translate-y-1 hover:shadow-xl justify-between flex flex-col min-h-[300px] transition-all duration-300 relative overflow-hidden block"
         >
-          <div className="flex justify-between items-start mb-12">
+          <div className="absolute top-0 right-0 p-32 bg-emerald-500/5 rounded-full blur-3xl" />
+          <div className="flex justify-between items-start mb-12 relative z-10">
             <Badge
               variant="outline"
               className="border-border/40 font-mono text-[10px] uppercase tracking-widest bg-transparent text-muted-foreground"
@@ -108,11 +108,11 @@ export default function ProjectsShowcase() {
             </Badge>
             <ArrowUpRight className="w-5 h-5 text-muted-foreground group-hover:text-foreground transition-colors" />
           </div>
-          <div className="space-y-4">
-            <h3 className="text-2xl font-semibold tracking-tight text-foreground">
+          <div className="space-y-3">
+            <h3 className="text-[20px] font-bold tracking-tight text-white/90 group-hover:text-white transition-colors">
               RLHF Toolkit v2
             </h3>
-            <p className="text-muted-foreground text-[15px] leading-relaxed">
+            <p className="text-[14px] text-white/50 leading-relaxed font-normal">
               Highly scalable alignment pipelines enabling low-VRAM fine-tuning
               and proxy-based reward modeling for local nodes.
             </p>

@@ -24,7 +24,7 @@ export default function MissionSection() {
         </span>
 
         {/* quote body */}
-        <blockquote className="relative z-10 text-center space-y-0">
+        <blockquote className="relative z-10 text-center space-y-0 italic text-foreground/90">
           <p
             className="text-2xl sm:text-3xl lg:text-[2.1rem] font-medium tracking-tight
                         text-foreground/90 text-balance leading-[1.45]"

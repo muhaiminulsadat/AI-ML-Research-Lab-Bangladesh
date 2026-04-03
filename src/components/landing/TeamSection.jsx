@@ -4,19 +4,37 @@ import {Avatar, AvatarFallback} from "@/components/ui/avatar";
 import {useEffect, useRef, useState} from "react";
 
 const teamMembers = [
-  {name: "Dr. Arisa K.", role: "Director of Lab", initials: "AK", index: "01"},
-  {name: "James Lin", role: "Senior ML Engineer", initials: "JL", index: "02"},
   {
-    name: "Sarah Vance",
-    role: "Research Scientist",
-    initials: "SV",
-    index: "03",
+    name: "Dr. M. Sohel Rahman",
+    role: "Professor, CSE BUET",
+    initials: "SR",
+    index: "01",
+    color: "from-blue-400/20 to-transparent",
+    ring: "border-blue-400/30",
   },
   {
-    name: "Dr. Chen W.",
-    role: "Computational Theorist",
-    initials: "CW",
+    name: "Dr. Mahmuda Naznin",
+    role: "Professor & Head, CSE BUET",
+    initials: "MN",
+    index: "02",
+    color: "from-emerald-400/20 to-transparent",
+    ring: "border-emerald-400/30",
+  },
+  {
+    name: "Dr. A.B.M. Alim Al Islam",
+    role: "Professor, CSE BUET",
+    initials: "AA",
+    index: "03",
+    color: "from-amber-400/20 to-transparent",
+    ring: "border-amber-400/30",
+  },
+  {
+    name: "Dr. Mohammed Eunus Ali",
+    role: "Professor, CSE BUET",
+    initials: "EA",
     index: "04",
+    color: "from-purple-400/20 to-transparent",
+    ring: "border-purple-400/30",
   },
 ];
 
@@ -49,24 +67,21 @@ export default function TeamSection() {
     >
       {/* Header */}
       <div
-        className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4"
+        className="flex flex-col items-center text-center sm:text-left sm:flex-row justify-between sm:items-end gap-4"
         style={{
           opacity: inView ? 1 : 0,
           transform: inView ? "translateY(0)" : "translateY(16px)",
           transition: "opacity 0.6s ease, transform 0.6s ease",
         }}
       >
-        <div className="space-y-3">
-          <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-primary/60">
-            // 002 — The People
+        <div className="space-y-3 flex flex-col items-center sm:items-start">
+          <p className="font-mono text-[11px] tracking-[0.22em] text-primary/70 uppercase">
+            // The People
           </p>
-          <h2
-            className="text-4xl font-black tracking-tight text-foreground leading-none"
-            style={{fontFamily: "'Bebas Neue', 'Outfit', sans-serif"}}
-          >
+          <h2 className="text-3xl sm:text-4xl font-bold tracking-tighter text-foreground leading-none">
             Principal Investigators
           </h2>
-          <div className="h-px w-48 bg-border/30 relative overflow-hidden">
+          <div className="h-px w-48 bg-border/30 relative overflow-hidden hidden sm:block">
             <div
               className="absolute inset-0 bg-primary origin-left"
               style={{
@@ -76,18 +91,18 @@ export default function TeamSection() {
             />
           </div>
         </div>
-        <p className="text-muted-foreground/60 text-sm max-w-xs text-left sm:text-right leading-relaxed">
+        <p className="text-muted-foreground/60 text-sm max-w-xs text-center sm:text-right leading-relaxed">
           Distinguished scientists driving theoretical advancements at the
           frontier.
         </p>
       </div>
 
       {/* Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {teamMembers.map((member, i) => (
           <div
             key={i}
-            className="group relative flex flex-col overflow-hidden rounded-[1.75rem] border border-border/30 bg-card hover:border-primary/30 transition-all duration-500 cursor-default"
+            className={`group relative flex flex-col overflow-hidden rounded-[1.75rem] border border-white/5 hover:border-white/10 bg-[#090A0F] hover:bg-[#0D0F14] shadow-lg hover:-translate-y-1 hover:shadow-xl transition-all duration-300 cursor-default`}
             style={{
               opacity: inView ? 1 : 0,
               transform: inView ? "translateY(0)" : "translateY(24px)",
@@ -96,11 +111,7 @@ export default function TeamSection() {
           >
             {/* Hover glow */}
             <div
-              className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-              style={{
-                background:
-                  "radial-gradient(ellipse at top, hsl(var(--primary)/0.08), transparent 65%)",
-              }}
+              className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none bg-gradient-to-br ${member.color}`}
             />
 
             {/* Ghost index */}
@@ -113,42 +124,28 @@ export default function TeamSection() {
 
             <div className="relative z-10 flex flex-col items-center text-center p-7 pt-8 gap-5">
               {/* Avatar */}
-              <div className="relative">
+              <div className="relative group/avatar">
                 {/* Ring */}
                 <div
-                  className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-500 scale-90 group-hover:scale-110"
-                  style={{
-                    boxShadow:
-                      "0 0 0 1.5px hsl(var(--primary)/0.4), 0 0 20px hsl(var(--primary)/0.15)",
-                    borderRadius: "9999px",
-                  }}
+                  className={`absolute inset-[-4px] rounded-full opacity-0 group-hover:opacity-100 transition-all duration-500 scale-90 group-hover:scale-100 border ${member.ring}`}
                 />
-                <Avatar className="w-16 h-16 border border-border/40">
-                  <AvatarFallback className="bg-secondary/50 text-sm font-mono font-semibold text-foreground tracking-wider">
+                <Avatar className="w-16 h-16 border border-border/40 relative z-10">
+                  <AvatarFallback className="bg-secondary/50 text-sm font-mono font-semibold text-foreground tracking-wider group-hover:bg-background transition-colors">
                     {member.initials}
                   </AvatarFallback>
                 </Avatar>
               </div>
 
               {/* Text */}
-              <div className="space-y-1.5">
-                <h4 className="text-base font-bold tracking-tight text-foreground leading-tight">
+              <div className="space-y-1.5 z-10">
+                <h4 className="text-[17px] font-bold tracking-tight text-white/90 leading-tight group-hover:text-white transition-colors">
                   {member.name}
                 </h4>
-                <p className="text-[11px] font-mono uppercase tracking-[0.15em] text-muted-foreground/60">
+                <p className="text-[12px] font-mono uppercase tracking-[0.10em] text-white/50 font-medium">
                   {member.role}
                 </p>
               </div>
             </div>
-
-            {/* Bottom primary line */}
-            <div
-              className="absolute bottom-0 left-0 right-0 h-px origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500"
-              style={{
-                background:
-                  "linear-gradient(to right, hsl(var(--primary)/0.6), transparent)",
-              }}
-            />
           </div>
         ))}
       </div>
