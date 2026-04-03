@@ -22,14 +22,25 @@ const profileSchema = z.object({
   bio: z.string().max(500, "Bio must be less than 500 characters.").optional(),
   university: z.string().optional(),
   researchInterests: z.array(z.string()).optional(),
-  socialLinks: z.record(z.string().url("Invalid URL format.").or(z.string().length(0))).optional(),
-  profileImage: z.string().url("Invalid image URL.").or(z.string().length(0)).optional(),
+  socialLinks: z
+    .record(z.string(), z.string().url("Invalid URL format.").or(z.literal("")))
+    .optional(),
+  profileImage: z
+    .string()
+    .url("Invalid image URL.")
+    .or(z.literal(""))
+    .optional(),
 });
 
 export async function registerUser(formData) {
   try {
-    const validated = registerSchema.parse(formData);
-    const {name, email, password, university} = validated;
+    const parseResult = registerSchema.safeParse(formData);
+
+    if (!parseResult.success) {
+      return {success: false, error: parseResult.error.issues[0].message};
+    }
+
+    const {name, email, password, university} = parseResult.data;
 
     const response = await auth.api.signUpEmail({
       body: {
@@ -42,10 +53,13 @@ export async function registerUser(formData) {
 
     return {success: true, data: convertToObject(response)};
   } catch (error) {
-    if (error instanceof z.ZodError) {
+    if (error?.errors?.[0]?.message) {
       return {success: false, error: error.errors[0].message};
     }
-    return {success: false, error: error.message};
+    return {
+      success: false,
+      error: error.message || "An unexpected error occurred.",
+    };
   }
 }
 
@@ -65,7 +79,13 @@ export async function loginUser(formData) {
 
 export async function updateProfile(data) {
   try {
-    const validated = profileSchema.parse(data);
+    const parseResult = profileSchema.safeParse(data);
+
+    if (!parseResult.success) {
+      return {success: false, error: parseResult.error.issues[0].message};
+    }
+
+    const validated = parseResult.data;
     const response = await auth.api.updateUser({
       headers: await headers(),
       body: {
@@ -81,10 +101,13 @@ export async function updateProfile(data) {
     revalidatePath("/profile");
     return {success: true, data: response};
   } catch (error) {
-    if (error instanceof z.ZodError) {
-       return {success: false, error: error.errors[0].message};
+    if (error?.errors?.[0]?.message) {
+      return {success: false, error: error.errors[0].message};
     }
-    return {success: false, error: error.message};
+    return {
+      success: false,
+      error: error.message || "An unexpected error occurred.",
+    };
   }
 }
 
@@ -108,9 +131,7 @@ export async function getMemberStats() {
 export async function getMembers() {
   try {
     await connectDB();
-    const users = await User.find({})
-      .sort({createdAt: -1})
-      .lean();
+    const users = await User.find({}).sort({createdAt: -1}).lean();
     return {success: true, data: convertToObject(users)};
   } catch (error) {
     return {success: false, error: error.message};
@@ -124,9 +145,7 @@ export async function adminGetAllUsers() {
     const {authorized, response} = await requireAdmin();
     if (!authorized) return response;
 
-    const allUsers = await User.find({})
-      .sort({createdAt: -1})
-      .lean();
+    const allUsers = await User.find({}).sort({createdAt: -1}).lean();
     return {success: true, data: convertToObject(allUsers)};
   } catch (error) {
     console.error("adminGetAllUsers error:", error);
@@ -178,7 +197,10 @@ export async function deleteUser(userId) {
     // However, safety first: check if user is the current user.
     const currentUser = await getCurrentUser();
     if (currentUser.user?.id === userId) {
-      return {success: false, message: "You cannot delete your own account from here."};
+      return {
+        success: false,
+        message: "You cannot delete your own account from here.",
+      };
     }
 
     // 1. Delete user via Better-Auth Admin API
@@ -200,6 +222,9 @@ export async function deleteUser(userId) {
     };
   } catch (error) {
     console.error("deleteUser error:", error);
-    return {success: false, message: error.message || "Something went wrong during deletion."};
+    return {
+      success: false,
+      message: error.message || "Something went wrong during deletion.",
+    };
   }
 }
