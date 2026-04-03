@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export default function HeroSection() {
   return (
-    <section className="flex flex-col items-center justify-center text-center space-y-10 pt-4">
+    <section className="flex flex-col items-center justify-center text-center  pt-4 space-y-10">
       <Badge
         variant="outline"
         className="px-4 py-1.5 rounded-full bg-secondary/30 backdrop-blur-sm border-border/40 text-xs font-mono tracking-widest text-muted-foreground uppercase"

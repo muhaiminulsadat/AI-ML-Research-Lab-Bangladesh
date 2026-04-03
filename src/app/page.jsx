@@ -13,11 +13,11 @@ export default function HomePage() {
 
       <main className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-20 pb-32 space-y-40">
         <HeroSection />
-        {/* <MissionSection />
+        <MissionSection />
         <DomainsSection />
         <ProjectsShowcase />
         <TeamSection />
-        <CTASection /> */}
+        <CTASection /> 
       </main>
     </div>
   );
