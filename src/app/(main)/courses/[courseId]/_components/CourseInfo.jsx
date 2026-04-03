@@ -67,7 +67,7 @@ export default function CourseInfo({
                 size="sm"
                 className={cn(
                   "h-8 px-4 text-xs font-medium cursor-pointer transition-all",
-                  isCurrentLectureCompleted && "text-emerald-500",
+                  isCurrentLectureCompleted && "text-success",
                 )}
               >
                 {isPending ? (

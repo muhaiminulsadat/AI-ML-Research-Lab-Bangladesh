@@ -197,7 +197,7 @@ export default function AppSidebar({user, isCollapsed, onToggleCollapse}) {
             <button
               onClick={logout}
               disabled={isLoggingOut}
-              className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-rose-500/80 rounded-lg hover:bg-rose-500/10 hover:text-rose-500 transition-colors cursor-pointer"
+              className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-destructive/80 rounded-lg hover:bg-destructive/10 hover:text-destructive transition-colors cursor-pointer"
             >
               <LogOut className="h-4 w-4 shrink-0" />
               {isLoggingOut ? "Signing out..." : "Sign Out"}
@@ -216,7 +216,7 @@ export default function AppSidebar({user, isCollapsed, onToggleCollapse}) {
               onClick={logout}
               disabled={isLoggingOut}
               title="Sign Out"
-              className="flex justify-center text-rose-500/80 hover:text-rose-500 cursor-pointer"
+              className="flex justify-center text-destructive/80 hover:text-destructive cursor-pointer"
             >
               <LogOut className="h-5 w-5" />
             </button>

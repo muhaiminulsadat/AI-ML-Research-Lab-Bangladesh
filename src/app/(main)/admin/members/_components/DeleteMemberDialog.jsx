@@ -66,7 +66,7 @@ export default function DeleteMemberDialog({member, onDeleteSuccess}) {
         <DialogHeader>
           <div className="flex items-center gap-2 text-destructive mb-2">
             <AlertTriangle className="h-5 w-5" />
-            <DialogTitle>Danger Zone</DialogTitle>
+            <DialogTitle className="font-bold text-xl">Danger Zone</DialogTitle>
           </div>
           <DialogDescription className="text-xs font-semibold text-muted-foreground uppercase tracking-widest pb-2 border-b">
             Critical Action Required

@@ -111,7 +111,7 @@ export default function CreateCourseDialog({open, onOpenChange, onSuccess}) {
       <DialogContent className="sm:max-w-[500px]">
         <form onSubmit={handleSubmit}>
           <DialogHeader>
-            <DialogTitle>Create New Course</DialogTitle>
+            <DialogTitle className="font-bold text-xl">Create New Course</DialogTitle>
             <DialogDescription>
               Set up the core details for your new course. You can add modules
               and lectures later.

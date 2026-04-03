@@ -89,7 +89,7 @@ export default function EditLectureDialog({
       <DialogContent className="sm:max-w-[450px]">
         <form onSubmit={handleSubmit}>
           <DialogHeader>
-            <DialogTitle>Edit Lecture</DialogTitle>
+            <DialogTitle className="font-bold text-xl">Edit Lecture</DialogTitle>
             <DialogDescription>
               Update the details for this lecture.
             </DialogDescription>

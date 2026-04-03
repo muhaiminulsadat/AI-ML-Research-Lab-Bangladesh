@@ -54,7 +54,7 @@ export default function CreateModuleDialog({
       <DialogContent className="sm:max-w-[425px]">
         <form onSubmit={handleSubmit}>
           <DialogHeader>
-            <DialogTitle>Add New Module</DialogTitle>
+            <DialogTitle className="font-bold text-xl">Add New Module</DialogTitle>
             <DialogDescription>
               Create a section to group related video lectures together.
             </DialogDescription>

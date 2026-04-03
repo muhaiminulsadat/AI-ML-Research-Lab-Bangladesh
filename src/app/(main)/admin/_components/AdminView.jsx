@@ -45,7 +45,7 @@ export default function AdminView({stats, recentUsers = []}) {
         <Card className="shadow-sm">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium">Published Courses</CardTitle>
-            <Video className="w-4 h-4 text-emerald-500" />
+            <Video className="w-4 h-4 text-success" />
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-bold">{stats?.coursesCount || 0}</div>
@@ -55,7 +55,7 @@ export default function AdminView({stats, recentUsers = []}) {
         <Card className="shadow-sm">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium">Research Papers</CardTitle>
-            <FileText className="w-4 h-4 text-indigo-500" />
+            <FileText className="w-4 h-4 text-primary" />
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-bold">{stats?.publicationsCount || 0}</div>
@@ -134,8 +134,8 @@ export default function AdminView({stats, recentUsers = []}) {
                   </div>
                </Link>
                <Link href="/courses/create" className="group">
-                  <div className="p-4 rounded-xl border border-border/60 bg-card hover:border-emerald-500/40 hover:shadow-lg transition-all cursor-pointer space-y-2">
-                     <div className="h-10 w-10 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-500 group-hover:scale-110 transition-transform">
+                  <div className="p-4 rounded-xl border border-border/60 bg-card hover:border-success/30/40 hover:shadow-lg transition-all cursor-pointer space-y-2">
+                     <div className="h-10 w-10 rounded-lg bg-success/10 flex items-center justify-center text-success group-hover:scale-110 transition-transform">
                         <Video className="w-5 h-5" />
                      </div>
                      <p className="font-semibold text-sm">Add New Course</p>

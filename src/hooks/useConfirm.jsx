@@ -48,7 +48,7 @@ export function useConfirm() {
     <Dialog open={isOpen} onOpenChange={(open) => !loading && setIsOpen(open)}>
       <DialogContent showCloseButton={false} className="sm:max-w-[380px]">
         <DialogHeader>
-          <DialogTitle>{config.title}</DialogTitle>
+          <DialogTitle className="font-bold text-xl">{config.title}</DialogTitle>
           <DialogDescription>{config.description}</DialogDescription>
         </DialogHeader>
         <DialogFooter>

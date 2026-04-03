@@ -60,7 +60,7 @@ export default function EditModuleDialog({
       <DialogContent className="sm:max-w-[425px]">
         <form onSubmit={handleSubmit}>
           <DialogHeader>
-            <DialogTitle>Edit Module</DialogTitle>
+            <DialogTitle className="font-bold text-xl">Edit Module</DialogTitle>
             <DialogDescription>
               Update the title for this module.
             </DialogDescription>

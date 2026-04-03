@@ -72,7 +72,7 @@ export default function CreateLectureDialog({ courseId, moduleId, open, onOpenCh
       <DialogContent className="sm:max-w-[450px]">
         <form onSubmit={handleSubmit}>
           <DialogHeader>
-            <DialogTitle>Add Lecture</DialogTitle>
+            <DialogTitle className="font-bold text-xl">Add Lecture</DialogTitle>
             <DialogDescription>
               Add a new video lecture to this module.
             </DialogDescription>

@@ -98,7 +98,7 @@ export default function EditCourseDialog({course, open, onOpenChange, onSuccess}
       <DialogContent className="sm:max-w-[500px]">
         <form onSubmit={handleSubmit}>
           <DialogHeader>
-            <DialogTitle>Edit Course Details</DialogTitle>
+            <DialogTitle className="font-bold text-xl">Edit Course Details</DialogTitle>
             <DialogDescription>
               Update the core information for this course.
             </DialogDescription>

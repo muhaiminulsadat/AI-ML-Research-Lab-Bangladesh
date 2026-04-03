@@ -116,7 +116,7 @@ export default function CreatePublicationDialog({open, onOpenChange, onSuccess})
       <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
         <form onSubmit={handleSubmit}>
           <DialogHeader>
-            <DialogTitle>Add Publication</DialogTitle>
+            <DialogTitle className="font-bold text-xl">Add Publication</DialogTitle>
             <DialogDescription>
               Add a new research paper, preprint, or ongoing project.
             </DialogDescription>

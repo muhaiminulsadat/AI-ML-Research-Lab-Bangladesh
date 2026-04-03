@@ -124,7 +124,7 @@ export default function EditPublicationDialog({
       <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
         <form onSubmit={handleSubmit}>
           <DialogHeader>
-            <DialogTitle>Edit Publication</DialogTitle>
+            <DialogTitle className="font-bold text-xl">Edit Publication</DialogTitle>
             <DialogDescription>
               Update the details for this research paper or project.
             </DialogDescription>

@@ -7,6 +7,7 @@ import {
   Building2,
   Mail,
   Pencil,
+  Key,
   GraduationCap,
   Users,
   ShieldCheck,
@@ -17,6 +18,7 @@ import {Button} from "@/components/ui/button";
 import {Badge} from "@/components/ui/badge";
 import {Card, CardContent} from "@/components/ui/card";
 import EditProfileModal from "./EditProfileModal";
+import ChangePasswordModal from "./ChangePasswordModal";
 import {cn} from "@/lib/utils";
 import Link from "next/link";
 
@@ -53,6 +55,7 @@ const roleConfig = {
 
 export default function ProfileView({user}) {
   const [editOpen, setEditOpen] = useState(false);
+  const [passwordOpen, setPasswordOpen] = useState(false);
 
   const role = roleConfig[user?.role] ?? roleConfig.member;
   const RoleIcon = role.icon;
@@ -99,15 +102,26 @@ export default function ProfileView({user}) {
                 {userInitials}
               </AvatarFallback>
             </Avatar>
-            <Button
-              size="sm"
-              variant="outline"
-              className="gap-1.5 mb-1"
-              onClick={() => setEditOpen(true)}
-            >
-              <Pencil className="h-3.5 w-3.5" />
-              Edit Profile
-            </Button>
+            <div className="flex items-center gap-2 mb-1">
+              <Button
+                size="sm"
+                variant="outline"
+                className="gap-1.5"
+                onClick={() => setPasswordOpen(true)}
+              >
+                <Key className="h-3.5 w-3.5" />
+                Change Password
+              </Button>
+              <Button
+                size="sm"
+                variant="outline"
+                className="gap-1.5"
+                onClick={() => setEditOpen(true)}
+              >
+                <Pencil className="h-3.5 w-3.5" />
+                Edit Profile
+              </Button>
+            </div>
           </div>
 
           <div className="space-y-2">
@@ -117,7 +131,7 @@ export default function ProfileView({user}) {
               </h1>
               {user?.memberId && (
                 <span className="inline-flex items-center px-1.5 py-0.5 rounded-sm bg-muted text-[10px] font-bold text-muted-foreground/60 tracking-wider">
-                   {user.memberId}
+                  {user.memberId}
                 </span>
               )}
               <Badge
@@ -180,7 +194,7 @@ export default function ProfileView({user}) {
             </div>
           )}
         </div>
-        
+
         <div className="md:col-span-1 space-y-6">
           {(user?.socialLinks?.github ||
             user?.socialLinks?.linkedin ||
@@ -270,6 +284,10 @@ export default function ProfileView({user}) {
         open={editOpen}
         onClose={() => setEditOpen(false)}
         user={user}
+      />
+      <ChangePasswordModal
+        open={passwordOpen}
+        onClose={() => setPasswordOpen(false)}
       />
     </div>
   );

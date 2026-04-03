@@ -181,7 +181,7 @@ export default function PublicationEditor({initialPublications}) {
                           className={cn(
                             "capitalize text-xs font-medium",
                             pub.status === "published"
-                              ? "bg-emerald-500/10 text-emerald-600 border-emerald-200"
+                              ? "bg-success/10 text-success border-success/30"
                               : "bg-amber-500/10 text-amber-600 border-amber-200",
                           )}
                         >

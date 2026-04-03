@@ -66,19 +66,19 @@ const roleLinks = {
 const roleBadgeConfig = {
   member: {
     label: "Member",
-    className: "bg-blue-500/10 text-blue-600 border-blue-200",
+    className: "bg-info/10 text-info border-info/30",
   },
   advisor: {
     label: "Advisor",
-    className: "bg-emerald-500/10 text-emerald-600 border-emerald-200",
+    className: "bg-success/10 text-success border-success/30",
   },
   core_panel: {
     label: "Core Panel",
-    className: "bg-purple-500/10 text-purple-600 border-purple-200",
+    className: "bg-primary/10 text-primary border-primary/30",
   },
   admin: {
     label: "Admin",
-    className: "bg-rose-500/10 text-rose-600 border-rose-200",
+    className: "bg-destructive/10 text-destructive border-destructive/30",
   },
 };
 
@@ -201,7 +201,7 @@ export default function Navbar({isMobileOnly = false}) {
                           {userInitials}
                         </AvatarFallback>
                       </Avatar>
-                      <span className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full bg-emerald-500 border-2 border-background" />
+                      <span className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full bg-success border-2 border-background" />
                     </div>
                     <span className="text-sm font-medium max-w-[100px] truncate">
                       {user?.name}
@@ -235,7 +235,7 @@ export default function Navbar({isMobileOnly = false}) {
                             {userInitials}
                           </AvatarFallback>
                         </Avatar>
-                        <span className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full bg-emerald-500 border-2 border-background" />
+                        <span className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full bg-success border-2 border-background" />
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-semibold truncate">
@@ -291,10 +291,10 @@ export default function Navbar({isMobileOnly = false}) {
                             href="/admin"
                             className="flex items-center gap-2.5 px-3 py-2 rounded-xl cursor-pointer group/admin"
                           >
-                            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-rose-500/10 group-hover/admin:bg-rose-500/20 transition-colors">
-                              <ShieldCheck className="h-3.5 w-3.5 text-rose-500" />
+                            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-destructive/10 group-hover/admin:bg-destructive/20 transition-colors">
+                              <ShieldCheck className="h-3.5 w-3.5 text-destructive" />
                             </div>
-                            <span className="text-sm text-rose-600">
+                            <span className="text-sm text-destructive">
                               Admin Panel
                             </span>
                           </Link>
@@ -435,7 +435,7 @@ export default function Navbar({isMobileOnly = false}) {
                           <Button
                             variant="outline"
                             size="sm"
-                            className="w-full gap-1.5 text-rose-600 border-rose-200 hover:bg-rose-500/5 cursor-pointer"
+                            className="w-full gap-1.5 text-destructive border-destructive/30 hover:bg-destructive/5 cursor-pointer"
                           >
                             <ShieldCheck className="h-3.5 w-3.5" />
                             Admin Panel

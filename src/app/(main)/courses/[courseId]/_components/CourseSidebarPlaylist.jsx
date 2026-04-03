@@ -90,7 +90,7 @@ export default function CourseSidebarPlaylist({
                             
                             <div className="shrink-0 mt-0.5 ml-1">
                               {isCompleted ? (
-                                <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0" />
+                                <CheckCircle2 className="h-4 w-4 text-success shrink-0" />
                               ) : isActive ? (
                                 <PlayCircle className="h-4 w-4 text-primary animate-pulse shrink-0 drop-shadow-md" />
                               ) : (

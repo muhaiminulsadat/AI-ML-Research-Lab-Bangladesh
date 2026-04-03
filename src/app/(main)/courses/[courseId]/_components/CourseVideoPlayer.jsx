@@ -8,7 +8,7 @@ export default function CourseVideoPlayer({
   onEnroll,
 }) {
   return (
-    <div className="relative rounded-2xl overflow-hidden border border-border/60 bg-[#0a0a0a]">
+    <div className="relative rounded-2xl overflow-hidden border border-border/60 bg-background">
       <div className="aspect-[16/9] w-full">
         {!isEnrolled ? (
           <div className="w-full h-full flex flex-col items-center justify-center text-muted-foreground px-6">
