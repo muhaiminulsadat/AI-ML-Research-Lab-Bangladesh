@@ -45,26 +45,6 @@ const publicLinks = [
   {href: "/about", label: "About us"},
 ];
 
-const roleLinks = {
-  member: [
-    {href: "/dashboard", label: "Dashboard", icon: LayoutDashboard},
-    {href: "/members", label: "Members", icon: Users},
-  ],
-  advisor: [
-    {href: "/dashboard", label: "Dashboard", icon: LayoutDashboard},
-    {href: "/members", label: "Members", icon: Users},
-  ],
-  core_panel: [
-    {href: "/dashboard", label: "Dashboard", icon: LayoutDashboard},
-    {href: "/members", label: "Members", icon: Users},
-  ],
-  admin: [
-    {href: "/dashboard", label: "Dashboard", icon: LayoutDashboard},
-    {href: "/members", label: "Members", icon: Users},
-    {href: "/admin", label: "Admin", icon: ShieldCheck},
-  ],
-};
-
 const roleBadgeConfig = {
   member: {
     label: "Member",
@@ -136,9 +116,8 @@ export default function Navbar({isMobileOnly = false}) {
   const isAuthenticated = !!user;
   const userRole = user?.role ?? "member";
   const roleConfig = roleBadgeConfig[userRole] ?? roleBadgeConfig.member;
-  const authLinks = roleLinks[userRole] ?? [];
 
-  const allLinks = [...publicLinks, ...(isAuthenticated ? authLinks : [])];
+  const allLinks = [...publicLinks];
 
   const userInitials = user?.name
     ? user.name
