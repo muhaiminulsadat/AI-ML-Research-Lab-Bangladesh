@@ -16,7 +16,11 @@ export default async function CourseDetailPage({params}) {
   const {courseId} = await params;
   const userRes = await getCurrentUser();
 
-  if (!userRes?.user || userRes.user.role === "general") {
+  if (!userRes?.user) {
+    redirect(`/login?callbackUrl=/courses/${courseId}`);
+  }
+
+  if (userRes.user.role === "general") {
     redirect("/dashboard");
   }
 

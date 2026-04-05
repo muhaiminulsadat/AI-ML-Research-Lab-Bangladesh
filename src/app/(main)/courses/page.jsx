@@ -9,14 +9,7 @@ export const metadata = {
 };
 
 export default async function CoursesPage() {
-  const {user} = await getCurrentUser();
-
-  // Role check: Only 'member' or 'admin' can access
-  if (!user || user.role === "general") {
-    redirect("/dashboard"); // or wherever general users should go
-  }
-
-  // Fetch only published courses since this is not an admin view
+  
   const res = await getCourses(false);
   const courses = res.success ? res.data : [];
 

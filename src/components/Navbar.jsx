@@ -37,27 +37,29 @@ import {cn} from "@/lib/utils";
 
 const publicLinks = [
   {href: "/", label: "Home"},
+  {href: "/panel", label: "Panel"},
+  {href: "/research", label: "Research"},
+  {href: "/workshop", label: "Workshop"},
+  {href: "/courses", label: "Courses"},
+  {href: "/contact", label: "Contact us"},
+  {href: "/about", label: "About us"},
 ];
 
 const roleLinks = {
   member: [
     {href: "/dashboard", label: "Dashboard", icon: LayoutDashboard},
-    {href: "/courses", label: "Courses", icon: BookOpen},
     {href: "/members", label: "Members", icon: Users},
   ],
   advisor: [
     {href: "/dashboard", label: "Dashboard", icon: LayoutDashboard},
-    {href: "/courses", label: "Courses", icon: BookOpen},
     {href: "/members", label: "Members", icon: Users},
   ],
   core_panel: [
     {href: "/dashboard", label: "Dashboard", icon: LayoutDashboard},
-    {href: "/courses", label: "Courses", icon: BookOpen},
     {href: "/members", label: "Members", icon: Users},
   ],
   admin: [
     {href: "/dashboard", label: "Dashboard", icon: LayoutDashboard},
-    {href: "/courses", label: "Courses", icon: BookOpen},
     {href: "/members", label: "Members", icon: Users},
     {href: "/admin", label: "Admin", icon: ShieldCheck},
   ],
@@ -166,7 +168,7 @@ export default function Navbar({isMobileOnly = false}) {
             </div>
             <div className="flex flex-col leading-none">
               <span className="text-sm font-bold tracking-tight">
-                ML/AI Research
+                ML & AI Research
               </span>
               <span className="text-[10px] text-muted-foreground tracking-widest uppercase">
                 Lab · Bangladesh

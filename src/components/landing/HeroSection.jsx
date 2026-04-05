@@ -11,7 +11,7 @@ export default function HeroSection() {
         className="px-4 py-1.5 rounded-full bg-secondary/30 backdrop-blur-sm border-border/40 text-xs font-mono tracking-widest text-muted-foreground uppercase"
       >
         <Microscope className="w-3.5 h-3.5 text-primary mr-2 inline" />
-        AI &amp; ML Research Lab
+        ML &amp; AI Research Lab, Bangladesh.
       </Badge>
 
       <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-[5.5rem] font-extrabold tracking-tighter max-w-5xl text-balance leading-[1.05] text-transparent bg-clip-text bg-linear-to-b from-foreground to-foreground/80">
