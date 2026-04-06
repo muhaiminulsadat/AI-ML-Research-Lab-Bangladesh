@@ -4,6 +4,7 @@ import MissionSection from "@/components/landing/MissionSection";
 import DomainsSection from "@/components/landing/DomainsSection";
 import ProjectsShowcase from "@/components/landing/ProjectsShowcase";
 import TeamSection from "@/components/landing/TeamSection";
+import DepartmentsSection from "@/components/landing/DepartmentsSection";
 import CTASection from "@/components/landing/CTASection";
 
 export default function HomePage() {
@@ -17,6 +18,7 @@ export default function HomePage() {
         <DomainsSection />
         <ProjectsShowcase />
         <TeamSection />
+        <DepartmentsSection />
         <CTASection />
       </main>
     </div>
