@@ -17,7 +17,7 @@ export default function HomePage() {
         <MissionSection />
         <DomainsSection />
         <ProjectsShowcase />
-        <TeamSection />
+        {/* <TeamSection /> */}
         <DepartmentsSection />
         <CTASection />
       </main>
