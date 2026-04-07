@@ -41,28 +41,6 @@ export default function MissionSection() {
       </div>
 
       {/* ── attribution ──────────────────────────────────────── */}
-      <div className="mt-10 flex items-center justify-center gap-4">
-        <div className="h-px w-10 bg-border/50" />
-        <div className="flex items-center gap-2.5">
-          {/* avatar circle */}
-          <div
-            className="size-7 rounded-full bg-primary/10 border border-primary/20
-                          flex items-center justify-center shrink-0"
-          >
-            <span className="font-mono text-[9px] font-bold text-primary leading-none">
-              MS
-            </span>
-          </div>
-          <span className="font-mono text-[11px] tracking-[0.18em] text-muted-foreground/70 uppercase">
-            Muhaiminul Sadat
-          </span>
-          <span className="text-border/60 text-xs">·</span>
-          <span className="font-mono text-[11px] tracking-[0.14em] text-muted-foreground/40 uppercase">
-            Lab Director
-          </span>
-        </div>
-        <div className="h-px w-10 bg-border/50" />
-      </div>
 
       {/* ── bottom rule ──────────────────────────────────────── */}
       <div className="flex items-center gap-4 mt-16">
@@ -73,3 +51,26 @@ export default function MissionSection() {
     </section>
   );
 }
+
+//  <div className="mt-10 flex items-center justify-center gap-4">
+//         <div className="h-px w-10 bg-border/50" />
+//         <div className="flex items-center gap-2.5">
+//           {/* avatar circle */}
+//           <div
+//             className="size-7 rounded-full bg-primary/10 border border-primary/20
+//                           flex items-center justify-center shrink-0"
+//           >
+//             <span className="font-mono text-[9px] font-bold text-primary leading-none">
+//               MS
+//             </span>
+//           </div>
+//           <span className="font-mono text-[11px] tracking-[0.18em] text-muted-foreground/70 uppercase">
+//             Muhaiminul Sadat
+//           </span>
+//           <span className="text-border/60 text-xs">·</span>
+//           <span className="font-mono text-[11px] tracking-[0.14em] text-muted-foreground/40 uppercase">
+//             Lab Director
+//           </span>
+//         </div>
+//         <div className="h-px w-10 bg-border/50" />
+//       </div>
