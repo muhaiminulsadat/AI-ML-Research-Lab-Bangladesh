@@ -90,43 +90,43 @@ export default function ProfileView({user}) {
         </div>
 
         <div className="px-6 pb-6">
-          <div className="flex items-end justify-between -mt-12 lg:-mt-16 mb-6">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 sm:gap-0 -mt-12 lg:-mt-16 mb-5 sm:mb-6">
             <Avatar
               className={cn(
-                "h-24 w-24 lg:h-32 lg:w-32 ring-4 lg:ring-8 ring-background shadow-lg",
+                "h-24 w-24 lg:h-32 lg:w-32 ring-4 lg:ring-8 ring-background shadow-lg shrink-0",
                 role.ring,
               )}
             >
-              <AvatarImage src={user?.profileImage || undefined} alt={user?.name} />
+              <AvatarImage src={user?.profileImage || undefined} alt={user?.name} className="object-cover" />
               <AvatarFallback className="text-2xl font-bold bg-muted">
                 {userInitials}
               </AvatarFallback>
             </Avatar>
-            <div className="flex items-center gap-2 mb-1">
+            <div className="flex items-center gap-2 sm:mb-1 w-full sm:w-auto mt-1 sm:mt-0">
               <Button
                 size="sm"
                 variant="outline"
-                className="gap-1.5"
+                className="gap-1.5 flex-1 sm:flex-auto justify-center"
                 onClick={() => setPasswordOpen(true)}
               >
-                <Key className="h-3.5 w-3.5" />
-                Change Password
+                <Key className="h-3.5 w-3.5 shrink-0" />
+                <span className="truncate">Password</span>
               </Button>
               <Button
                 size="sm"
                 variant="outline"
-                className="gap-1.5"
+                className="gap-1.5 flex-1 sm:flex-auto justify-center"
                 onClick={() => setEditOpen(true)}
               >
-                <Pencil className="h-3.5 w-3.5" />
-                Edit Profile
+                <Pencil className="h-3.5 w-3.5 shrink-0" />
+                <span className="truncate">Edit Profile</span>
               </Button>
             </div>
           </div>
 
-          <div className="space-y-2">
-            <div className="flex items-center gap-3 flex-wrap">
-              <h1 className="text-2xl font-bold tracking-tight">
+          <div className="space-y-3 sm:space-y-2">
+            <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
+              <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">
                 {user?.name}
               </h1>
               {user?.memberId && (
@@ -254,24 +254,24 @@ export default function ProfileView({user}) {
 
       {/* Admin Panel Link */}
       {isAdmin && (
-        <Card className="shadow-sm border-destructive/20 bg-destructive/5">
-          <CardContent className="pt-5 pb-5 flex items-center justify-between">
+        <Card className="shadow-sm border-destructive/20 bg-destructive/5 mt-4">
+          <CardContent className="pt-5 pb-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-destructive/10">
+              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-destructive/10 shrink-0">
                 <ShieldCheck className="h-4 w-4 text-destructive" />
               </div>
               <div>
                 <p className="text-sm font-medium">Admin Panel</p>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-xs text-muted-foreground line-clamp-1">
                   Manage lab members and content
                 </p>
               </div>
             </div>
-            <Link href="/admin">
+            <Link href="/admin" className="w-full sm:w-auto">
               <Button
                 size="sm"
                 variant="outline"
-                className="border-destructive/20 text-destructive hover:bg-destructive/10"
+                className="w-full sm:w-auto border-destructive/20 text-destructive hover:bg-destructive/10"
               >
                 Open Panel
               </Button>
