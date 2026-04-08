@@ -26,7 +26,7 @@ export default function AdminView({stats, recentUsers = []}) {
       <div className="space-y-1">
         <h1 className="text-3xl font-bold tracking-tight">Admin Dashboard</h1>
         <p className="text-sm text-muted-foreground">
-          Welcome to the control center for your AI/ML Research Lab.
+          Welcome to the control center for your ML & AI Research Lab.
         </p>
       </div>
 

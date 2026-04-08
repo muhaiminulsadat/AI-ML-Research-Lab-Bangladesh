@@ -2,8 +2,9 @@ import {getPublications} from "@/actions/publication.action";
 import ResearchView from "./_components/ResearchView";
 
 export const metadata = {
-  title: "Research & Publications | AI/ML Lab",
-  description: "Explore the ongoing projects and published papers from our AI/ML Lab.",
+  title: "Research & Publications | ML & AI Lab",
+  description:
+    "Explore the ongoing projects and published papers from our ML & AI Lab.",
 };
 
 export default async function ResearchPage() {

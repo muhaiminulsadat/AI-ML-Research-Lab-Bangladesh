@@ -82,7 +82,7 @@ export default function AppSidebar({user, isCollapsed, onToggleCollapse}) {
           </div>
           {!isCollapsed && (
             <span className="font-bold text-lg tracking-tight whitespace-nowrap">
-              AI/ML Lab
+              ML & AI Lab
             </span>
           )}
         </Link>

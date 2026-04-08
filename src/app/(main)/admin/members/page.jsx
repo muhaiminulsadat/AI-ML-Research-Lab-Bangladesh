@@ -4,7 +4,7 @@ import {adminGetAllUsers} from "@/actions/user.action";
 import AdminMembersView from "./_components/AdminMembersView";
 
 export const metadata = {
-  title: "Admin - Manage Members | AI/ML Lab",
+  title: "Admin - Manage Members | ML & AI Lab",
 };
 
 export default async function AdminMembersPage() {

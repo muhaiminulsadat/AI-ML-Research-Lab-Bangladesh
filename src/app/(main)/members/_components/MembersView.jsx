@@ -70,8 +70,8 @@ export default function MembersView({members}) {
               <span className="text-foreground/80 ml-1.5">directory</span>
             </h1>
             <p className="text-sm sm:text-base text-muted-foreground max-w-xl">
-              Browse advisors, core panel, and members contributing to the AI/ML
-              Lab, with quick filters for roles and research focus.
+              Browse advisors, core panel, and members contributing to the ML &
+              AI Lab, with quick filters for roles and research focus.
             </p>
           </div>
         </div>

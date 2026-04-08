@@ -52,7 +52,7 @@ export const administration = [
   },
   {
     designation: "HR Secretary",
-    name: "Tirtho Saha Torun",
+    name: " Torun Kumar Saha Tirtho",
     institution: "Brac University (BracU)",
     department: "Computer Science and Engineering (CSE)",
     email: "tirtho.saha007@gmail.com",

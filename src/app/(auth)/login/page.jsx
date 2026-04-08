@@ -59,7 +59,7 @@ export default function LoginPage() {
           </div>
           <CardTitle className="text-2xl text-center">Welcome back</CardTitle>
           <CardDescription className="text-center">
-            Sign in to your ML/AI Research Lab account
+            Sign in to your ML & AI Research Lab account
           </CardDescription>
         </CardHeader>
         <CardContent>

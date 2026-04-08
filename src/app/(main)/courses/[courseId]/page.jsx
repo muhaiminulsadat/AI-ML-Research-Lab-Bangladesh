@@ -9,7 +9,7 @@ export async function generateMetadata({params}) {
   const res = await getCourseById(courseId, false);
 
   if (!res.success) return {title: "Course Not Found"};
-  return {title: `${res.data.title} | AI/ML Lab`};
+  return {title: `${res.data.title} | ML & AI Lab`};
 }
 
 export default async function CourseDetailPage({params}) {

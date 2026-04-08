@@ -4,7 +4,7 @@ import {getPublications} from "@/actions/publication.action";
 import PublicationEditor from "./_components/PublicationEditor";
 
 export const metadata = {
-  title: "Admin - Publications | AI/ML Lab",
+  title: "Admin - Publications | ML & AI Lab",
 };
 
 export default async function AdminPublicationsPage() {
