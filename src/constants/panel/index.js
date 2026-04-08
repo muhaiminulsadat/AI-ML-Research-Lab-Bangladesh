@@ -1,16 +1,13 @@
-export const panelMembers = [
-  // Directors
+export const directors = [
   {
-    division: "Directors",
     designation: "Director",
     name: "Nirob Devnath",
     institution: "",
     department: "",
     email: "",
-    url: "https://drive.google.com/thumbnail?id=1BQtAhYb1jaZg594TVgPbMU0LcTdB4hDw&sz=w800",
+    url: "https://drive.google.com/uc?export=view&id=1BQtAhYb1jaZg594TVgPbMU0LcTdB4hDw",
   },
   {
-    division: "Directors",
     designation: "Co-Director",
     name: "Apurbo Kumar",
     institution: "",
@@ -19,7 +16,6 @@ export const panelMembers = [
     url: null,
   },
   {
-    division: "Directors",
     designation: "Co-Director",
     name: "Nafi Naib Mon",
     institution: "",
@@ -27,45 +23,42 @@ export const panelMembers = [
     email: "",
     url: null,
   },
-  // Administration Division
+];
+
+export const administration = [
   {
-    division: "Administration",
     designation: "Treasurer",
     name: "Mahi Tasnim",
     institution: "Rajshahi University of Engineering and Technology (RUET)",
     department: "Architecture (Arch.)",
     email: "mahit9012@gmail.com",
-    url: "https://drive.google.com/thumbnail?id=1QI0Lu5ggkRzZokaKZdwvJQoxheIQQmST&sz=w800",
+    url: "https://drive.google.com/uc?export=view&id=1QI0Lu5ggkRzZokaKZdwvJQoxheIQQmST",
   },
   {
-    division: "Administration",
     designation: "Accounts & Finance Secretary",
     name: "Arafat Yeasmin Oyshi",
     institution: "Chittagong University",
     department: "B.B.A in Accounting",
     email: "yeasminoyshil8@gmail.com",
-    url: "https://drive.google.com/thumbnail?id=1Q4I8_ymZOGW9-FYMptVXXR5TOrraHBwm&sz=w800",
+    url: "https://drive.google.com/uc?export=view&id=1Q4I8_ymZOGW9-FYMptVXXR5TOrraHBwm",
   },
   {
-    division: "Administration",
     designation: "Office Secretary",
     name: "Rudro Mohonto Jit",
     institution: "Rajshahi University of Engineering and Technology (RUET)",
     department: "Electrical and Electronic Engineering (EEE)",
     email: "rmjit01@gmail.com",
-    url: "https://drive.google.com/thumbnail?id=1FDNFbeYxpzHixmavrZJy82HtuvsF9Nt3&sz=w800",
+    url: "https://drive.google.com/uc?export=view&id=1FDNFbeYxpzHixmavrZJy82HtuvsF9Nt3",
   },
   {
-    division: "Administration",
     designation: "HR Secretary",
     name: "Tirtho Saha Torun",
     institution: "Brac University (BracU)",
     department: "Computer Science and Engineering (CSE)",
     email: "tirtho.saha007@gmail.com",
-    url: "https://drive.google.com/thumbnail?id=1go9sKblPeMqPaS_wwmGqpwsSJTXrhWBR&sz=w800",
+    url: "https://drive.google.com/uc?export=view&id=1go9sKblPeMqPaS_wwmGqpwsSJTXrhWBR",
   },
   {
-    division: "Administration",
     designation: "Assistant HR Secretary",
     name: "Diponna Roy",
     institution: "University Of Rajshahi",
@@ -74,7 +67,6 @@ export const panelMembers = [
     url: null,
   },
   {
-    division: "Administration",
     designation: "IR Secretary",
     name: "Abdullah Al Tahmid",
     institution: "Islamic University of Technology (IUT)",
@@ -83,7 +75,6 @@ export const panelMembers = [
     url: null,
   },
   {
-    division: "Administration",
     designation: "IR Secretary (Assistant)",
     name: "Shreyoshi Mohanta",
     institution: "North South University (NSU)",
@@ -92,7 +83,6 @@ export const panelMembers = [
     url: null,
   },
   {
-    division: "Administration",
     designation: "IR Secretary (Assistant)",
     name: "Borsha Sarkar",
     institution: "Varendra University",
@@ -101,89 +91,81 @@ export const panelMembers = [
     url: null,
   },
   {
-    division: "Administration",
     designation: "Event Management Secretary",
     name: "Md. Taufiq Biswas",
     institution: "Hajee Mohammad Danesh Science & Technology University (HSTU)",
     department: "Electronics and Communication Engineering (ECE)",
     email: "taufiq.a2002@gmail.com",
-    url: "https://drive.google.com/thumbnail?id=1MTGpKMsZrfBuvWo0UEeiv8Qxne8hOuP2&sz=w800",
+    url: "https://drive.google.com/uc?export=view&id=1MTGpKMsZrfBuvWo0UEeiv8Qxne8hOuP2",
   },
   {
-    division: "Administration",
     designation: "Event Management Secretary (Assistant)",
     name: "Mohammad Tafim Akondo",
     institution: "North South University (NSU)",
     department: "Electrical and Electronic Engineering (EEE)",
     email: "tafimmoula2324@gmail.com",
-    url: "https://drive.google.com/thumbnail?id=103bb4u8F6BpCwTSqxDThlfotNvtxHmTH&sz=w800",
+    url: null,
   },
   {
-    division: "Administration",
     designation: "Event Management Secretary (Assistant)",
     name: "Anik Kumar Ray",
     institution: "University of Dhaka (DU)",
     department: "Department of Statistics",
     email: "anikray050@gmail.com",
-    url: "https://drive.google.com/thumbnail?id=1NDqDI4snIHzjpMVsptU34hnZ_M7nIHo5&sz=w800",
+    url: "https://drive.google.com/uc?export=view&id=1NDqDI4snIHzjpMVsptU34hnZ_M7nIHo5",
   },
   {
-    division: "Administration",
     designation: "Organizing Secretary",
     name: "Majedul Hoque",
     institution: "University of Frontier Technology, Bangladesh (UFTB)",
     department: "Data Science and Engineering",
     email: "hoquemazed007@gmail.com",
-    url: "https://drive.google.com/thumbnail?id=1OXH827xYgQgGKAycqkYaQiRFVju4bOZc&sz=w800",
+    url: "https://drive.google.com/uc?export=view&id=1OXH827xYgQgGKAycqkYaQiRFVju4bOZc",
   },
-  // Research Division (Core)
+];
+
+export const research = [
   {
-    division: "Research",
     designation: "Research Secretary (Admin)",
     name: "Samyo Pramanik",
     institution: "Bangladesh University of Engineering and Technology (BUET)",
     department: "Computer Science and Engineering (CSE)",
     email: "samyopramanik2003@gmail.com",
-    url: "https://drive.google.com/thumbnail?id=1N1bmCMhPLfJd-zTxt1iz2gRYNjFifKTn&sz=w800",
+    url: "https://drive.google.com/uc?export=view&id=1N1bmCMhPLfJd-zTxt1iz2gRYNjFifKTn",
   },
   {
-    division: "Research",
     designation: "Research Secretary (Coordination)",
     name: "Prachya Biswas",
     institution: "Brac University (BracU)",
     department: "Computer Science and Engineering (CSE)",
     email: "prachya.biswas@g.bracu.ac.bd",
-    url: "https://drive.google.com/thumbnail?id=1cdrzhe-8m_es9_jB9FS6PkuIxGOg2yha&sz=w800",
+    url: "https://drive.google.com/uc?export=view&id=1cdrzhe-8m_es9_jB9FS6PkuIxGOg2yha",
   },
   {
-    division: "Research",
     designation: "Research Secretary (Documentation)",
     name: "Atiqur Rahman Atik",
     institution: "Bangladesh University of Engineering and Technology (BUET)",
     department: "Computer Science and Engineering (CSE)",
     email: "rahmanatikofc@gmail.com",
-    url: "https://drive.google.com/thumbnail?id=1dPOFLrQ08gNCnjvcTo9VNknCuHraNqJ5&sz=w800",
+    url: "https://drive.google.com/uc?export=view&id=1dPOFLrQ08gNCnjvcTo9VNknCuHraNqJ5",
   },
   {
-    division: "Research",
     designation: "Research Assistant",
     name: "Himel Sarker Turjo",
     institution: "Bangladesh University of Engineering and Technology (BUET)",
     department: "Urban and Regional Planning",
     email: "turjo2215027@gmail.com",
-    url: "https://drive.google.com/thumbnail?id=16Vd7N7fbMkl9vrx3VhOTMRdZ_Z96OavB&sz=w800",
+    url: "https://drive.google.com/uc?export=view&id=16Vd7N7fbMkl9vrx3VhOTMRdZ_Z96OavB",
   },
   {
-    division: "Research",
     designation: "Research Assistant",
     name: "Rajoy Nath",
     institution: "Chittagong University of Engineering and Technology (CUET)",
     department: "Mechatronics and Industrial Engineering",
     email: "rjnathanik@gmail.com",
-    url: "https://drive.google.com/thumbnail?id=1Qs7PYbd9UxG_rgIo2-uCWjw_YLMqtS72&sz=w800",
+    url: "https://drive.google.com/uc?export=view&id=1Qs7PYbd9UxG_rgIo2-uCWjw_YLMqtS72",
   },
   {
-    division: "Research",
     designation: "Research Assistant",
     name: "MD Shahed Ahammod",
     institution: "University of Frontier Technology, Bangladesh (UFTB)",
@@ -192,7 +174,6 @@ export const panelMembers = [
     url: null,
   },
   {
-    division: "Research",
     designation: "Research Assistant",
     name: "Sarafat Islam Tonoy",
     institution: "Dhaka University (DU)",
@@ -200,9 +181,10 @@ export const panelMembers = [
     email: "sarafatislamtonoy@gmail.com",
     url: null,
   },
-  // ICT Division
+];
+
+export const ict = [
   {
-    division: "ICT",
     designation: "ICT Director",
     name: "Muhaiminul Sadat",
     institution: "Bangladesh University of Engineering and Technology (BUET)",
@@ -211,35 +193,33 @@ export const panelMembers = [
     url: null,
   },
   {
-    division: "ICT",
     designation: "Designer (ICT Division)",
     name: "Shourob Biswas",
     institution: "Daffodil International University (DIU)",
     department: "Software Engineering",
     email: "shourob623483@gmail.com",
-    url: "https://drive.google.com/thumbnail?id=1xO_oINxM5zazIlCXerqzm_-AutCn41G_&sz=w800",
+    url: "https://drive.google.com/uc?export=view&id=1xO_oINxM5zazIlCXerqzm_-AutCn41G_",
   },
   {
-    division: "ICT",
     designation: "Co-Designer (ICT Division)",
     name: "Md. Ashfik Sadman",
     institution: "Chittagong University of Engineering and Technology (CUET)",
     department: "Civil Engineering (CE)",
     email: "ashfiksadman2006@gmail.com",
-    url: "https://drive.google.com/thumbnail?id=1ZDS_l4wOd_6Yh6vkvdNDd40RStJ3bJ33&sz=w800",
+    url: "https://drive.google.com/uc?export=view&id=1ZDS_l4wOd_6Yh6vkvdNDd40RStJ3bJ33",
   },
   {
-    division: "ICT",
     designation: "Co-Designer (ICT Division)",
     name: "Mithun Kumar Roy",
     institution: "Hajee Mohammad Danesh Science and Technology University (HSTU)",
     department: "Electronics and Communication Engineering",
     email: "mkrmithun23@gmail.com",
-    url: "https://drive.google.com/thumbnail?id=1ipCL7vS-oNLLBHnA7hJHbGpCyngcSU6p&sz=w800",
+    url: "https://drive.google.com/uc?export=view&id=1ipCL7vS-oNLLBHnA7hJHbGpCyngcSU6p",
   },
-  // Law Division
+];
+
+export const law = [
   {
-    division: "Law",
     designation: "Legal Secretary",
     name: "Al-Hadi Leon",
     institution: "Chittagong University",
@@ -248,7 +228,6 @@ export const panelMembers = [
     url: null,
   },
   {
-    division: "Law",
     designation: "Legal Researcher",
     name: "Ahonaf Shahriar Nadim",
     institution: "Chittagong University",
@@ -257,7 +236,6 @@ export const panelMembers = [
     url: null,
   },
   {
-    division: "Law",
     designation: "Legal Co-Ordinator",
     name: "Tanveer Hridoy",
     institution: "Chittagong University",
@@ -266,7 +244,6 @@ export const panelMembers = [
     url: null,
   },
   {
-    division: "Law",
     designation: "Assistant Legal Co-Ordinator",
     name: "Jahidul Islam Babu",
     institution: "Chittagong University",
@@ -274,9 +251,10 @@ export const panelMembers = [
     email: "mdjahidulislambabu2005@gmail.com",
     url: null,
   },
-  // Executive Member
+];
+
+export const executives = [
   {
-    division: "Executive",
     designation: "Executive Member",
     name: "Asaduzzaman Riem",
     institution: "Chittagong University",
@@ -285,7 +263,6 @@ export const panelMembers = [
     url: null,
   },
   {
-    division: "Executive",
     designation: "Executive Member",
     name: "Ruhul Amin Maruf",
     institution: "Hajee Mohammad Danesh Science and Technology University (HSTU)",
@@ -294,7 +271,6 @@ export const panelMembers = [
     url: null,
   },
   {
-    division: "Executive",
     designation: "Executive Member",
     name: "Arpon Adhikary",
     institution: "Chittagong University",
@@ -303,16 +279,14 @@ export const panelMembers = [
     url: null,
   },
   {
-    division: "Executive",
     designation: "Executive Member",
     name: "Farhan Labib Ahan",
     institution: "Dhaka university",
     department: "Computer Science & Engineering(CSE)",
     email: "farhanlabibahan@gmail.com",
-    url: "https://drive.google.com/thumbnail?id=1oMdJnLpMymvUTn7GiiKxGt-Ie5oWrlxn&sz=w800",
+    url: "https://drive.google.com/uc?export=view&id=1oMdJnLpMymvUTn7GiiKxGt-Ie5oWrlxn",
   },
   {
-    division: "Executive",
     designation: "Executive Member",
     name: "Chaion Das",
     institution: "Hajee Mohammad Danesh Science and Technology University (HSTU)",
@@ -321,7 +295,6 @@ export const panelMembers = [
     url: null,
   },
   {
-    division: "Executive",
     designation: "Executive Member",
     name: "Tahsin T. Talha",
     institution: "Hajee Mohammad Danesh Science and Technology University (HSTU)",
@@ -330,7 +303,6 @@ export const panelMembers = [
     url: null,
   },
   {
-    division: "Executive",
     designation: "Executive Member",
     name: "Niaz Nafis Shuvo",
     institution: "Brac University (BracU)",
@@ -339,5 +311,14 @@ export const panelMembers = [
     url: null,
   },
 ];
+
+const panelMembers = {
+  directors,
+  administration,
+  research,
+  ict,
+  law,
+  executives,
+};
 
 export default panelMembers;
