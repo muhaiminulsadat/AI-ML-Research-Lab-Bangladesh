@@ -191,7 +191,7 @@ export const ict = [
     institution: "Bangladesh University of Engineering and Technology (BUET)",
     department: "Civil Engineering (CE)",
     email: "muhaiminulsadat@gmail.com",
-    url: null,
+    url: "https://avatars.githubusercontent.com/u/227270611?v=4",
   },
   {
     designation: "Designer (ICT Division)",
