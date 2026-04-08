@@ -76,7 +76,7 @@ export const administration = [
   },
   {
     designation: "IR Secretary (Assistant)",
-    name: "Shreyoshi Mohanta",
+    name: "Shreyosi Mohanta",
     institution: "North South University (NSU)",
     department: "Computer Science and Engineering (CSE)",
     email: "shreyosi.mohanta2312@gmail.com",
@@ -211,7 +211,8 @@ export const ict = [
   {
     designation: "Co-Designer (ICT Division)",
     name: "Mithun Kumar Roy",
-    institution: "Hajee Mohammad Danesh Science and Technology University (HSTU)",
+    institution:
+      "Hajee Mohammad Danesh Science and Technology University (HSTU)",
     department: "Electronics and Communication Engineering",
     email: "mkrmithun23@gmail.com",
     url: "https://drive.google.com/uc?export=view&id=1ipCL7vS-oNLLBHnA7hJHbGpCyngcSU6p",
@@ -265,7 +266,8 @@ export const executives = [
   {
     designation: "Executive Member",
     name: "Ruhul Amin Maruf",
-    institution: "Hajee Mohammad Danesh Science and Technology University (HSTU)",
+    institution:
+      "Hajee Mohammad Danesh Science and Technology University (HSTU)",
     department: "Electronics and Communication Engineering (ECE)",
     email: "ruhulamin43416@gmail.com",
     url: null,
@@ -289,7 +291,8 @@ export const executives = [
   {
     designation: "Executive Member",
     name: "Chaion Das",
-    institution: "Hajee Mohammad Danesh Science and Technology University (HSTU)",
+    institution:
+      "Hajee Mohammad Danesh Science and Technology University (HSTU)",
     department: "Electronics and Communication Engineering (ECE)",
     email: "chayand063@gmail.com",
     url: null,
@@ -297,7 +300,8 @@ export const executives = [
   {
     designation: "Executive Member",
     name: "Tahsin T. Talha",
-    institution: "Hajee Mohammad Danesh Science and Technology University (HSTU)",
+    institution:
+      "Hajee Mohammad Danesh Science and Technology University (HSTU)",
     department: "Electronics and Communication Engineering (ECE)",
     email: "tahsinttalha@gmail.com",
     url: null,
