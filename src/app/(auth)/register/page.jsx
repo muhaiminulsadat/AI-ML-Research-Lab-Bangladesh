@@ -49,7 +49,6 @@ export default function RegisterPage() {
     setFormData((prev) => ({...prev, [name]: value}));
   };
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     const {name, email, password, university} = formData;
@@ -79,7 +78,7 @@ export default function RegisterPage() {
             Create an account
           </CardTitle>
           <CardDescription className="text-center">
-            Join the ML/AI Research Lab community
+            Join the ML & AI Research Lab community
           </CardDescription>
         </CardHeader>
         <CardContent>

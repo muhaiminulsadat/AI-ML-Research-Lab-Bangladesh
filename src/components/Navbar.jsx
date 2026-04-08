@@ -332,7 +332,9 @@ export default function Navbar({isMobileOnly = false}) {
                       <FlaskConical className="h-4 w-4 text-primary-foreground" />
                     </div>
                     <div className="flex flex-col leading-none">
-                      <span className="text-sm font-bold">ML/AI Research</span>
+                      <span className="text-sm font-bold">
+                        ML & AI Research
+                      </span>
                       <span className="text-[10px] text-muted-foreground tracking-widest uppercase">
                         Lab · Bangladesh
                       </span>

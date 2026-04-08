@@ -20,7 +20,7 @@ export default function Footer() {
               </div>
               <div className="flex flex-col leading-none">
                 <span className="text-base font-bold tracking-tight text-white/90">
-                  ML/AI Research
+                  ML & AI Research
                 </span>
                 <span className="text-[10px] text-white/40 tracking-[0.2em] uppercase mt-1">
                   Lab · Bangladesh
@@ -124,7 +124,7 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="mt-16 pt-8 border-t border-white/5 flex flex-col-reverse sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
           <span className="text-[12px] text-white/40">
-            © {new Date().getFullYear()} ML/AI Research Lab Bangladesh. All
+            © {new Date().getFullYear()} ML & AI Research Lab Bangladesh. All
             rights reserved.
           </span>
           <span className="text-[12px] text-white/40 font-mono tracking-widest uppercase">

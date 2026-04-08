@@ -14,7 +14,7 @@ const DIVISION_CONFIG = [
     key: "research",
     label: "Research",
     icon: "🔬",
-    description: "ML/AI research, publications & project execution",
+    description: "ML & AI research, publications & project execution",
   },
   {
     key: "ict",
