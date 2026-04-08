@@ -2,50 +2,59 @@
 
 import {useState} from "react";
 import {motion} from "framer-motion";
+import Image from "next/image";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
+import panelMembers from "@/constants/panel";
 
 const departmentsData = {
-  admin: {
-    id: "admin",
+  directors: {
+    id: "directors",
+    label: "Directors",
+    description:
+      "Visionary leaders guiding the lab's strategic direction and overarching mission.",
+    members: panelMembers.directors || [],
+  },
+  administration: {
+    id: "administration",
     label: "Administration",
     description:
-      "Responsible for overall governance, strategy, policy formulation, and nationwide coordination.",
-    members: [
-      {name: "Nirob Devnath", role: "Director", dept: "CU"},
-      {name: "Apurbo Kumar", role: "Co-Director", dept: "BUET"},
-      {name: "Nafi Naib Mon", role: "Co-Director", dept: "CU"},
-    ],
+      "Governance, strategy, policy formulation, and nationwide coordination.",
+    members: panelMembers.administration || [],
   },
   research: {
     id: "research",
-    label: "Research (Core)",
+    label: "Research",
     description:
       "Dedicated to conducting ML & AI research, project execution, and driving global academic publications.",
-    members: [{name: "Samyo Pramanik", role: "Research Head", dept: "BUET"}],
+    members: panelMembers.research || [],
   },
   ict: {
     id: "ict",
     label: "ICT",
     description:
       "Manages technical support, software and web development, and digital infrastructure.",
-    members: [
-      {name: "Muhaiminul Islam Sadat", role: "ICT Secretary", dept: "BUET"},
-    ],
+    members: panelMembers.ict || [],
   },
   law: {
     id: "law",
     label: "Law",
     description:
       "Handles legal advisory, compliance, policy documentation, and partnership agreements.",
-    members: [{name: "Sadat", role: "Legal Advisor", dept: "BUET"}],
+    members: panelMembers.law || [],
+  },
+  executives: {
+    id: "executives",
+    label: "Executives",
+    description: "Cross-functional leaders supporting daily lab operations.",
+    members: panelMembers.executives || [],
   },
 };
 
 export default function DepartmentsSection() {
-  const [activeTab, setActiveTab] = useState("admin");
+  const [activeTab, setActiveTab] = useState("directors");
 
   return (
-    <section className="relative py-24 bg-[#090A0F] overflow-hidden">
+    <section className="relative rounded-2xl py-24 bg-[#090A0F] overflow-hidden">
       <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-[120px] pointer-events-none" />
 
       <div className="container mx-auto px-6 relative z-10 w-full max-w-6xl">
@@ -104,25 +113,41 @@ export default function DepartmentsSection() {
                           className="group relative p-6 rounded-2xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] hover:border-white/10 transition-all duration-300"
                         >
                           <div className="flex items-center gap-4">
-                            <Avatar className="h-14 w-14 border border-white/10">
-                              <AvatarImage
-                                src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${member.name}`}
-                                alt={member.name}
-                              />
-                              <AvatarFallback className="bg-primary/20 text-primary">
-                                {member.name.slice(0, 2).toUpperCase()}
-                              </AvatarFallback>
-                            </Avatar>
-                            <div>
-                              <h4 className="text-lg font-semibold text-white group-hover:text-primary transition-colors">
+                            {member.url ? (
+                              <div className="relative h-14 w-14 rounded-full overflow-hidden shrink-0 border border-white/10">
+                                <Image
+                                  src={member.url}
+                                  alt={member.name}
+                                  fill
+                                  sizes="64px"
+                                  className="object-cover"
+                                />
+                              </div>
+                            ) : (
+                              <Avatar className="h-14 w-14 border border-white/10 shrink-0">
+                                <AvatarImage
+                                  src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${member.name}`}
+                                  alt={member.name}
+                                />
+                                <AvatarFallback className="bg-primary/20 text-primary font-bold">
+                                  {member.name.slice(0, 2).toUpperCase()}
+                                </AvatarFallback>
+                              </Avatar>
+                            )}
+                            <div className="min-w-0">
+                              <h4 className="text-lg font-semibold text-white group-hover:text-primary transition-colors truncate">
                                 {member.name}
                               </h4>
-                              <p className="text-sm text-primary/80 font-medium">
-                                {member.role}
+                              <p className="text-sm text-primary/80 font-medium truncate">
+                                {member.designation}
                               </p>
-                              <p className="text-xs text-zinc-500 mt-1">
-                                {member.dept}
-                              </p>
+                              {(member.institution || member.department) && (
+                                <p className="text-xs text-zinc-500 mt-1 truncate">
+                                  {member.department
+                                    ? `${member.department}, ${member.institution}`
+                                    : member.institution}
+                                </p>
+                              )}
                             </div>
                           </div>
                         </div>
