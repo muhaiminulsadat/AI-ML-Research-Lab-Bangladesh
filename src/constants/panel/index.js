@@ -104,7 +104,7 @@ export const administration = [
     institution: "North South University (NSU)",
     department: "Electrical and Electronic Engineering (EEE)",
     email: "tafimmoula2324@gmail.com",
-    url: null,
+    url: "https://drive.google.com/thumbnail?id=103bb4u8F6BpCwTSqxDThlfotNvtxHmTH&sz=w800",
   },
   {
     designation: "Event Management Secretary (Assistant)",
@@ -179,7 +179,8 @@ export const research = [
     institution: "Dhaka University (DU)",
     department: "Applied Statistics and Data Science (ASDS)",
     email: "sarafatislamtonoy@gmail.com",
-    url: null,
+    url: "https://drive.google.com/thumbnail?id=1heoWICIaQiyt3ewc4Qv_mCUqV9thNEyy&sz=w800",
+    // url: "/api/proxy-image?id=",
   },
 ];
 
@@ -226,7 +227,7 @@ export const law = [
     institution: "Chittagong University",
     department: "Law",
     email: "ahlalhadi@gmail.com",
-    url: null,
+    url: "https://drive.google.com/thumbnail?id=1l11dzzH4y0udptP8-Eu1xIn2Na9m4Nin&sz=w800",
   },
   {
     designation: "Legal Researcher",
@@ -234,7 +235,7 @@ export const law = [
     institution: "Chittagong University",
     department: "Law",
     email: "ahonaf.nadim1@gmail.com",
-    url: null,
+    url: "https://drive.google.com/thumbnail?id=1QL0Eqp9XfDdzYL1SE-gt3YlU256sBAAK&sz=w800",
   },
   {
     designation: "Legal Co-Ordinator",
@@ -242,7 +243,7 @@ export const law = [
     institution: "Chittagong University",
     department: "Law",
     email: "hstanvir@gmail.com",
-    url: null,
+    url: "https://drive.google.com/thumbnail?id=1dL3GAZZLtcMMu8SigIfO1n8C858umSX7&sz=w800",
   },
   {
     designation: "Assistant Legal Co-Ordinator",
@@ -261,7 +262,7 @@ export const executives = [
     institution: "Chittagong University",
     department: "Electrical & Elctronic Engineering(EEE)",
     email: "azriem2000@gmail.com",
-    url: null,
+    url: "https://drive.google.com/thumbnail?id=1bcgPO-DcfyqsksdNyKMkzw2WIYeBNOcu&sz=w800",
   },
   {
     designation: "Executive Member",

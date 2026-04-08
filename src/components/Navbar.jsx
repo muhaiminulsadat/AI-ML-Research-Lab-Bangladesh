@@ -1,6 +1,7 @@
 "use client";
 import {useState} from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {usePathname} from "next/navigation";
 import {
   Menu,
@@ -142,14 +143,20 @@ export default function Navbar({isMobileOnly = false}) {
             href="/"
             className="flex items-center gap-2.5 shrink-0 cursor-pointer"
           >
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
-              <FlaskConical className="h-4 w-4 text-primary-foreground" />
+            <div className="relative flex h-10 w-10 items-center justify-center rounded-lg bg-primary overflow-hidden">
+              <Image
+                src="/logo.png"
+                alt="ML & AI Research Lab Logo"
+                fill
+                className="object-contain brightness-0 scale-[1.15]"
+                priority
+              />
             </div>
             <div className="flex flex-col leading-none">
-              <span className="text-sm font-bold tracking-tight">
+              <span className="text-[15px] font-bold tracking-tight text-foreground">
                 ML & AI Research
               </span>
-              <span className="text-[10px] text-muted-foreground tracking-widest uppercase">
+              <span className="text-[10px] text-muted-foreground tracking-widest uppercase mt-0.5">
                 Lab · Bangladesh
               </span>
             </div>
@@ -328,14 +335,19 @@ export default function Navbar({isMobileOnly = false}) {
               <SheetContent side="right" className="w-72 flex flex-col p-0">
                 <SheetHeader className="px-5 py-4 border-b shrink-0">
                   <SheetTitle className="flex items-center gap-2.5">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary shrink-0">
-                      <FlaskConical className="h-4 w-4 text-primary-foreground" />
+                    <div className="relative flex h-10 w-10 items-center justify-center rounded-lg bg-primary shrink-0 overflow-hidden">
+                      <Image
+                        src="/logo.png"
+                        alt="ML & AI Research Lab Logo"
+                        fill
+                        className="object-contain brightness-0 scale-[1.15]"
+                      />
                     </div>
-                    <div className="flex flex-col leading-none">
-                      <span className="text-sm font-bold">
+                    <div className="flex flex-col leading-none text-left">
+                      <span className="text-[15px] font-bold">
                         ML & AI Research
                       </span>
-                      <span className="text-[10px] text-muted-foreground tracking-widest uppercase">
+                      <span className="text-[10px] text-muted-foreground tracking-widest uppercase mt-0.5">
                         Lab · Bangladesh
                       </span>
                     </div>
