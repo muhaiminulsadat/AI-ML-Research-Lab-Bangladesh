@@ -16,8 +16,9 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata = {
-  title: "AI/ML Lab | Research & Education",
-  description: "Advanced Platform for Machine Learning and AI Courses",
+  title: "ML & AI  Lab | Research & Education",
+  description:
+    "Advanced Platform for Machine Learning and AI Research and Education",
 };
 
 export default function RootLayout({children}) {
