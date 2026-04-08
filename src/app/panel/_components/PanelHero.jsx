@@ -102,7 +102,7 @@ export default function PanelHero({totalMembers}) {
         >
           {[
             {icon: Users, value: totalMembers, label: "Members"},
-            {icon: Layers, value: 6, label: "Divisions"},
+            {icon: Layers, value: 4, label: "Divisions"},
             {icon: CalendarCheck, value: "Oct '26", label: "Valid Until"},
           ].map(({icon: Icon, value, label}) => (
             <div
