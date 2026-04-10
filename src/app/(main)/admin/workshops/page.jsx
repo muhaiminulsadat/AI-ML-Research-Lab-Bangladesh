@@ -1,4 +1,4 @@
-import {getWorkshops, deleteWorkshop} from "@/actions/workshop.action";
+import {getWorkshops} from "@/actions/workshop.action";
 import {getCurrentUser} from "@/lib/auth";
 import {redirect} from "next/navigation";
 import {Button} from "@/components/ui/button";
@@ -14,6 +14,7 @@ import {
 import Link from "next/link";
 import {format} from "date-fns";
 import {Edit, Eye, Plus, Users} from "lucide-react";
+import DeleteWorkshopDialog from "./_components/DeleteWorkshopDialog";
 
 export default async function AdminWorkshopsPage() {
   const {user} = await getCurrentUser();
@@ -40,16 +41,28 @@ export default async function AdminWorkshopsPage() {
         </Button>
       </div>
 
-      <div className="bg-[#090A0F] border border-white/5 rounded-xl overflow-hidden shadow-sm">
+      <div className="bg-[#090A0F] border border-white/10 rounded-xl overflow-hidden shadow-2xl">
         <Table>
           <TableHeader>
-            <TableRow className="border-white/5 bg-muted/50 hover:bg-muted/50">
-              <TableHead>Workshop Title</TableHead>
-              <TableHead>Dates</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Registration</TableHead>
-              <TableHead>Seats</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
+            <TableRow className="border-white/10 bg-muted/30 hover:bg-muted/30">
+              <TableHead className="w-[300px] h-12 uppercase text-[10px] tracking-wider text-muted-foreground">
+                Workshop Title
+              </TableHead>
+              <TableHead className="h-12 uppercase text-[10px] tracking-wider text-muted-foreground text-center">
+                Dates
+              </TableHead>
+              <TableHead className="h-12 uppercase text-[10px] tracking-wider text-muted-foreground text-center">
+                Status
+              </TableHead>
+              <TableHead className="h-12 uppercase text-[10px] tracking-wider text-muted-foreground text-center">
+                Registration
+              </TableHead>
+              <TableHead className="h-12 uppercase text-[10px] tracking-wider text-muted-foreground text-center">
+                Seats
+              </TableHead>
+              <TableHead className="text-right pr-6 h-12 uppercase text-[10px] tracking-wider text-muted-foreground">
+                Actions
+              </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -64,49 +77,63 @@ export default async function AdminWorkshopsPage() {
               </TableRow>
             ) : (
               workshops.map((workshop) => (
-                <TableRow key={workshop._id} className="border-white/5">
-                  <TableCell className="font-medium">
-                    {workshop.title}
+                <TableRow
+                  key={workshop._id}
+                  className="border-white/5 hover:bg-white/[0.02] transition-colors group"
+                >
+                  <TableCell className="font-semibold text-foreground py-4">
+                    <span className="line-clamp-1">{workshop.title}</span>
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="py-4 text-center text-sm text-muted-foreground whitespace-nowrap">
                     {workshop.start_date
                       ? format(new Date(workshop.start_date), "MMM d, yyyy")
                       : "TBD"}
                   </TableCell>
-                  <TableCell>
-                    <Badge variant="outline" className="capitalize">
+                  <TableCell className="py-4 text-center">
+                    <Badge
+                      variant="outline"
+                      className={`capitalize px-2.5 py-0.5 text-[11px] font-medium tracking-wide ${
+                        workshop.status === "upcoming"
+                          ? "bg-blue-500/10 text-blue-400 border-blue-500/20"
+                          : workshop.status === "past"
+                            ? "bg-zinc-500/10 text-zinc-400 border-zinc-500/20"
+                            : "bg-primary/10 text-primary border-primary/20"
+                      }`}
+                    >
                       {workshop.status}
                     </Badge>
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="py-4 text-center">
                     <Badge
-                      variant={
-                        workshop.registration_open ? "default" : "secondary"
-                      }
-                      className={
+                      variant="outline"
+                      className={`capitalize px-2.5 py-0.5 text-[11px] font-medium tracking-wide ${
                         workshop.registration_open
-                          ? "bg-green-600/20 text-green-500 hover:bg-green-600/30"
-                          : ""
-                      }
+                          ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/30"
+                          : "bg-red-500/10 text-red-400 border-red-500/30"
+                      }`}
                     >
                       {workshop.registration_open ? "Open" : "Closed"}
                     </Badge>
                   </TableCell>
-                  <TableCell>
-                    {workshop.seats_filled || 0} / {workshop.seats_total || "∞"}
+                  <TableCell className="py-4 text-center font-mono text-xs text-muted-foreground">
+                    <span className="text-foreground font-semibold">
+                      {workshop.seats_filled || 0}
+                    </span>{" "}
+                    / {workshop.seats_total || "∞"}
                   </TableCell>
-                  <TableCell className="text-right">
-                    <div className="flex justify-end gap-2">
+                  <TableCell className="text-right pr-4 py-4">
+                    <div className="flex justify-end gap-1.5 opacity-80 group-hover:opacity-100 transition-opacity">
                       <Button
                         variant="ghost"
                         size="icon"
                         title="View/Edit Participants"
                         asChild
+                        className="h-8 w-8 rounded-full hover:bg-blue-500/10 hover:text-blue-400 cursor-pointer"
                       >
                         <Link
                           href={`/admin/workshops/${workshop._id}/participants`}
                         >
-                          <Users className="w-4 h-4 text-blue-400" />
+                          <Users className="w-4 h-4" />
                           <span className="sr-only">Participants</span>
                         </Link>
                       </Button>
@@ -115,9 +142,10 @@ export default async function AdminWorkshopsPage() {
                         size="icon"
                         title="Edit Workshop"
                         asChild
+                        className="h-8 w-8 rounded-full hover:bg-amber-500/10 hover:text-amber-400 cursor-pointer"
                       >
                         <Link href={`/admin/workshops/${workshop._id}/edit`}>
-                          <Edit className="w-4 h-4 text-amber-400" />
+                          <Edit className="w-4 h-4 text-amber-500/70" />
                           <span className="sr-only">Edit</span>
                         </Link>
                       </Button>
@@ -126,6 +154,7 @@ export default async function AdminWorkshopsPage() {
                         size="icon"
                         title="View Public Page"
                         asChild
+                        className="h-8 w-8 rounded-full hover:bg-white/10 hover:text-white cursor-pointer"
                       >
                         <Link
                           href={`/workshops/${workshop.slug}`}
@@ -135,6 +164,10 @@ export default async function AdminWorkshopsPage() {
                           <span className="sr-only">View</span>
                         </Link>
                       </Button>
+                      <DeleteWorkshopDialog
+                        workshopId={workshop._id}
+                        workshopTitle={workshop.title}
+                      />
                     </div>
                   </TableCell>
                 </TableRow>
