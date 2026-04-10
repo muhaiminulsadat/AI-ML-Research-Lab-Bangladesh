@@ -299,6 +299,7 @@ export default function WorkshopForm({initialData = null, isEdit = false}) {
                 type="date"
                 value={formData.start_date}
                 onChange={handleChange}
+                className="[&::-webkit-calendar-picker-indicator]:dark:invert"
               />
             </div>
             <div className="space-y-2">
@@ -309,6 +310,7 @@ export default function WorkshopForm({initialData = null, isEdit = false}) {
                 type="date"
                 value={formData.end_date}
                 onChange={handleChange}
+                className="[&::-webkit-calendar-picker-indicator]:dark:invert"
               />
             </div>
             <div className="space-y-2">
@@ -321,6 +323,7 @@ export default function WorkshopForm({initialData = null, isEdit = false}) {
                 type="date"
                 value={formData.registration_deadline}
                 onChange={handleChange}
+                className="[&::-webkit-calendar-picker-indicator]:dark:invert"
               />
             </div>
             <div className="space-y-2">
@@ -333,6 +336,7 @@ export default function WorkshopForm({initialData = null, isEdit = false}) {
                 type="date"
                 value={formData.speaker_deadline}
                 onChange={handleChange}
+                className="[&::-webkit-calendar-picker-indicator]:dark:invert"
               />
             </div>
           </div>

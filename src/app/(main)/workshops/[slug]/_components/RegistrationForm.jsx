@@ -160,7 +160,7 @@ export default function RegistrationForm({workshop, user}) {
         {step === 1 && (
           <div className="space-y-4 animate-in fade-in slide-in-from-bottom-2 duration-300">
             {!user && (
-              <div className="bg-primary/10 text-primary-foreground/80 p-3 rounded-lg text-sm border border-primary/20 mb-4 flex justify-between items-center">
+              <div className="bg-primary/10 text-white p-3 rounded-lg text-sm border border-primary/20 mb-4 flex justify-between items-center">
                 <span>Already a member?</span>
                 <Link
                   href="/login"

@@ -137,6 +137,10 @@
   html {
     @apply font-sans;
   }
+
+  .dark input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1) brightness(0.9);
+  }
 }
 
 @layer utilities {
