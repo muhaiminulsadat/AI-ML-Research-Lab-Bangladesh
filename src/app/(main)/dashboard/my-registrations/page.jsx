@@ -6,7 +6,16 @@ import {getCurrentUser} from "@/lib/auth";
 import {redirect} from "next/navigation";
 import {Badge} from "@/components/ui/badge";
 import {format} from "date-fns";
-import {Calendar, MapPin} from "lucide-react";
+import {
+  CalendarDays,
+  MapPin,
+  Mic,
+  ArrowRight,
+  PartyPopper,
+  Clock,
+  BadgeAlert,
+  Sparkles,
+} from "lucide-react";
 import Link from "next/link";
 import {Button} from "@/components/ui/button";
 
@@ -35,112 +44,162 @@ export default async function MyRegistrationsPage() {
           </Button>
         </div>
       ) : (
-        <div className="grid gap-6">
-          {registrations.map((reg) => (
-            <div
-              key={reg._id}
-              className="relative overflow-hidden bg-[#090A0F] border border-white/5 rounded-xl p-6 shadow-sm hover:border-white/20 transition-colors"
-            >
-              <div className="flex flex-col md:flex-row justify-between gap-6">
-                <div className="flex-1 space-y-4">
-                  <div>
-                    <div className="flex flex-wrap items-center gap-2 mb-2">
-                      <Badge variant="outline" className="capitalize">
-                        {reg.participation_type}
+        <div className="grid gap-8">
+          {registrations.map((reg) => {
+            const isSpeakerAccepted =
+              reg.participation_type === "speaker" &&
+              reg.speaker_status === "accepted";
+
+            return (
+              <div
+                key={reg._id}
+                className="relative overflow-hidden bg-[#090A0F] border border-white/5 hover:border-white/10 rounded-2xl p-6 shadow-xl transition-all group"
+              >
+                {isSpeakerAccepted && (
+                  <div className="absolute inset-0 bg-primary/[0.03] blur-3xl pointer-events-none" />
+                )}
+
+                <div className="relative flex flex-col md:flex-row justify-between gap-8 md:gap-12 items-start md:items-center">
+                  <div className="flex-1 space-y-5">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <Badge
+                        variant="secondary"
+                        className="capitalize text-[10px] tracking-wider px-2 py-0.5 bg-muted text-muted-foreground border-white/5"
+                      >
+                        {reg.participation_type === "speaker" ? (
+                          <div className="flex items-center gap-1.5">
+                            <Mic className="w-3 h-3" /> Speaker
+                          </div>
+                        ) : (
+                          "Participant"
+                        )}
                       </Badge>
                       <Badge
-                        className={
+                        variant="outline"
+                        className={`capitalize text-[10px] tracking-wider px-2 py-0.5 ${
                           reg.status === "approved"
-                            ? "bg-green-600/20 text-green-500 border-green-600/20"
+                            ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20"
                             : reg.status === "rejected"
-                              ? "bg-red-600/20 text-red-500 border-red-600/20"
-                              : "bg-amber-600/20 text-amber-500 border-amber-600/20"
-                        }
+                              ? "bg-red-500/10 text-red-500 border-red-500/20"
+                              : "bg-amber-500/10 text-amber-500 border-amber-500/20"
+                        }`}
                       >
                         {reg.status}
                       </Badge>
                       {reg.participation_type === "speaker" &&
                         reg.speaker_status && (
                           <Badge
-                            className={
-                              reg.speaker_status === "accepted"
-                                ? "bg-purple-600/20 text-purple-500 border-purple-600/20"
+                            variant="outline"
+                            className={`capitalize text-[10px] tracking-wider px-2 py-0.5 ${
+                              isSpeakerAccepted
+                                ? "bg-primary/10 text-primary border-primary/20 shadow-[0_0_15px_rgba(var(--primary),0.15)]"
                                 : reg.speaker_status === "rejected"
-                                  ? "bg-red-600/20 text-red-500 border-red-600/20"
-                                  : "bg-amber-600/20 text-amber-500 border-amber-600/20"
-                            }
+                                  ? "bg-red-500/10 text-red-500 border-red-500/20"
+                                  : "bg-amber-500/10 text-amber-500 border-amber-500/20"
+                            }`}
                           >
-                            Speaker: {reg.speaker_status}
+                            Talk: {reg.speaker_status}
                           </Badge>
                         )}
                     </div>
+
                     <Link
                       href={`/workshops/${reg.workshop_id?.slug}`}
-                      className="hover:underline underline-offset-4"
+                      className="block group-hover:pl-1 transition-all duration-300"
                     >
-                      <h3 className="text-xl font-bold text-foreground">
+                      <h3 className="text-2xl font-bold tracking-tight text-foreground/90 group-hover:text-primary transition-colors line-clamp-2">
                         {reg.workshop_id?.title || "Workshop unavailable"}
                       </h3>
                     </Link>
-                  </div>
 
-                  <div className="flex flex-col gap-2 text-sm text-muted-foreground">
-                    <div className="flex items-center gap-2">
-                      <Calendar className="w-4 h-4 text-primary" />
-                      <span>
-                        {reg.workshop_id?.start_date
-                          ? format(
-                              new Date(reg.workshop_id.start_date),
-                              "MMM d, yyyy",
-                            )
-                          : "TBD"}
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <MapPin className="w-4 h-4 text-primary" />
-                      <span>{reg.workshop_id?.venue || "TBD"}</span>
-                    </div>
-                  </div>
-
-                  {reg.participation_type === "speaker" &&
-                    reg.speaker_details?.presentation_title && (
-                      <div className="bg-muted/30 p-3 rounded-lg border border-white/5 space-y-1">
-                        <p className="text-xs text-muted-foreground uppercase tracking-wider font-semibold">
-                          Your Talk
-                        </p>
-                        <p className="font-medium text-sm text-foreground">
-                          {reg.speaker_details.presentation_title}
-                        </p>
+                    <div className="flex flex-wrap items-center gap-x-6 gap-y-3 text-sm text-muted-foreground font-medium">
+                      <div className="flex items-center gap-2">
+                        <div className="p-1.5 rounded-md bg-white/[0.03] border border-white/5">
+                          <CalendarDays className="w-4 h-4 text-primary" />
+                        </div>
+                        <span>
+                          {reg.workshop_id?.start_date
+                            ? format(
+                                new Date(reg.workshop_id.start_date),
+                                "MMM d, yyyy",
+                              )
+                            : "TBD"}
+                        </span>
                       </div>
-                    )}
-                </div>
+                      <div className="flex items-center gap-2">
+                        <div className="p-1.5 rounded-md bg-white/[0.03] border border-white/5">
+                          <MapPin className="w-4 h-4 text-primary" />
+                        </div>
+                        <span>{reg.workshop_id?.venue || "TBD"}</span>
+                      </div>
+                    </div>
 
-                <div className="flex flex-col sm:flex-row justify-end gap-3 min-w-[140px] mt-4 md:mt-0">
-                  {reg.status === "pending" && (
-                    <form
-                      action={async () => {
-                        "use server";
-                        await cancelRegistration(reg._id);
-                      }}
+                    {reg.participation_type === "speaker" &&
+                      reg.speaker_details?.presentation_title && (
+                        <div className="mt-4 relative">
+                          <div className="bg-[#111218] p-4 rounded-xl border border-white/5">
+                            <p className="text-[10px] text-muted-foreground uppercase tracking-widest font-bold mb-1.5 flex items-center gap-2">
+                              Your Proposed Talk
+                            </p>
+                            <p className="font-semibold text-sm text-foreground/90 leading-relaxed">
+                              {reg.speaker_details.presentation_title}
+                            </p>
+                          </div>
+
+                          {/* Success Message Banner for Speakers */}
+                          {isSpeakerAccepted && (
+                            <div className="mt-3 bg-primary/[0.03] border border-primary/20 p-3 rounded-xl flex gap-3 items-start animate-in fade-in slide-in-from-bottom-2 duration-700">
+                              <div className="bg-primary/10 p-1.5 rounded-lg shrink-0">
+                                <PartyPopper className="w-5 h-5 text-primary" />
+                              </div>
+                              <div className="space-y-0.5">
+                                <h4 className="text-xs font-bold text-primary uppercase tracking-wider">
+                                  Congratulations!
+                                </h4>
+                                <p className="text-xs text-foreground/70">
+                                  Your talk proposal has been officially
+                                  selected for this workshop. We look forward to
+                                  your incredible session!
+                                </p>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      )}
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row md:flex-col justify-end gap-3 w-full md:w-auto shrink-0 md:min-w-[160px]">
+                    <Button
+                      variant="default"
+                      className="w-full text-xs font-bold rounded-lg h-10 group/btn"
+                      asChild
                     >
-                      <Button variant="destructive" className="w-full">
-                        Cancel Registration
-                      </Button>
-                    </form>
-                  )}
-                  <Button
-                    variant="outline"
-                    className="w-full sm:w-auto"
-                    asChild
-                  >
-                    <Link href={`/workshops/${reg.workshop_id?.slug}`}>
-                      View Workshop
-                    </Link>
-                  </Button>
+                      <Link href={`/workshops/${reg.workshop_id?.slug}`}>
+                        Go to Workshop
+                        <ArrowRight className="w-3.5 h-3.5 ml-2 opacity-50 group-hover/btn:opacity-100 group-hover/btn:translate-x-1 transition-all" />
+                      </Link>
+                    </Button>
+
+                    {reg.status === "pending" && (
+                      <form
+                        action={async () => {
+                          "use server";
+                          await cancelRegistration(reg._id);
+                        }}
+                      >
+                        <Button
+                          variant="ghost"
+                          className="w-full text-xs font-medium text-muted-foreground hover:text-red-400 hover:bg-red-500/10 h-10 rounded-lg"
+                        >
+                          Cancel Request
+                        </Button>
+                      </form>
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>

@@ -7,6 +7,7 @@ import {getCurrentUser} from "@/lib/auth";
 import {format} from "date-fns";
 import {Calendar, MapPin, Users, Info} from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import RegistrationForm from "./_components/RegistrationForm";
 import {notFound} from "next/navigation";
 
@@ -141,8 +142,14 @@ export default async function WorkshopDetailPage({params}) {
                   You are already registered
                 </h3>
                 <p className="text-muted-foreground text-sm">
-                  We look forward to seeing you at the workshop. Check your
-                  dashboard for more details.
+                  We look forward to seeing you at the workshop. Check{" "}
+                  <Link
+                    href="/dashboard/my-registrations"
+                    className="text-primary hover:underline font-medium"
+                  >
+                    My Registrations
+                  </Link>{" "}
+                  for more details.
                 </p>
               </div>
             ) : !workshop.registration_open ? (

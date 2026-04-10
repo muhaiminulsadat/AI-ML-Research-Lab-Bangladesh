@@ -1,135 +1,150 @@
 import Link from "next/link";
-import {
-  FlaskConical,
-  // GitBranch,
-  // Twitter,
-  Mail,
-  ExternalLink,
-} from "lucide-react";
+import {FlaskConical} from "lucide-react";
 
 export default function Footer() {
   return (
-    <footer className="border-t border-border/30 bg-[#040405]">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 sm:py-20">
-        <div className="grid grid-cols-2 md:grid-cols-12 gap-x-8 gap-y-12">
-          {/* Brand - Takes full width on mobile, 4 cols on desktop */}
-          <div className="col-span-2 md:col-span-5 space-y-6">
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary shrink-0">
-                <FlaskConical className="h-5 w-5 text-primary-foreground" />
+    <footer className="relative border-t border-white/[0.08] bg-[#050508] overflow-hidden">
+      {/* Decorative top glow */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-4/5 h-[1px] bg-gradient-to-r from-transparent via-primary/50 to-transparent opacity-50" />
+
+      <div className="mx-auto max-w-7xl px-6 lg:px-8 py-12 md:py-16">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 lg:gap-8">
+          {/* Brand Column */}
+          <div className="md:col-span-4 lg:col-span-5 flex flex-col items-center md:items-start">
+            <Link href="/" className="flex items-center gap-3 group mb-6">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20 group-hover:border-primary/40 group-hover:shadow-[0_0_20px_rgba(var(--primary),0.15)] transition-all duration-500 shrink-0">
+                <FlaskConical className="h-5 w-5 text-primary group-hover:scale-110 transition-transform duration-500" />
               </div>
               <div className="flex flex-col leading-none">
-                <span className="text-base font-bold tracking-tight text-white/90">
-                  ML & AI Research
+                <span className="text-base font-extrabold tracking-tight text-white/90 group-hover:text-white transition-colors">
+                  ML & AI Research Lab
                 </span>
-                <span className="text-[10px] text-white/40 tracking-[0.2em] uppercase mt-1">
-                  Lab · Bangladesh
+                <span className="text-[10px] text-muted-foreground font-semibold tracking-[0.25em] text-primary/70 uppercase mt-1.5">
+                  Bangladesh
                 </span>
               </div>
+            </Link>
+            <p className="text-sm text-muted-foreground text-center md:text-left max-w-xs leading-relaxed mb-6 font-medium">
+              Advancing the boundaries of artificial intelligence and machine
+              learning through innovative research and collaborative education.
+            </p>
+            <div className="flex gap-4">
+              <a
+                href="#"
+                className="h-9 w-9 rounded-full bg-white/[0.03] border border-white/10 flex items-center justify-center text-muted-foreground hover:bg-primary/10 hover:text-primary hover:border-primary/30 transition-all duration-300 shadow-sm"
+                aria-label="Facebook"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+                </svg>
+              </a>
+              <a
+                href="#"
+                className="h-9 w-9 rounded-full bg-white/[0.03] border border-white/10 flex items-center justify-center text-muted-foreground hover:bg-primary/10 hover:text-primary hover:border-primary/30 transition-all duration-300 shadow-sm"
+                aria-label="LinkedIn"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+                  <rect width="4" height="12" x="2" y="9" />
+                  <circle cx="4" cy="4" r="2" />
+                </svg>
+              </a>
             </div>
-            <p className="text-sm text-white/50 leading-relaxed max-w-sm">
-              Uniting researchers and students across Bangladesh to advance AI &
-              ML research and build a stronger, collaborative research culture.
-            </p>
           </div>
 
-          {/* Platform */}
-          <div className="col-span-1 md:col-span-2 space-y-4">
-            <p className="text-xs font-bold uppercase tracking-widest text-white/80">
-              Platform
-            </p>
-            <ul className="space-y-3">
-              {[
-                {href: "/members", label: "Members"},
-                {href: "/dashboard", label: "Dashboard"},
-                {href: "/research", label: "Research"},
-                {href: "/about", label: "About Us"},
-              ].map((link) => (
-                <li key={link.href}>
+          {/* Links Columns */}
+          <div className="md:col-span-8 lg:col-span-7 grid grid-cols-2 sm:grid-cols-3 gap-8 text-center sm:text-left">
+            <div className="flex flex-col gap-4">
+              <h4 className="text-sm font-bold text-foreground">Explore</h4>
+              <nav className="flex flex-col gap-3">
+                {[
+                  {href: "/research", label: "Research"},
+                  {href: "/publications", label: "Publications"},
+                  {href: "/courses", label: "Courses & Workshops"},
+                ].map((link) => (
                   <Link
+                    key={link.href}
                     href={link.href}
-                    className="text-[13px] text-white/50 hover:text-white transition-colors"
+                    className="text-[13px] text-muted-foreground hover:text-primary transition-colors font-medium relative w-fit group sm:mx-0 mx-auto"
                   >
-                    {link.label}
+                    <span>{link.label}</span>
+                    <span className="absolute -bottom-1 left-0 w-0 h-[1.5px] bg-primary transition-all duration-300 group-hover:w-full" />
                   </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+                ))}
+              </nav>
+            </div>
 
-          {/* Account */}
-          <div className="col-span-1 md:col-span-2 space-y-4">
-            <p className="text-xs font-bold uppercase tracking-widest text-white/80">
-              Account
-            </p>
-            <ul className="space-y-3">
-              {[
-                {href: "/login", label: "Sign In"},
-                {href: "/register", label: "Sign Up"},
-                {href: "/profile", label: "Profile"},
-              ].map((link) => (
-                <li key={link.href}>
+            <div className="flex flex-col gap-4">
+              <h4 className="text-sm font-bold text-foreground">
+                Organization
+              </h4>
+              <nav className="flex flex-col gap-3">
+                {[
+                  {href: "/about", label: "About Us"},
+                  {href: "/members", label: "Our Team"},
+                  {href: "/careers", label: "Careers"},
+                ].map((link) => (
                   <Link
+                    key={link.href}
                     href={link.href}
-                    className="text-[13px] text-white/50 hover:text-white transition-colors"
+                    className="text-[13px] text-muted-foreground hover:text-primary transition-colors font-medium relative w-fit group sm:mx-0 mx-auto"
                   >
-                    {link.label}
+                    <span>{link.label}</span>
+                    <span className="absolute -bottom-1 left-0 w-0 h-[1.5px] bg-primary transition-all duration-300 group-hover:w-full" />
                   </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+                ))}
+              </nav>
+            </div>
 
-          {/* Connect */}
-          <div className="col-span-2 md:col-span-3 space-y-4">
-            <p className="text-xs font-bold uppercase tracking-widest text-white/80">
-              Connect
-            </p>
-            <ul className="space-y-3">
-              <li>
-                <Link
-                  href="https://github.com/yourlab"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-1.5 text-[13px] text-white/50 hover:text-white transition-colors group w-fit"
+            <div className="flex flex-col gap-4 col-span-2 sm:col-span-1">
+              <h4 className="text-sm font-bold text-foreground">Connect</h4>
+              <nav className="flex flex-col gap-3">
+                <a
+                  href="mailto:contact@aimllab.bd"
+                  className="text-[13px] text-muted-foreground hover:text-primary transition-colors font-medium relative w-fit group sm:mx-0 mx-auto"
                 >
-                  GitHub
-                  <ExternalLink className="h-3 w-3 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="https://twitter.com/yourlab"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-1.5 text-[13px] text-white/50 hover:text-white transition-colors group w-fit"
-                >
-                  Twitter
-                  <ExternalLink className="h-3 w-3 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="mailto:info@researchlab.com"
-                  className="flex items-center gap-2 text-[13px] text-white/50 hover:text-white transition-colors w-fit"
-                >
-                  <Mail className="h-3.5 w-3.5" />
-                  info@researchlab.com
-                </Link>
-              </li>
-            </ul>
+                  <span>contact@aimllab.bd</span>
+                  <span className="absolute -bottom-1 left-0 w-0 h-[1.5px] bg-primary transition-all duration-300 group-hover:w-full" />
+                </a>
+              </nav>
+            </div>
           </div>
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-16 pt-8 border-t border-white/5 flex flex-col-reverse sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
-          <span className="text-[12px] text-white/40">
-            © {new Date().getFullYear()} ML & AI Research Lab Bangladesh. All
+        <div className="mt-12 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p className="text-xs text-muted-foreground font-medium">
+            &copy; {new Date().getFullYear()} ML & AI Research Lab BD. All
             rights reserved.
-          </span>
-          <span className="text-[12px] text-white/40 font-mono tracking-widest uppercase">
-            Built for the future
-          </span>
+          </p>
+          <div className="flex gap-6 text-xs text-muted-foreground font-medium">
+            <Link href="#" className="hover:text-primary transition-colors">
+              Privacy Policy
+            </Link>
+            <Link href="#" className="hover:text-primary transition-colors">
+              Terms of Service
+            </Link>
+          </div>
         </div>
       </div>
     </footer>
