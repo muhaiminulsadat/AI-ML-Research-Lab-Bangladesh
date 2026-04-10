@@ -25,17 +25,22 @@ export default async function WorkshopParticipantsPage({params}) {
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-6xl">
-      <div className="flex items-center gap-4 mb-8">
-        <Button variant="outline" size="icon" asChild>
+      <div className="flex items-start sm:items-center gap-4 mb-8">
+        <Button
+          variant="outline"
+          size="icon"
+          asChild
+          className="shrink-0 mt-1 sm:mt-0"
+        >
           <Link href="/admin/workshops">
             <ArrowLeft className="w-4 h-4" />
           </Link>
         </Button>
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">
             Workshop Registrations
           </h1>
-          <p className="text-muted-foreground mt-1">
+          <p className="text-muted-foreground mt-1 text-sm sm:text-base line-clamp-2">
             Manage participants and speakers for "{workshop.title}"
           </p>
         </div>

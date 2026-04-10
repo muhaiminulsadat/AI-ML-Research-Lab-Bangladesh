@@ -64,7 +64,7 @@ export default async function WorkshopsPage({searchParams}) {
                 </div>
               )}
               <CardHeader>
-                <div className="flex justify-between items-start mb-2 gap-2">
+                <div className="flex flex-wrap justify-between items-start mb-2 gap-2">
                   <Badge variant="outline" className="capitalize">
                     {workshop.status}
                   </Badge>

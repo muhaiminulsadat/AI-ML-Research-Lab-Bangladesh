@@ -44,7 +44,7 @@ export default async function MyRegistrationsPage() {
               <div className="flex flex-col md:flex-row justify-between gap-6">
                 <div className="flex-1 space-y-4">
                   <div>
-                    <div className="flex items-center gap-3 mb-2">
+                    <div className="flex flex-wrap items-center gap-2 mb-2">
                       <Badge variant="outline" className="capitalize">
                         {reg.participation_type}
                       </Badge>
@@ -115,7 +115,7 @@ export default async function MyRegistrationsPage() {
                     )}
                 </div>
 
-                <div className="flex flex-col justify-end gap-3 min-w-[140px]">
+                <div className="flex flex-col sm:flex-row justify-end gap-3 min-w-[140px] mt-4 md:mt-0">
                   {reg.status === "pending" && (
                     <form
                       action={async () => {
@@ -128,7 +128,11 @@ export default async function MyRegistrationsPage() {
                       </Button>
                     </form>
                   )}
-                  <Button variant="outline" className="w-full" asChild>
+                  <Button
+                    variant="outline"
+                    className="w-full sm:w-auto"
+                    asChild
+                  >
                     <Link href={`/workshops/${reg.workshop_id?.slug}`}>
                       View Workshop
                     </Link>

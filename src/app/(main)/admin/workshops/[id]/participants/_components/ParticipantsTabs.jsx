@@ -95,22 +95,28 @@ export default function ParticipantsTabs({registrations}) {
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <div className="flex gap-2 bg-muted p-1 rounded-lg">
+        <div className="flex gap-2 bg-muted p-1 rounded-lg w-full sm:w-auto overflow-x-auto">
           <Button
             variant={tab === "participants" ? "default" : "ghost"}
             onClick={() => setTab("participants")}
+            className="flex-1 sm:flex-none whitespace-nowrap"
           >
             Participants ({participants.length})
           </Button>
           <Button
             variant={tab === "speakers" ? "default" : "ghost"}
             onClick={() => setTab("speakers")}
+            className="flex-1 sm:flex-none whitespace-nowrap"
           >
             Speakers ({speakers.length})
           </Button>
         </div>
 
-        <Button variant="outline" onClick={downloadCSV}>
+        <Button
+          variant="outline"
+          onClick={downloadCSV}
+          className="w-full sm:w-auto"
+        >
           <FileText className="w-4 h-4 mr-2" />
           Export CSV
         </Button>

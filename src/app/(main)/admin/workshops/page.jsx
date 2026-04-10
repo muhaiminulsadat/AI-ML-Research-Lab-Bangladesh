@@ -23,7 +23,7 @@ export default async function AdminWorkshopsPage() {
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-6xl">
-      <div className="flex justify-between items-center mb-8">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">
             Manage Workshops
@@ -32,7 +32,7 @@ export default async function AdminWorkshopsPage() {
             Create, edit, and monitor your workshops and attendees.
           </p>
         </div>
-        <Button asChild>
+        <Button asChild className="w-full md:w-auto">
           <Link href="/admin/workshops/new">
             <Plus className="w-4 h-4 mr-2" />
             Create Workshop

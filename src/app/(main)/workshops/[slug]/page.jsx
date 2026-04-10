@@ -42,7 +42,7 @@ export default async function WorkshopDetailPage({params}) {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2 space-y-6">
           <div>
-            <div className="flex items-center gap-3 mb-4">
+            <div className="flex flex-wrap items-center gap-2 mb-4">
               <Badge
                 variant="outline"
                 className="capitalize text-primary border-primary/50"

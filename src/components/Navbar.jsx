@@ -14,6 +14,9 @@ import {
   Users,
   ClipboardList,
   BookOpen,
+  GraduationCap,
+  Calendar,
+  FileText,
 } from "lucide-react";
 import {Button} from "@/components/ui/button";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
@@ -46,6 +49,36 @@ const publicLinks = [
   {href: "/about", label: "About us"},
 ];
 
+const getAppLinks = (role) => {
+  const baseLinks = [
+    {href: "/dashboard", label: "Dashboard", icon: LayoutDashboard},
+    {
+      href: "/dashboard/my-registrations",
+      label: "My Registrations",
+      icon: ClipboardList,
+    },
+    {href: "/courses", label: "Courses", icon: BookOpen},
+    {href: "/research", label: "Research", icon: FileText},
+    {href: "/members", label: "Members", icon: Users},
+  ];
+
+  if (role === "admin") {
+    baseLinks.push(
+      {href: "/admin", label: "Admin Panel", icon: ShieldCheck},
+      {href: "/admin/members", label: "Manage Members", icon: Users},
+      {href: "/admin/courses", label: "Manage Courses", icon: GraduationCap},
+      {href: "/admin/workshops", label: "Manage Workshops", icon: Calendar},
+      {
+        href: "/admin/publications",
+        label: "Manage Publications",
+        icon: FileText,
+      },
+    );
+  }
+
+  return baseLinks;
+};
+
 const roleBadgeConfig = {
   member: {
     label: "Member",
@@ -65,9 +98,15 @@ const roleBadgeConfig = {
   },
 };
 
-function NavLink({href, label, onClick, mobile = false}) {
+function NavLink({href, label, icon: Icon, onClick, mobile = false}) {
   const pathname = usePathname();
-  const isActive = pathname === href;
+  // Exact match for root or specific paths, and startsWith match (with slash) for nested
+  const isActive =
+    href === "/"
+      ? pathname === "/"
+      : href === "/admin"
+        ? pathname === "/admin"
+        : pathname === href || pathname.startsWith(`${href}/`);
 
   if (mobile) {
     return (
@@ -81,12 +120,21 @@ function NavLink({href, label, onClick, mobile = false}) {
             : "text-muted-foreground hover:text-foreground hover:bg-muted",
         )}
       >
-        <span
-          className={cn(
-            "h-1.5 w-1.5 rounded-full shrink-0 transition-colors",
-            isActive ? "bg-primary" : "bg-border",
-          )}
-        />
+        {Icon ? (
+          <Icon
+            className={cn(
+              "h-4 w-4 shrink-0",
+              isActive ? "text-primary" : "text-muted-foreground",
+            )}
+          />
+        ) : (
+          <span
+            className={cn(
+              "h-1.5 w-1.5 rounded-full shrink-0 transition-colors",
+              isActive ? "bg-primary" : "bg-border",
+            )}
+          />
+        )}
         {label}
       </Link>
     );
@@ -118,6 +166,7 @@ export default function Navbar({isMobileOnly = false}) {
   const userRole = user?.role ?? "member";
   const roleConfig = roleBadgeConfig[userRole] ?? roleBadgeConfig.member;
 
+  const appLinks = getAppLinks(userRole);
   const allLinks = [...publicLinks];
 
   const userInitials = user?.name
@@ -355,15 +404,36 @@ export default function Navbar({isMobileOnly = false}) {
                 </SheetHeader>
 
                 {/* Nav Links */}
-                <div className="flex-1 px-3 py-3 space-y-0.5 overflow-y-auto">
-                  {allLinks.map((link) => (
-                    <NavLink
-                      key={link.href}
-                      {...link}
-                      mobile
-                      onClick={() => setMobileMenuOpen(false)}
-                    />
-                  ))}
+                <div className="flex-1 px-3 py-3 space-y-6 overflow-y-auto custom-scrollbar">
+                  {isAuthenticated && (
+                    <div className="space-y-1">
+                      <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2 px-2">
+                        Dashboard Navigation
+                      </div>
+                      {appLinks.map((link) => (
+                        <NavLink
+                          key={link.href + "-app"}
+                          {...link}
+                          mobile
+                          onClick={() => setMobileMenuOpen(false)}
+                        />
+                      ))}
+                    </div>
+                  )}
+
+                  <div className="space-y-1">
+                    <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2 px-2">
+                      Public Site
+                    </div>
+                    {allLinks.map((link) => (
+                      <NavLink
+                        key={link.href}
+                        {...link}
+                        mobile
+                        onClick={() => setMobileMenuOpen(false)}
+                      />
+                    ))}
+                  </div>
                 </div>
 
                 {/* Footer */}
@@ -395,7 +465,7 @@ export default function Navbar({isMobileOnly = false}) {
                           {roleConfig.label}
                         </Badge>
                       </div>
-                      <div className="grid grid-cols-2 gap-2">
+                      <div className="grid grid-cols-2 gap-2 mt-3">
                         <Link
                           href="/profile"
                           onClick={() => setMobileMenuOpen(false)}
@@ -422,21 +492,6 @@ export default function Navbar({isMobileOnly = false}) {
                           Log out
                         </Button>
                       </div>
-                      {userRole === "admin" && (
-                        <Link
-                          href="/admin"
-                          onClick={() => setMobileMenuOpen(false)}
-                        >
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="w-full gap-1.5 text-destructive border-destructive/30 hover:bg-destructive/5 cursor-pointer"
-                          >
-                            <ShieldCheck className="h-3.5 w-3.5" />
-                            Admin Panel
-                          </Button>
-                        </Link>
-                      )}
                     </div>
                   ) : (
                     <div className="flex flex-col gap-2">
