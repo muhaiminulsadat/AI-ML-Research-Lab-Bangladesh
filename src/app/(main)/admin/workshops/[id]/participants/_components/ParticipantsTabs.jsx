@@ -17,15 +17,23 @@ import {
 } from "@/actions/workshop.action";
 import {format} from "date-fns";
 import {toast} from "sonner";
-import {Check, X, FileText, ExternalLink} from "lucide-react";
+import {
+  Check,
+  X,
+  FileText,
+  ExternalLink,
+  MoreVertical,
+  MoreHorizontal,
+} from "lucide-react";
 import Link from "next/link";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import {useRouter} from "next/navigation";
 
 export default function ParticipantsTabs({registrations}) {
@@ -219,7 +227,7 @@ export default function ParticipantsTabs({registrations}) {
                 <TableHead>Topic & type</TableHead>
                 <TableHead>Reg. Status</TableHead>
                 <TableHead>Speaker Status</TableHead>
-                <TableHead className="text-right w-32">Actions</TableHead>
+                <TableHead className="text-right w-24">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -289,51 +297,73 @@ export default function ParticipantsTabs({registrations}) {
                       </Badge>
                     </TableCell>
                     <TableCell className="text-right">
-                      <div className="flex flex-col gap-2">
-                        <Select
-                          value={s.status}
-                          onValueChange={(val) =>
-                            handleUpdateStatus(s._id, val, "registration")
-                          }
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            className="h-8 w-8 p-0 border border-white/5 bg-muted/20 hover:bg-muted/50 rounded-full"
+                          >
+                            <span className="sr-only">Open menu</span>
+                            <MoreHorizontal className="h-4 w-4 text-muted-foreground" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent
+                          align="end"
+                          className="w-52 bg-[#090A0F] border-white/10 rounded-xl p-2 shadow-2xl"
                         >
-                          <SelectTrigger className="h-8 text-xs">
-                            <SelectValue placeholder="Reg Status" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="pending">
-                              Reg: Pending
-                            </SelectItem>
-                            <SelectItem value="approved">
-                              Reg: Approve
-                            </SelectItem>
-                            <SelectItem value="rejected">
-                              Reg: Reject
-                            </SelectItem>
-                          </SelectContent>
-                        </Select>
-
-                        <Select
-                          value={s.speaker_status || "pending"}
-                          onValueChange={(val) =>
-                            handleUpdateStatus(s._id, val, "speaker")
-                          }
-                        >
-                          <SelectTrigger className="h-8 text-xs">
-                            <SelectValue placeholder="Talk Status" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="pending">
-                              Talk: Pending
-                            </SelectItem>
-                            <SelectItem value="accepted">
-                              Talk: Accept
-                            </SelectItem>
-                            <SelectItem value="rejected">
-                              Talk: Reject
-                            </SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
+                          <DropdownMenuLabel className="text-muted-foreground text-xs uppercase tracking-wider font-semibold px-2">
+                            Registration
+                          </DropdownMenuLabel>
+                          <DropdownMenuItem
+                            onClick={() =>
+                              handleUpdateStatus(
+                                s._id,
+                                "approved",
+                                "registration",
+                              )
+                            }
+                            className="gap-2 cursor-pointer focus:bg-green-500/10 focus:text-green-500 rounded-lg"
+                          >
+                            <Check className="h-4 w-4" />
+                            Approve Registration
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
+                            onClick={() =>
+                              handleUpdateStatus(
+                                s._id,
+                                "rejected",
+                                "registration",
+                              )
+                            }
+                            className="gap-2 cursor-pointer focus:bg-red-500/10 focus:text-red-500 rounded-lg"
+                          >
+                            <X className="h-4 w-4" />
+                            Reject Registration
+                          </DropdownMenuItem>
+                          <DropdownMenuSeparator className="bg-white/5 my-2" />
+                          <DropdownMenuLabel className="text-muted-foreground text-xs uppercase tracking-wider font-semibold px-2">
+                            Speaker Status
+                          </DropdownMenuLabel>
+                          <DropdownMenuItem
+                            onClick={() =>
+                              handleUpdateStatus(s._id, "accepted", "speaker")
+                            }
+                            className="gap-2 cursor-pointer focus:bg-purple-500/10 focus:text-purple-500 rounded-lg"
+                          >
+                            <Check className="h-4 w-4" />
+                            Accept Talk
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
+                            onClick={() =>
+                              handleUpdateStatus(s._id, "rejected", "speaker")
+                            }
+                            className="gap-2 cursor-pointer focus:bg-red-500/10 focus:text-red-500 rounded-lg"
+                          >
+                            <X className="h-4 w-4" />
+                            Reject Talk
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
                     </TableCell>
                   </TableRow>
                 ))
