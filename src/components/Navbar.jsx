@@ -40,7 +40,7 @@ const publicLinks = [
   {href: "/", label: "Home"},
   {href: "/panel", label: "Panel"},
   {href: "/research", label: "Research"},
-  {href: "/workshop", label: "Workshop"},
+  {href: "/workshops", label: "Workshops"},
   {href: "/courses", label: "Courses"},
   {href: "/contact", label: "Contact us"},
   {href: "/about", label: "About us"},

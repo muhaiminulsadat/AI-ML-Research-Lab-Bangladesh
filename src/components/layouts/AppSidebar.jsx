@@ -14,6 +14,8 @@ import {
   PanelLeft,
   GraduationCap,
   FileText,
+  ClipboardList,
+  Calendar,
 } from "lucide-react";
 import {cn} from "@/lib/utils";
 import {Button} from "@/components/ui/button";
@@ -23,6 +25,11 @@ import {useLogOut} from "@/hooks/useAuth";
 const getLinks = (role) => {
   const baseLinks = [
     {href: "/dashboard", label: "Dashboard", icon: LayoutDashboard},
+    {
+      href: "/dashboard/my-registrations",
+      label: "My Registrations",
+      icon: ClipboardList,
+    },
     {href: "/courses", label: "Courses", icon: BookOpen},
     {href: "/research", label: "Research", icon: FileText},
     {href: "/members", label: "Members", icon: Users},
@@ -33,6 +40,7 @@ const getLinks = (role) => {
       {href: "/admin", label: "Admin Panel", icon: ShieldCheck},
       {href: "/admin/members", label: "Manage Members", icon: Users},
       {href: "/admin/courses", label: "Manage Courses", icon: GraduationCap},
+      {href: "/admin/workshops", label: "Manage Workshops", icon: Calendar},
       {
         href: "/admin/publications",
         label: "Manage Publications",
