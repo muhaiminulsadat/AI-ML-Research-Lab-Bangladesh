@@ -20,6 +20,9 @@ const userSchema = new mongoose.Schema(
     university: {
       type: String,
     },
+    designation: {
+      type: String,
+    },
     bio: {
       type: String,
     },
@@ -58,7 +61,10 @@ userSchema.pre("save", async function (next) {
     try {
       const User = mongoose.models.User || mongoose.model("User", userSchema);
       // Find the user with the highest numeric part of ML-XXXX
-      const lastUser = await User.findOne({memberId: /^ML-\d{4}$/}, {memberId: 1})
+      const lastUser = await User.findOne(
+        {memberId: /^ML-\d{4}$/},
+        {memberId: 1},
+      )
         .sort({memberId: -1})
         .lean();
 
