@@ -186,8 +186,8 @@ const registrationSchema = z.object({
   participation_type: z.enum(["participant", "speaker"]),
   speaker_details: z
     .object({
-      presentation_title: z.string().min(3, "Title is required"),
-      abstract: z.string().min(10, "Abstract is required"),
+      presentation_title: z.string().min(1, "Title is required"),
+      abstract: z.string().min(1, "Abstract is required"),
       presentation_type: z.enum(["paper", "poster", "demo", "keynote"]),
       co_authors: z.string().optional(),
       file_url: z.string().optional(),
