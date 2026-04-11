@@ -63,38 +63,38 @@ export default async function WorkshopDetailPage({params}) {
                 </Badge>
               )}
             </div>
-            <h1 className="text-4xl font-bold tracking-tight text-foreground mb-4">
+            <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight text-foreground mb-4">
               {workshop.title}
             </h1>
-            <p className="text-xl text-muted-foreground">
+            <p className="text-base md:text-lg text-muted-foreground">
               {workshop.description}
             </p>
           </div>
 
           <div className="bg-[#090A0F] border border-white/5 p-6 rounded-xl space-y-4">
-            <h3 className="font-semibold text-lg border-b border-white/5 pb-2 mb-4">
+            <h3 className="font-semibold text-base border-b border-white/5 pb-2 mb-4">
               Key Information
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="flex items-center gap-3 text-muted-foreground">
-                <MapPin className="text-primary w-5 h-5 shrink-0" />
+                <MapPin className="text-primary w-4 h-4 shrink-0" />
                 <div>
-                  <p className="font-medium text-foreground">
+                  <p className="text-sm font-medium text-foreground">
                     {workshop.venue}
                   </p>
-                  <p className="text-sm">{workshop.university}</p>
+                  <p className="text-xs">{workshop.university}</p>
                 </div>
               </div>
               <div className="flex items-center gap-3 text-muted-foreground">
-                <Calendar className="text-primary w-5 h-5 shrink-0" />
+                <Calendar className="text-primary w-4 h-4 shrink-0" />
                 <div>
-                  <p className="font-medium text-foreground">
+                  <p className="text-sm font-medium text-foreground">
                     {workshop.start_date
                       ? format(new Date(workshop.start_date), "MMM d, yyyy")
                       : "Date TBD"}
                   </p>
                   {workshop.end_date && (
-                    <p className="text-sm">
+                    <p className="text-xs">
                       To {format(new Date(workshop.end_date), "MMM d, yyyy")}
                     </p>
                   )}
@@ -102,10 +102,12 @@ export default async function WorkshopDetailPage({params}) {
               </div>
               {workshop.seats_total && (
                 <div className="flex items-center gap-3 text-muted-foreground">
-                  <Users className="text-primary w-5 h-5 shrink-0" />
+                  <Users className="text-primary w-4 h-4 shrink-0" />
                   <div>
-                    <p className="font-medium text-foreground">Capacity</p>
-                    <p className="text-sm">
+                    <p className="text-sm font-medium text-foreground">
+                      Capacity
+                    </p>
+                    <p className="text-xs">
                       {workshop.seats_total - (workshop.seats_filled || 0)}{" "}
                       seats remaining of {workshop.seats_total}
                     </p>
@@ -114,10 +116,12 @@ export default async function WorkshopDetailPage({params}) {
               )}
               {workshop.registration_deadline && (
                 <div className="flex items-center gap-3 text-muted-foreground">
-                  <Info className="text-primary w-5 h-5 shrink-0" />
+                  <Info className="text-primary w-4 h-4 shrink-0" />
                   <div>
-                    <p className="font-medium text-foreground">Deadline</p>
-                    <p className="text-sm">
+                    <p className="text-sm font-medium text-foreground">
+                      Deadline
+                    </p>
+                    <p className="text-xs">
                       Register by{" "}
                       {format(
                         new Date(workshop.registration_deadline),
@@ -135,13 +139,13 @@ export default async function WorkshopDetailPage({params}) {
           <div className="bg-[#090A0F] border border-white/5 rounded-xl p-6 shadow-sm sticky top-24">
             {isRegistered ? (
               <div className="text-center py-6">
-                <div className="bg-green-500/10 text-green-500 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 border border-green-500/20">
-                  <Users className="w-8 h-8" />
+                <div className="bg-green-500/10 text-green-500 w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center mx-auto mb-4 border border-green-500/20">
+                  <Users className="w-5 h-5 md:w-6 md:h-6" />
                 </div>
-                <h3 className="text-xl font-bold text-foreground mb-2">
+                <h3 className="text-base md:text-lg font-bold text-foreground mb-1">
                   You are already registered
                 </h3>
-                <p className="text-muted-foreground text-sm">
+                <p className="text-muted-foreground text-xs md:text-sm">
                   We look forward to seeing you at the workshop. Check{" "}
                   <Link
                     href="/dashboard/my-registrations"
@@ -154,26 +158,26 @@ export default async function WorkshopDetailPage({params}) {
               </div>
             ) : !workshop.registration_open ? (
               <div className="text-center py-6">
-                <div className="bg-red-500/10 text-red-500 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 border border-red-500/20">
-                  <Info className="w-8 h-8" />
+                <div className="bg-red-500/10 text-red-500 w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center mx-auto mb-4 border border-red-500/20">
+                  <Info className="w-5 h-5 md:w-6 md:h-6" />
                 </div>
-                <h3 className="text-xl font-bold text-foreground mb-2">
+                <h3 className="text-base md:text-lg font-bold text-foreground mb-1">
                   Registration Closed
                 </h3>
-                <p className="text-muted-foreground text-sm">
+                <p className="text-muted-foreground text-xs md:text-sm">
                   We are no longer accepting registrations for this event.
                 </p>
               </div>
             ) : workshop.seats_total &&
               workshop.seats_filled >= workshop.seats_total ? (
               <div className="text-center py-6">
-                <div className="bg-amber-500/10 text-amber-500 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 border border-amber-500/20">
-                  <Users className="w-8 h-8" />
+                <div className="bg-amber-500/10 text-amber-500 w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center mx-auto mb-4 border border-amber-500/20">
+                  <Users className="w-5 h-5 md:w-6 md:h-6" />
                 </div>
-                <h3 className="text-xl font-bold text-foreground mb-2">
+                <h3 className="text-base md:text-lg font-bold text-foreground mb-1">
                   Workshop is Full
                 </h3>
-                <p className="text-muted-foreground text-sm">
+                <p className="text-muted-foreground text-xs md:text-sm">
                   This workshop has reached its maximum capacity.
                 </p>
               </div>
