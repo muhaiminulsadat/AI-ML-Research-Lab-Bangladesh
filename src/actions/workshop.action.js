@@ -6,6 +6,7 @@ import {WorkshopRegistration} from "@/models/workshopRegistration.model";
 import {User} from "@/models/user.model";
 import {requireAdmin, convertToObject} from "@/lib/utility";
 import {getCurrentUser} from "@/lib/auth";
+import {sendWorkshopApprovalEmail} from "@/lib/mail";
 import {z} from "zod";
 
 // --- WORKSHOP SCHEMA VALIDATION ---
@@ -379,7 +380,18 @@ export async function updateRegistrationStatus(id, status) {
         reviewed_by: adminCheck.user.id,
       },
       {new: true},
-    ).lean();
+    )
+      .populate("workshop_id", "title")
+      .lean();
+
+    if (updated && status === "approved" && updated.email) {
+      // Fire it asynchronously so we don't block the request response
+      sendWorkshopApprovalEmail(
+        updated.email,
+        updated.name || "Participant",
+        updated.workshop_id?.title || "ML & AI Research Lab Workshop",
+      );
+    }
 
     return {
       success: true,
