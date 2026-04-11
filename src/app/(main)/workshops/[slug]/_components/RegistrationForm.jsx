@@ -171,7 +171,12 @@ export default function RegistrationForm({workshop, user}) {
               </div>
             )}
             <div className="space-y-2">
-              <Label htmlFor="name">Full Name *</Label>
+              <Label
+                htmlFor="name"
+                className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1 block"
+              >
+                Full Name *
+              </Label>
               <Input
                 id="name"
                 value={formData.name}
@@ -182,7 +187,12 @@ export default function RegistrationForm({workshop, user}) {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="email">Email Address *</Label>
+              <Label
+                htmlFor="email"
+                className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1 block"
+              >
+                Email Address *
+              </Label>
               <Input
                 id="email"
                 type="email"
@@ -194,7 +204,12 @@ export default function RegistrationForm({workshop, user}) {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="institution">Institution / University *</Label>
+              <Label
+                htmlFor="institution"
+                className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1 block"
+              >
+                Institution / University *
+              </Label>
               <Input
                 id="institution"
                 value={formData.institution}
@@ -205,7 +220,12 @@ export default function RegistrationForm({workshop, user}) {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="designation">Designation</Label>
+              <Label
+                htmlFor="designation"
+                className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1 block"
+              >
+                Designation
+              </Label>
               <Select
                 value={formData.designation}
                 onValueChange={(val) => updateForm("designation", val)}
@@ -225,7 +245,12 @@ export default function RegistrationForm({workshop, user}) {
               </Select>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="phone">Phone Number</Label>
+              <Label
+                htmlFor="phone"
+                className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1 block"
+              >
+                Phone Number
+              </Label>
               <Input
                 id="phone"
                 value={formData.phone}
@@ -273,7 +298,12 @@ export default function RegistrationForm({workshop, user}) {
             {formData.participation_type === "speaker" && (
               <div className="space-y-4 pt-4 border-t border-white/5 mt-4">
                 <div className="space-y-2">
-                  <Label htmlFor="present_title">Presentation Title *</Label>
+                  <Label
+                    htmlFor="present_title"
+                    className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1 block"
+                  >
+                    Presentation Title *
+                  </Label>
                   <Input
                     id="present_title"
                     value={formData.speaker_details.presentation_title}
@@ -288,7 +318,12 @@ export default function RegistrationForm({workshop, user}) {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="presentation_type">Presentation Type *</Label>
+                  <Label
+                    htmlFor="presentation_type"
+                    className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1 block"
+                  >
+                    Presentation Type *
+                  </Label>
                   <Select
                     value={formData.speaker_details.presentation_type}
                     onValueChange={(val) =>
@@ -307,7 +342,12 @@ export default function RegistrationForm({workshop, user}) {
                   </Select>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="abstract">Abstract *</Label>
+                  <Label
+                    htmlFor="abstract"
+                    className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1 block"
+                  >
+                    Abstract *
+                  </Label>
                   <Textarea
                     id="abstract"
                     rows={4}
@@ -320,7 +360,12 @@ export default function RegistrationForm({workshop, user}) {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="co">Co-authors (Optional)</Label>
+                  <Label
+                    htmlFor="co"
+                    className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1 block"
+                  >
+                    Co-authors (Optional)
+                  </Label>
                   <Input
                     id="co"
                     value={formData.speaker_details.co_authors}
@@ -331,7 +376,10 @@ export default function RegistrationForm({workshop, user}) {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="file_url">
+                  <Label
+                    htmlFor="file_url"
+                    className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1 block"
+                  >
                     Upload PDF / External Link (Optional)
                   </Label>
                   <Input
