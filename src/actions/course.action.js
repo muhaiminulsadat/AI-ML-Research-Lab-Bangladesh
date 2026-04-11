@@ -198,7 +198,7 @@ export async function toggleCoursePublish(courseId, isPublished) {
     const updatedCourse = await Course.findByIdAndUpdate(
       courseId,
       {isPublished},
-      {new: true},
+      {returnDocument: 'after'},
     ).lean();
 
     if (!updatedCourse) {
@@ -295,7 +295,7 @@ export async function updateCourse(courseId, data) {
         tags: tags || [],
         difficulty: difficulty || "beginner",
       },
-      {new: true},
+      {returnDocument: 'after'},
     )
       .populate("instructor", "name email profileImage")
       .lean();

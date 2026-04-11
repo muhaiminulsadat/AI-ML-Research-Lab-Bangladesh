@@ -129,7 +129,7 @@ export async function updateWorkshop(id, data) {
     await connectDB();
 
     const updated = await Workshop.findByIdAndUpdate(id, validated, {
-      new: true,
+      returnDocument: 'after',
     }).lean();
 
     if (!updated) {
@@ -400,7 +400,7 @@ export async function updateRegistrationStatus(id, status) {
         reviewed_at: new Date(),
         reviewed_by: adminCheck.user.id,
       },
-      {new: true},
+      {returnDocument: 'after'},
     )
       .populate("workshop_id", "title")
       .lean();
@@ -438,7 +438,7 @@ export async function updateSpeakerStatus(id, speakerStatus) {
         reviewed_at: new Date(),
         reviewed_by: adminCheck.user.id,
       },
-      {new: true},
+      {returnDocument: 'after'},
     ).lean();
 
     return {

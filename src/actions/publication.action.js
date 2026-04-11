@@ -59,7 +59,7 @@ export async function updatePublication(id, data) {
     const updated = await Publication.findByIdAndUpdate(
       id,
       {$set: data},
-      {new: true, runValidators: true},
+      {returnDocument: 'after', runValidators: true},
     ).lean();
 
     if (!updated) {
