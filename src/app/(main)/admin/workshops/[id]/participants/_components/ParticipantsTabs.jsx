@@ -14,6 +14,7 @@ import {Button} from "@/components/ui/button";
 import {
   updateRegistrationStatus,
   updateSpeakerStatus,
+  deleteWorkshopRegistration,
 } from "@/actions/workshop.action";
 import {format} from "date-fns";
 import {toast} from "sonner";
@@ -24,6 +25,7 @@ import {
   ExternalLink,
   MoreVertical,
   MoreHorizontal,
+  Trash2,
 } from "lucide-react";
 import Link from "next/link";
 import {
@@ -67,6 +69,30 @@ export default function ParticipantsTabs({registrations}) {
     }
   };
 
+  const handleRemove = async (id) => {
+    try {
+      const res = await deleteWorkshopRegistration(id);
+      if (res.success) {
+        toast.success(res.message);
+        router.refresh();
+      } else {
+        toast.error(res.message);
+      }
+    } catch (error) {
+      toast.error("Failed to remove registration.");
+    }
+  };
+
+  const confirmRemove = (id) => {
+    confirm({
+      title: "Remove Registration",
+      description:
+        "Are you sure you want to permanently remove this participant/speaker? This cannot be undone.",
+      confirmText: "Remove",
+      onConfirm: () => handleRemove(id),
+    });
+  };
+
   const confirmAction = (id, status, type = "registration") => {
     if (status === "rejected") {
       const actionName =
@@ -83,6 +109,89 @@ export default function ParticipantsTabs({registrations}) {
       handleUpdateStatus(id, status, type);
     }
   };
+
+  const ActionsMenu = ({p}) => (
+    <div className="flex justify-end opacity-80 group-hover:opacity-100 transition-opacity">
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button
+            variant="ghost"
+            className="h-8 w-8 p-0 border border-white/5 bg-muted/20 hover:bg-muted/50 rounded-full focus-visible:ring-1 focus-visible:ring-primary focus-visible:ring-offset-0"
+          >
+            <span className="sr-only">Open menu</span>
+            <MoreHorizontal className="h-4 w-4 text-muted-foreground group-hover:text-foreground transition-colors" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent
+          align="end"
+          className="w-52 bg-[#090A0F] border-white/10 rounded-xl p-2 shadow-2xl"
+        >
+          <DropdownMenuLabel className="text-muted-foreground text-[10px] uppercase tracking-wider font-bold px-2 py-1.5 flex items-center">
+            Registration Control
+          </DropdownMenuLabel>
+          {p.status !== "approved" && (
+            <DropdownMenuItem
+              onClick={() => confirmAction(p._id, "approved", "registration")}
+              className="gap-2 cursor-pointer focus:bg-emerald-500/10 focus:text-emerald-500 rounded-lg text-sm mb-1 transition-colors"
+            >
+              <div className="w-5 h-5 rounded bg-emerald-500/10 flex items-center justify-center shrink-0">
+                <Check className="h-3.5 w-3.5" />
+              </div>
+              Approve Registration
+            </DropdownMenuItem>
+          )}
+          {p.status !== "rejected" && (
+            <DropdownMenuItem
+              onClick={() => confirmAction(p._id, "rejected", "registration")}
+              className="gap-2 cursor-pointer focus:bg-red-500/10 focus:text-red-500 rounded-lg text-sm mb-1 transition-colors"
+            >
+              <div className="w-5 h-5 rounded bg-red-500/10 flex items-center justify-center shrink-0">
+                <X className="h-3.5 w-3.5" />
+              </div>
+              Reject Registration
+            </DropdownMenuItem>
+          )}
+
+          {p.participation_type === "speaker" && (
+            <>
+              <DropdownMenuSeparator className="bg-white/5 my-2" />
+              <DropdownMenuLabel className="text-muted-foreground text-[10px] uppercase tracking-wider font-bold px-2 py-1.5 flex items-center">
+                Speaker Control
+              </DropdownMenuLabel>
+              <DropdownMenuItem
+                onClick={() => confirmAction(p._id, "accepted", "speaker")}
+                className="gap-2 cursor-pointer focus:bg-purple-500/10 focus:text-purple-400 rounded-lg text-sm mb-1 transition-colors"
+              >
+                <div className="w-5 h-5 rounded bg-purple-500/10 flex items-center justify-center shrink-0">
+                  <Check className="h-3.5 w-3.5" />
+                </div>
+                Accept Talk
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => confirmAction(p._id, "rejected", "speaker")}
+                className="gap-2 cursor-pointer focus:bg-red-500/10 focus:text-red-500 rounded-lg text-sm mb-1 transition-colors"
+              >
+                <div className="w-5 h-5 rounded bg-red-500/10 flex items-center justify-center shrink-0">
+                  <X className="h-3.5 w-3.5" />
+                </div>
+                Reject Talk
+              </DropdownMenuItem>
+            </>
+          )}
+          <DropdownMenuSeparator className="bg-white/5 my-2" />
+          <DropdownMenuItem
+            onClick={() => confirmRemove(p._id)}
+            className="gap-2 cursor-pointer focus:bg-red-500/10 text-red-500 focus:text-red-500 rounded-lg text-sm mb-1 transition-colors"
+          >
+            <div className="w-5 h-5 rounded bg-red-500/10 flex items-center justify-center shrink-0">
+              <Trash2 className="h-3.5 w-3.5" />
+            </div>
+            Remove Member
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
+  );
 
   const downloadCSV = () => {
     const activeData =
@@ -262,114 +371,7 @@ export default function ParticipantsTabs({registrations}) {
                       </div>
                     </TableCell>
                     <TableCell className="text-right py-4 pr-4">
-                      {p.participation_type === "speaker" ? (
-                        <div className="flex justify-end opacity-80 group-hover:opacity-100 transition-opacity">
-                          <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                              <Button
-                                variant="ghost"
-                                className="h-8 w-8 p-0 border border-white/5 bg-muted/20 hover:bg-muted/50 rounded-full focus-visible:ring-1 focus-visible:ring-primary focus-visible:ring-offset-0"
-                              >
-                                <span className="sr-only">Open menu</span>
-                                <MoreHorizontal className="h-4 w-4 text-muted-foreground group-hover:text-foreground transition-colors" />
-                              </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent
-                              align="end"
-                              className="w-52 bg-[#090A0F] border-white/10 rounded-xl p-2 shadow-2xl"
-                            >
-                              <DropdownMenuLabel className="text-muted-foreground text-[10px] uppercase tracking-wider font-bold px-2 py-1.5 flex items-center">
-                                Registration Control
-                              </DropdownMenuLabel>
-                              <DropdownMenuItem
-                                onClick={() =>
-                                  confirmAction(
-                                    p._id,
-                                    "approved",
-                                    "registration",
-                                  )
-                                }
-                                className="gap-2 cursor-pointer focus:bg-emerald-500/10 focus:text-emerald-500 rounded-lg text-sm mb-1 transition-colors"
-                              >
-                                <div className="w-5 h-5 rounded bg-emerald-500/10 flex items-center justify-center shrink-0">
-                                  <Check className="h-3.5 w-3.5" />
-                                </div>
-                                Approve Registration
-                              </DropdownMenuItem>
-                              <DropdownMenuItem
-                                onClick={() =>
-                                  confirmAction(
-                                    p._id,
-                                    "rejected",
-                                    "registration",
-                                  )
-                                }
-                                className="gap-2 cursor-pointer focus:bg-red-500/10 focus:text-red-500 rounded-lg text-sm mb-1 transition-colors"
-                              >
-                                <div className="w-5 h-5 rounded bg-red-500/10 flex items-center justify-center shrink-0">
-                                  <X className="h-3.5 w-3.5" />
-                                </div>
-                                Reject Registration
-                              </DropdownMenuItem>
-                              <DropdownMenuSeparator className="bg-white/5 my-2" />
-                              <DropdownMenuLabel className="text-muted-foreground text-[10px] uppercase tracking-wider font-bold px-2 py-1.5 flex items-center">
-                                Speaker Control
-                              </DropdownMenuLabel>
-                              <DropdownMenuItem
-                                onClick={() =>
-                                  confirmAction(p._id, "accepted", "speaker")
-                                }
-                                className="gap-2 cursor-pointer focus:bg-purple-500/10 focus:text-purple-400 rounded-lg text-sm mb-1 transition-colors"
-                              >
-                                <div className="w-5 h-5 rounded bg-purple-500/10 flex items-center justify-center shrink-0">
-                                  <Check className="h-3.5 w-3.5" />
-                                </div>
-                                Accept Talk
-                              </DropdownMenuItem>
-                              <DropdownMenuItem
-                                onClick={() =>
-                                  confirmAction(p._id, "rejected", "speaker")
-                                }
-                                className="gap-2 cursor-pointer focus:bg-red-500/10 focus:text-red-500 rounded-lg text-sm mb-1 transition-colors"
-                              >
-                                <div className="w-5 h-5 rounded bg-red-500/10 flex items-center justify-center shrink-0">
-                                  <X className="h-3.5 w-3.5" />
-                                </div>
-                                Reject Talk
-                              </DropdownMenuItem>
-                            </DropdownMenuContent>
-                          </DropdownMenu>
-                        </div>
-                      ) : (
-                        <div className="flex justify-end gap-1.5 opacity-80 group-hover:opacity-100 transition-opacity">
-                          {p.status !== "approved" && (
-                            <Button
-                              size="icon"
-                              variant="ghost"
-                              className="h-8 w-8 rounded-full text-emerald-500 hover:text-emerald-400 hover:bg-emerald-500/10 cursor-pointer"
-                              onClick={() =>
-                                confirmAction(p._id, "approved", "registration")
-                              }
-                              title="Approve"
-                            >
-                              <Check className="w-4 h-4" />
-                            </Button>
-                          )}
-                          {p.status !== "rejected" && (
-                            <Button
-                              size="icon"
-                              variant="ghost"
-                              className="h-8 w-8 rounded-full text-red-500 hover:text-red-400 hover:bg-red-500/10 cursor-pointer"
-                              onClick={() =>
-                                confirmAction(p._id, "rejected", "registration")
-                              }
-                              title="Reject"
-                            >
-                              <X className="w-4 h-4" />
-                            </Button>
-                          )}
-                        </div>
-                      )}
+                      <ActionsMenu p={p} />
                     </TableCell>
                   </TableRow>
                 ))
@@ -452,34 +454,7 @@ export default function ParticipantsTabs({registrations}) {
                       </Badge>
                     </TableCell>
                     <TableCell className="text-right py-4 pr-4">
-                      <div className="flex justify-end gap-1.5 opacity-80 group-hover:opacity-100 transition-opacity">
-                        {p.status !== "approved" && (
-                          <Button
-                            size="icon"
-                            variant="ghost"
-                            className="h-8 w-8 rounded-full text-emerald-500 hover:text-emerald-400 hover:bg-emerald-500/10 cursor-pointer"
-                            onClick={() =>
-                              confirmAction(p._id, "approved", "registration")
-                            }
-                            title="Approve"
-                          >
-                            <Check className="w-4 h-4" />
-                          </Button>
-                        )}
-                        {p.status !== "rejected" && (
-                          <Button
-                            size="icon"
-                            variant="ghost"
-                            className="h-8 w-8 rounded-full text-red-500 hover:text-red-400 hover:bg-red-500/10 cursor-pointer"
-                            onClick={() =>
-                              confirmAction(p._id, "rejected", "registration")
-                            }
-                            title="Reject"
-                          >
-                            <X className="w-4 h-4" />
-                          </Button>
-                        )}
-                      </div>
+                      <ActionsMenu p={p} />
                     </TableCell>
                   </TableRow>
                 ))
@@ -580,75 +555,7 @@ export default function ParticipantsTabs({registrations}) {
                       </Badge>
                     </TableCell>
                     <TableCell className="text-right py-4 pr-4">
-                      <div className="flex justify-end opacity-80 group-hover:opacity-100 transition-opacity">
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button
-                              variant="ghost"
-                              className="h-8 w-8 p-0 border border-white/5 bg-muted/20 hover:bg-muted/50 rounded-full focus-visible:ring-1 focus-visible:ring-primary focus-visible:ring-offset-0"
-                            >
-                              <span className="sr-only">Open menu</span>
-                              <MoreHorizontal className="h-4 w-4 text-muted-foreground group-hover:text-foreground transition-colors" />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent
-                            align="end"
-                            className="w-52 bg-[#090A0F] border-white/10 rounded-xl p-2 shadow-2xl"
-                          >
-                            <DropdownMenuLabel className="text-muted-foreground text-[10px] uppercase tracking-wider font-bold px-2 py-1.5 flex items-center">
-                              Registration Control
-                            </DropdownMenuLabel>
-                            <DropdownMenuItem
-                              onClick={() =>
-                                confirmAction(s._id, "approved", "registration")
-                              }
-                              className="gap-2 cursor-pointer focus:bg-emerald-500/10 focus:text-emerald-500 rounded-lg text-sm mb-1 transition-colors"
-                            >
-                              <div className="w-5 h-5 rounded bg-emerald-500/10 flex items-center justify-center shrink-0">
-                                <Check className="h-3.5 w-3.5" />
-                              </div>
-                              Approve Registration
-                            </DropdownMenuItem>
-                            <DropdownMenuItem
-                              onClick={() =>
-                                confirmAction(s._id, "rejected", "registration")
-                              }
-                              className="gap-2 cursor-pointer focus:bg-red-500/10 focus:text-red-500 rounded-lg text-sm mb-1 transition-colors"
-                            >
-                              <div className="w-5 h-5 rounded bg-red-500/10 flex items-center justify-center shrink-0">
-                                <X className="h-3.5 w-3.5" />
-                              </div>
-                              Reject Registration
-                            </DropdownMenuItem>
-                            <DropdownMenuSeparator className="bg-white/5 my-2" />
-                            <DropdownMenuLabel className="text-muted-foreground text-[10px] uppercase tracking-wider font-bold px-2 py-1.5 flex items-center">
-                              Speaker Control
-                            </DropdownMenuLabel>
-                            <DropdownMenuItem
-                              onClick={() =>
-                                confirmAction(s._id, "accepted", "speaker")
-                              }
-                              className="gap-2 cursor-pointer focus:bg-purple-500/10 focus:text-purple-400 rounded-lg text-sm mb-1 transition-colors"
-                            >
-                              <div className="w-5 h-5 rounded bg-purple-500/10 flex items-center justify-center shrink-0">
-                                <Check className="h-3.5 w-3.5" />
-                              </div>
-                              Accept Talk
-                            </DropdownMenuItem>
-                            <DropdownMenuItem
-                              onClick={() =>
-                                confirmAction(s._id, "rejected", "speaker")
-                              }
-                              className="gap-2 cursor-pointer focus:bg-red-500/10 focus:text-red-500 rounded-lg text-sm mb-1 transition-colors"
-                            >
-                              <div className="w-5 h-5 rounded bg-red-500/10 flex items-center justify-center shrink-0">
-                                <X className="h-3.5 w-3.5" />
-                              </div>
-                              Reject Talk
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </div>
+                      <ActionsMenu p={s} />
                     </TableCell>
                   </TableRow>
                 ))

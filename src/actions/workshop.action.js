@@ -418,6 +418,31 @@ export async function updateSpeakerStatus(id, speakerStatus) {
   }
 }
 
+export async function deleteWorkshopRegistration(id) {
+  try {
+    const adminCheck = await requireAdmin();
+    if (!adminCheck.authorized) return adminCheck.response;
+
+    await connectDB();
+
+    const registration = await WorkshopRegistration.findById(id);
+    if (!registration) {
+      return {success: false, message: "Registration not found."};
+    }
+
+    await Workshop.findByIdAndUpdate(registration.workshop_id, {
+      $inc: {seats_filled: -1},
+    });
+
+    await WorkshopRegistration.findByIdAndDelete(id);
+
+    return {success: true, message: "Registration removed successfully."};
+  } catch (error) {
+    console.error("Error deleting registration:", error);
+    return {success: false, message: "Failed to remove registration."};
+  }
+}
+
 export async function exportRegistrations(workshopId) {
   try {
     const adminCheck = await requireAdmin();
