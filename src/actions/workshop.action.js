@@ -168,6 +168,7 @@ const registrationSchema = z.object({
   email: z.string().email("Invalid email address"),
   institution: z.string().min(2, "Institution is required"),
   designation: z.string().optional(),
+  student_id: z.string().optional(),
   phone: z.string().optional(),
   participation_type: z.enum(["participant", "speaker"]),
   speaker_details: z

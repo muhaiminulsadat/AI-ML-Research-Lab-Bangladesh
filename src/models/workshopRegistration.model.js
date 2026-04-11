@@ -47,6 +47,9 @@ const workshopRegistrationSchema = new mongoose.Schema(
     designation: {
       type: String,
     },
+    student_id: {
+      type: String,
+    },
     phone: {
       type: String,
     },

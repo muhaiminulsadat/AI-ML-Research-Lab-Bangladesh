@@ -31,6 +31,7 @@ export default function RegistrationForm({workshop, user}) {
     email: user?.email || "",
     institution: user?.university || user?.institution || "",
     designation: user?.designation || "",
+    student_id: user?.student_id || "",
     phone: "",
     participation_type: "participant",
     speaker_details: {
@@ -59,7 +60,12 @@ export default function RegistrationForm({workshop, user}) {
 
   const currentStepIsValid = () => {
     if (step === 1) {
-      return formData.name && formData.email && formData.institution;
+      const isBaseValid =
+        formData.name && formData.email && formData.institution;
+      if (formData.designation === "Student") {
+        return isBaseValid && !!formData.student_id;
+      }
+      return isBaseValid;
     }
     if (step === 2) {
       if (formData.participation_type === "speaker") {
@@ -86,6 +92,10 @@ export default function RegistrationForm({workshop, user}) {
 
     setLoading(true);
     let payload = {...formData};
+
+    if (payload.designation !== "Student") {
+      delete payload.student_id;
+    }
 
     // Remove speaker details if participant
     if (payload.participation_type === "participant") {
@@ -252,6 +262,23 @@ export default function RegistrationForm({workshop, user}) {
                 </SelectContent>
               </Select>
             </div>
+            {formData.designation === "Student" && (
+              <div className="space-y-2 animate-in fade-in slide-in-from-top-1 duration-200">
+                <Label
+                  htmlFor="student_id"
+                  className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1 block"
+                >
+                  Student ID *
+                </Label>
+                <Input
+                  id="student_id"
+                  value={formData.student_id}
+                  onChange={(e) => updateForm("student_id", e.target.value)}
+                  required
+                  placeholder="e.g. 2104123"
+                />
+              </div>
+            )}
             <div className="space-y-2">
               <Label
                 htmlFor="phone"
