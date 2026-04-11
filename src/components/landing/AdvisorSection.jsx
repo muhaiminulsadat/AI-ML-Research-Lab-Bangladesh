@@ -26,7 +26,7 @@ export default function AdvisorSection() {
             {"//"} Esteemed Guidance
           </h2>
           <h3 className="text-3xl md:text-5xl font-bold text-white mb-6">
-            Our Respected Advisor
+            Our Respected <span className="text-primary">Advisor</span>
           </h3>
         </div>
 
