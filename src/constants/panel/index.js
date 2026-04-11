@@ -2,25 +2,27 @@ export const directors = [
   {
     designation: "Director",
     name: "Nirob Devnath",
-    institution: "",
-    department: "",
-    email: "",
+    institution: "Chittagong University (CU)",
+    department: "Electrical & Electronic Engineering (EEE)",
+    email: "nirobdevnatheee@gmail.com",
     url: "https://drive.google.com/uc?export=view&id=1BQtAhYb1jaZg594TVgPbMU0LcTdB4hDw",
   },
   {
     designation: "Co-Director",
     name: "Apurbo Kumar",
-    institution: "",
-    department: "",
-    email: "",
+    institution:
+      "Bangladesh University of Engineering and Technology (BUET) & Indian Institute Of Technology (IIT)",
+    department:
+      "Civil Engineering (CE) & Data Science and Artificial Intelligence (DS&AI)",
+    email: "apurbokumar1355@gmail.com",
     url: "https://scontent.fdac181-1.fna.fbcdn.net/v/t39.30808-6/592313144_2008977396612926_5360946863699538642_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=1d70fc&_nc_eui2=AeEfykd8Z66fBRmh7UfZxUY8-LRTmjC3SJv4tFOaMLdIm6GS4abqygTqpZ36t5cEU41x67w-xwVxsW4FSh-nT7YZ&_nc_ohc=afTCiPM13MAQ7kNvwH6vAJX&_nc_oc=AdpMg9LHTroIeSpWzB7BknSzzAjh5foOS6ybeXEQgRzQnGdO_NbRXHyRU9NSWTuYCh4&_nc_zt=23&_nc_ht=scontent.fdac181-1.fna&_nc_gid=10yUiXuqfXR2Nq1XyCe-RA&_nc_ss=7a3a8&oh=00_Af3YacgBVaFbKhzu_IcgG0-dDpGVG_hLSkhEpYVHt2KRjQ&oe=69DC5E29",
   },
   {
     designation: "Co-Director",
     name: "Nafi Naib Mon",
-    institution: "",
-    department: "",
-    email: "",
+    institution: "Islamic University Of Technology (IUT)",
+    department: "Civil Engineering",
+    email: "nafinaib668@gmail.com",
     url: null,
   },
 ];
