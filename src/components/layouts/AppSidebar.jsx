@@ -90,8 +90,7 @@ export default function AppSidebar({user, isCollapsed, onToggleCollapse}) {
             <Image
               src="/logo.png"
               alt="Lab Logo"
-              fill
-              className="object-contain brightness-0 scale-[1.15]"
+              fill sizes='40px' className="object-contain brightness-0 scale-[1.15]"
             />
           </div>
           {!isCollapsed && (

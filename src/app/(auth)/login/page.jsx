@@ -58,8 +58,7 @@ export default function LoginPage() {
               <Image
                 src="/logo.png"
                 alt="ML & AI Research Lab"
-                fill
-                className="object-contain brightness-0 scale-[1.15]"
+                fill sizes='40px' className="object-contain brightness-0 scale-[1.15]"
               />
             </div>
           </div>

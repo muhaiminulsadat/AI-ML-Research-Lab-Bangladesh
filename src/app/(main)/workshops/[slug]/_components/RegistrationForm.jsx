@@ -69,10 +69,11 @@ export default function RegistrationForm({workshop, user}) {
     }
     if (step === 2) {
       if (formData.participation_type === "speaker") {
-        return (
-          formData.speaker_details.presentation_title?.trim().length >= 3 &&
-          formData.speaker_details.abstract?.trim().length >= 10 &&
-          formData.speaker_details.presentation_type
+        return Boolean(
+          (formData.speaker_details?.presentation_title || "").trim().length >=
+            1 &&
+          (formData.speaker_details?.abstract || "").trim().length >= 1 &&
+          formData.speaker_details?.presentation_type,
         );
       }
       return true;

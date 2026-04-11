@@ -196,8 +196,7 @@ export default function Navbar({isMobileOnly = false}) {
               <Image
                 src="/logo.png"
                 alt="ML & AI Research Lab Logo"
-                fill
-                className="object-contain brightness-0 scale-[1.15]"
+                fill sizes='40px' className="object-contain brightness-0 scale-[1.15]"
                 priority
               />
             </div>
@@ -388,8 +387,7 @@ export default function Navbar({isMobileOnly = false}) {
                       <Image
                         src="/logo.png"
                         alt="ML & AI Research Lab Logo"
-                        fill
-                        className="object-contain brightness-0 scale-[1.15]"
+                        fill sizes='40px' className="object-contain brightness-0 scale-[1.15]"
                       />
                     </div>
                     <div className="flex flex-col leading-none text-left">
