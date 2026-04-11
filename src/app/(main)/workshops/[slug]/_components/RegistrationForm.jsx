@@ -81,13 +81,17 @@ export default function RegistrationForm({workshop, user}) {
   };
 
   const handleNext = () => {
-    if (currentStepIsValid()) setStep((s) => s + 1);
+    if (currentStepIsValid() && step < 3) setStep((s) => s + 1);
   };
 
-  const handleBack = () => setStep((s) => s - 1);
+  const handleBack = () => {
+    if (step > 1) setStep((s) => s - 1);
+  };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleFormSubmit = async (e) => {
+    if (e && e.preventDefault) e.preventDefault();
+
+    if (step !== 3) return;
     if (!currentStepIsValid()) return;
 
     setLoading(true);
@@ -138,25 +142,31 @@ export default function RegistrationForm({workshop, user}) {
 
   return (
     <div className="w-full">
-      <div className="flex justify-between items-center mb-6 relative">
+      <div className="flex justify-between items-center mb-12 relative">
         <div className="absolute left-0 top-1/2 w-full h-px bg-white/10 -z-10 -translate-y-1/2" />
         {steps.map((label, idx) => (
           <div
             key={idx}
-            className="flex flex-col items-center bg-[#090A0F] px-2 gap-2"
+            className="flex flex-col items-center bg-[#090A0F] px-3 relative"
           >
             <div
-              className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold transition-colors ${
+              className={`w-8 h-8 shrink-0 rounded-full flex items-center justify-center text-sm font-semibold transition-colors z-10 ${
                 step > idx + 1
                   ? "bg-primary text-primary-foreground"
                   : step === idx + 1
                     ? "bg-primary text-primary-foreground border-2 border-primary/20 ring-4 ring-primary/10"
-                    : "bg-muted text-muted-foreground border border-white/10"
+                    : "bg-[#090A0F] text-muted-foreground border border-white/10"
               }`}
             >
               {step > idx + 1 ? <CheckCircle2 className="w-4 h-4" /> : idx + 1}
             </div>
-            <span className="text-xs text-muted-foreground hidden sm:block">
+            <span
+              className={`text-xs text-center absolute top-10 w-max left-1/2 -translate-x-1/2 hidden sm:block ${
+                step >= idx + 1
+                  ? "text-foreground font-medium"
+                  : "text-muted-foreground"
+              }`}
+            >
               {label}
             </span>
           </div>
@@ -164,7 +174,14 @@ export default function RegistrationForm({workshop, user}) {
       </div>
 
       <form
-        onSubmit={step === 3 ? handleSubmit : (e) => e.preventDefault()}
+        onSubmit={(e) => {
+          e.preventDefault();
+          if (step === 3 && currentStepIsValid()) {
+            handleFormSubmit(e);
+          } else if (step < 3 && currentStepIsValid()) {
+            handleNext();
+          }
+        }}
         className="space-y-6"
       >
         {step === 1 && (
@@ -436,24 +453,51 @@ export default function RegistrationForm({workshop, user}) {
           <div className="space-y-4 animate-in fade-in slide-in-from-right-2 duration-300">
             <h3 className="font-semibold text-lg mb-2">Review Your Details</h3>
             <div className="bg-muted/30 p-4 rounded-xl space-y-3 text-sm border border-white/5">
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-1 sm:grid-cols-[140px_1fr] gap-2">
                 <span className="text-muted-foreground">Name:</span>
-                <span className="font-medium text-foreground">
+                <span className="font-medium text-foreground break-words">
                   {formData.name}
                 </span>
 
                 <span className="text-muted-foreground">Email:</span>
-                <span className="font-medium text-foreground">
+                <span className="font-medium text-foreground break-words">
                   {formData.email}
                 </span>
 
                 <span className="text-muted-foreground">Institution:</span>
-                <span className="font-medium text-foreground">
+                <span className="font-medium text-foreground break-words">
                   {formData.institution}
                 </span>
 
-                <span className="text-muted-foreground">Participation:</span>
-                <span className="font-medium text-foreground capitalize">
+                {formData.designation && (
+                  <>
+                    <span className="text-muted-foreground">Designation:</span>
+                    <span className="font-medium text-foreground break-words">
+                      {formData.designation}
+                    </span>
+                  </>
+                )}
+
+                {formData.designation === "Student" && formData.student_id && (
+                  <>
+                    <span className="text-muted-foreground">Student ID:</span>
+                    <span className="font-medium text-foreground break-words">
+                      {formData.student_id}
+                    </span>
+                  </>
+                )}
+
+                {formData.phone && (
+                  <>
+                    <span className="text-muted-foreground">Phone:</span>
+                    <span className="font-medium text-foreground break-words">
+                      {formData.phone}
+                    </span>
+                  </>
+                )}
+
+                <span className="text-muted-foreground">Participation as:</span>
+                <span className="font-medium text-foreground capitalize break-words">
                   {formData.participation_type}
                 </span>
               </div>
@@ -461,18 +505,18 @@ export default function RegistrationForm({workshop, user}) {
 
             {formData.participation_type === "speaker" && (
               <div className="bg-muted/30 p-4 rounded-xl space-y-3 text-sm border border-white/5">
-                <h4 className="font-medium text-foreground border-b border-white/5 pb-2 mb-2">
+                <h4 className="font-medium text-foreground mb-2">
                   Speaker Details
                 </h4>
-                <div className="grid grid-cols-2 gap-2 mt-4">
+                <div className="grid grid-cols-1 sm:grid-cols-[140px_1fr] gap-2">
                   <span className="text-muted-foreground">Title:</span>
-                  <span className="font-medium text-foreground">
+                  <span className="font-medium text-foreground break-words">
                     {formData.speaker_details.presentation_title}
                   </span>
 
                   <span className="text-muted-foreground">Type:</span>
-                  <span className="font-medium text-foreground capitalize">
-                    {formData.speaker_details.presentation_type}
+                  <span className="font-medium text-foreground capitalize break-words">
+                    {formData.speaker_details.presentation_type || "N/A"}
                   </span>
                 </div>
               </div>
@@ -483,6 +527,7 @@ export default function RegistrationForm({workshop, user}) {
         <div className="flex justify-between pt-4 mt-4 border-t border-white/5 gap-4">
           {step > 1 ? (
             <Button
+              key="back-btn"
               type="button"
               variant="outline"
               onClick={handleBack}
@@ -496,14 +541,22 @@ export default function RegistrationForm({workshop, user}) {
 
           {step < 3 ? (
             <Button
+              key="next-btn"
               type="button"
-              onClick={handleNext}
+              onClick={(e) => {
+                e.preventDefault();
+                handleNext();
+              }}
               disabled={!currentStepIsValid()}
             >
               Next Step
             </Button>
           ) : (
-            <Button type="submit" disabled={loading || !currentStepIsValid()}>
+            <Button
+              key="submit-btn"
+              type="submit"
+              disabled={loading || !currentStepIsValid()}
+            >
               {loading && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
               {loading ? "Registering..." : "Submit Registration"}
             </Button>
