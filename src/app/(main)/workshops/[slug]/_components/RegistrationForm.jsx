@@ -236,6 +236,14 @@ export default function RegistrationForm({workshop, user}) {
                 <SelectContent>
                   <SelectItem value="Student">Student</SelectItem>
                   <SelectItem value="Researcher">Researcher</SelectItem>
+                  <SelectItem value="Teacher">Teacher</SelectItem>
+                  <SelectItem value="Lecturer">Lecturer</SelectItem>
+                  <SelectItem value="Assistant Professor">
+                    Assistant Professor
+                  </SelectItem>
+                  <SelectItem value="Associate Professor">
+                    Associate Professor
+                  </SelectItem>
                   <SelectItem value="Professor">Professor</SelectItem>
                   <SelectItem value="Industry Professional">
                     Industry Professional
