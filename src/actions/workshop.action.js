@@ -45,7 +45,7 @@ export async function getWorkshops(status) {
   try {
     await connectDB();
     const query = status ? {status} : {};
-    const workshops = await Workshop.find(query).sort({start_date: 1}).lean();
+    const workshops = await Workshop.find(query).sort({createdAt: -1}).lean();
 
     return {
       success: true,

@@ -192,7 +192,7 @@ export default function Navbar({isMobileOnly = false}) {
             href="/"
             className="flex items-center gap-2.5 shrink-0 cursor-pointer"
           >
-            <div className="relative flex h-10 w-10 items-center justify-center rounded-lg bg-primary overflow-hidden">
+            <div className="relative flex h-10 w-10 items-center justify-center rounded-full bg-primary overflow-hidden">
               <Image
                 src="/logo.png"
                 alt="ML & AI Research Lab Logo"
@@ -384,7 +384,7 @@ export default function Navbar({isMobileOnly = false}) {
               <SheetContent side="right" className="w-72 flex flex-col p-0">
                 <SheetHeader className="px-5 py-4 border-b shrink-0">
                   <SheetTitle className="flex items-center gap-2.5">
-                    <div className="relative flex h-10 w-10 items-center justify-center rounded-lg bg-primary shrink-0 overflow-hidden">
+                    <div className="relative flex h-10 w-10 items-center justify-center rounded-full bg-primary shrink-0 overflow-hidden">
                       <Image
                         src="/logo.png"
                         alt="ML & AI Research Lab Logo"

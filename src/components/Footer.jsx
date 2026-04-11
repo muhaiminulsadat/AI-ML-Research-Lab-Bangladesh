@@ -1,5 +1,5 @@
 import Link from "next/link";
-import {FlaskConical} from "lucide-react";
+import Image from "next/image";
 
 export default function Footer() {
   return (
@@ -12,8 +12,13 @@ export default function Footer() {
           {/* Brand Column */}
           <div className="md:col-span-4 lg:col-span-5 flex flex-col items-center md:items-start">
             <Link href="/" className="flex items-center gap-3 group mb-6">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20 group-hover:border-primary/40 group-hover:shadow-[0_0_20px_rgba(var(--primary),0.15)] transition-all duration-500 shrink-0">
-                <FlaskConical className="h-5 w-5 text-primary group-hover:scale-110 transition-transform duration-500" />
+              <div className="relative flex h-10 w-10 items-center justify-center rounded-full bg-primary border border-primary/20 group-hover:border-primary/40 group-hover:shadow-[0_0_20px_rgba(var(--primary),0.15)] transition-all duration-500 shrink-0 overflow-hidden">
+                <Image
+                  src="/logo.png"
+                  alt="ML & AI Research Lab Logo"
+                  fill
+                  className="object-contain brightness-0 scale-[1.15]"
+                />
               </div>
               <div className="flex flex-col leading-none">
                 <span className="text-base font-extrabold tracking-tight text-white/90 group-hover:text-white transition-colors">

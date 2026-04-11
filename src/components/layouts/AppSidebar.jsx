@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import {usePathname} from "next/navigation";
+import Image from "next/image";
 import {
   LayoutDashboard,
   BookOpen,
@@ -85,8 +86,13 @@ export default function AppSidebar({user, isCollapsed, onToggleCollapse}) {
           className="flex items-center gap-2.5 transition-opacity hover:opacity-80 cursor-pointer"
           title="Go to Homepage"
         >
-          <div className="bg-primary/20 p-1.5 rounded-lg border border-primary/20 flex-shrink-0">
-            <FlaskConical className="h-5 w-5 text-primary" />
+          <div className="relative flex h-8 w-8 items-center justify-center rounded-full bg-primary overflow-hidden flex-shrink-0">
+            <Image
+              src="/logo.png"
+              alt="Lab Logo"
+              fill
+              className="object-contain brightness-0 scale-[1.15]"
+            />
           </div>
           {!isCollapsed && (
             <span className="font-bold text-lg tracking-tight whitespace-nowrap">

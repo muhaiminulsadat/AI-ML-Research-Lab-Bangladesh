@@ -1,6 +1,7 @@
 "use client";
 import {useState} from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {Mail, Lock, Eye, EyeOff, FlaskConical, LogIn} from "lucide-react";
 import {toast} from "sonner";
 import {Button} from "@/components/ui/button";
@@ -53,8 +54,13 @@ export default function LoginPage() {
       <Card className="w-full max-w-md p-4 mx-auto">
         <CardHeader className="space-y-1">
           <div className="flex justify-center mb-2">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary">
-              <FlaskConical className="h-5 w-5 text-primary-foreground" />
+            <div className="relative flex h-10 w-10 items-center justify-center rounded-full bg-primary overflow-hidden">
+              <Image
+                src="/logo.png"
+                alt="ML & AI Research Lab"
+                fill
+                className="object-contain brightness-0 scale-[1.15]"
+              />
             </div>
           </div>
           <CardTitle className="text-2xl text-center">Welcome back</CardTitle>
