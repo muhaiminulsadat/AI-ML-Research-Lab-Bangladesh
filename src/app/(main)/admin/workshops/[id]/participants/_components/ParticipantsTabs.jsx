@@ -200,22 +200,33 @@ export default function ParticipantsTabs({registrations}) {
         : tab === "participants"
           ? participants
           : speakers;
+
+    const escapeCSV = (str) => {
+      if (!str) return '""';
+      return `"${String(str).replace(/"/g, '""').replace(/\n/g, " ")}"`;
+    };
+
     const headers =
-      tab === "all"
-        ? "Name,Email,Participation Type,Institution,Status,Submitted At\n"
-        : tab === "participants"
-          ? "Name,Email,Institution,Designation,Phone,Status,Submitted At\n"
-          : "Name,Email,Institution,Title,Type,Status,Speaker Status,Submitted At\n";
+      "Name,Email,Phone,Institution,Designation,Participation Type,Registration Status,Speaker Status,Presentation Title,Presentation Type,Abstract,Co-Authors,File URL,Submitted At\n";
 
     const rows = activeData
       .map((r) => {
-        if (tab === "all") {
-          return `"${r.name}","${r.email}","${r.participation_type}","${r.institution}","${r.status}","${format(new Date(r.createdAt), "yyyy-MM-dd")}"`;
-        } else if (tab === "participants") {
-          return `"${r.name}","${r.email}","${r.institution}","${r.designation || ""}","${r.phone || ""}","${r.status}","${format(new Date(r.createdAt), "yyyy-MM-dd")}"`;
-        } else {
-          return `"${r.name}","${r.email}","${r.institution}","${r.speaker_details?.presentation_title || ""}","${r.speaker_details?.presentation_type || ""}","${r.status}","${r.speaker_status || "pending"}","${format(new Date(r.createdAt), "yyyy-MM-dd")}"`;
-        }
+        return [
+          escapeCSV(r.name),
+          escapeCSV(r.email),
+          escapeCSV(r.phone),
+          escapeCSV(r.institution),
+          escapeCSV(r.designation),
+          escapeCSV(r.participation_type),
+          escapeCSV(r.status),
+          escapeCSV(r.speaker_status || "N/A"),
+          escapeCSV(r.speaker_details?.presentation_title),
+          escapeCSV(r.speaker_details?.presentation_type),
+          escapeCSV(r.speaker_details?.abstract),
+          escapeCSV(r.speaker_details?.co_authors),
+          escapeCSV(r.speaker_details?.file_url),
+          escapeCSV(format(new Date(r.createdAt), "yyyy-MM-dd HH:mm")),
+        ].join(",");
       })
       .join("\n");
 

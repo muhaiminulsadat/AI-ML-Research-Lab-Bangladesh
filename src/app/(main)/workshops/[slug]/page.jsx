@@ -3,9 +3,10 @@ import {
   checkAlreadyRegistered,
 } from "@/actions/workshop.action";
 import {Badge} from "@/components/ui/badge";
+import {Button} from "@/components/ui/button";
 import {getCurrentUser} from "@/lib/auth";
 import {format} from "date-fns";
-import {Calendar, MapPin, Users, Info} from "lucide-react";
+import {Calendar, MapPin, Users, Info, Settings} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import RegistrationForm from "./_components/RegistrationForm";
@@ -43,24 +44,39 @@ export default async function WorkshopDetailPage({params}) {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2 space-y-6">
           <div>
-            <div className="flex flex-wrap items-center gap-2 mb-4">
-              <Badge
-                variant="outline"
-                className="capitalize text-primary border-primary/50"
-              >
-                {workshop.status}
-              </Badge>
-              {workshop.registration_open ? (
-                <Badge className="bg-green-600/20 text-green-500 border-green-600/20">
-                  Registration Open
-                </Badge>
-              ) : (
+            <div className="flex flex-wrap items-center justify-between gap-4 mb-4 border-b border-white/5 pb-4">
+              <div className="flex items-center gap-2">
                 <Badge
-                  variant="destructive"
-                  className="bg-red-600/20 text-red-500 border-red-600/20"
+                  variant="outline"
+                  className="capitalize text-primary border-primary/50"
                 >
-                  Registration Closed
+                  {workshop.status}
                 </Badge>
+                {workshop.registration_open ? (
+                  <Badge className="bg-green-600/20 text-green-500 border-green-600/20">
+                    Registration Open
+                  </Badge>
+                ) : (
+                  <Badge
+                    variant="destructive"
+                    className="bg-red-600/20 text-red-500 border-red-600/20"
+                  >
+                    Registration Closed
+                  </Badge>
+                )}
+              </div>
+
+              {user?.role === "admin" && (
+                <Button
+                  asChild
+                  variant="default"
+                  className="gap-2 font-semibold shadow-lg shadow-primary/25"
+                >
+                  <Link href={`/admin/workshops/${workshop._id}/participants`}>
+                    <Settings className="w-4 h-4" />
+                    Manage Workshop
+                  </Link>
+                </Button>
               )}
             </div>
             <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight text-foreground mb-4">
