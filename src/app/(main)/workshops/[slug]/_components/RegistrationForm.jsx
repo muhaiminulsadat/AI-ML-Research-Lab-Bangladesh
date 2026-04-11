@@ -70,8 +70,8 @@ export default function RegistrationForm({workshop, user}) {
     if (step === 2) {
       if (formData.participation_type === "speaker") {
         return (
-          formData.speaker_details.presentation_title &&
-          formData.speaker_details.abstract &&
+          formData.speaker_details.presentation_title?.trim().length >= 3 &&
+          formData.speaker_details.abstract?.trim().length >= 10 &&
           formData.speaker_details.presentation_type
         );
       }
@@ -116,7 +116,8 @@ export default function RegistrationForm({workshop, user}) {
         toast.error(res.message || "Failed to register.");
       }
     } catch (error) {
-      toast.error("An unexpected error occurred.");
+      console.error("Form submission error:", error);
+      toast.error(error.message || "An unexpected error occurred.");
     } finally {
       setLoading(false);
     }

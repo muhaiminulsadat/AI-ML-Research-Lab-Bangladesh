@@ -106,8 +106,14 @@ export async function createWorkshop(data) {
       data: convertToObject(newWorkshop),
     };
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      return {success: false, message: error.errors[0].message};
+    if (error?.name === "ZodError") {
+      return {
+        success: false,
+        message:
+          error.issues?.[0]?.message ||
+          error.errors?.[0]?.message ||
+          "Validation error",
+      };
     }
     console.error("Error creating workshop:", error);
     return {success: false, message: "Failed to create workshop."};
@@ -136,8 +142,14 @@ export async function updateWorkshop(id, data) {
       data: convertToObject(updated),
     };
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      return {success: false, message: error.errors[0].message};
+    if (error?.name === "ZodError") {
+      return {
+        success: false,
+        message:
+          error.issues?.[0]?.message ||
+          error.errors?.[0]?.message ||
+          "Validation error",
+      };
     }
     console.error("Error updating workshop:", error);
     return {success: false, message: "Failed to update workshop."};
@@ -270,11 +282,20 @@ export async function registerForWorkshop(formData) {
       data: convertToObject(newRegistration),
     };
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      return {success: false, message: error.errors[0].message};
+    if (error?.name === "ZodError") {
+      return {
+        success: false,
+        message:
+          error.issues?.[0]?.message ||
+          error.errors?.[0]?.message ||
+          "Validation error",
+      };
     }
     console.error("Error registering for workshop:", error);
-    return {success: false, message: "Failed to register for workshop."};
+    return {
+      success: false,
+      message: error?.message || "Failed to register for workshop.",
+    };
   }
 }
 

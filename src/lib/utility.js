@@ -1,6 +1,11 @@
 import {getCurrentUser} from "@/lib/auth";
 
-export const convertToObject = (data) => JSON.parse(JSON.stringify(data));
+export const convertToObject = (data) => {
+  if (data && typeof data.toObject === "function") {
+    data = data.toObject();
+  }
+  return JSON.parse(JSON.stringify(data));
+};
 
 export async function requireAdmin() {
   const {user} = await getCurrentUser();

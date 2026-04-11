@@ -10,10 +10,18 @@ import {z} from "zod";
 
 const courseSchema = z.object({
   title: z.string().min(3, "Title must be at least 3 characters."),
-  description: z.string().min(10, "Description must be at least 10 characters."),
+  description: z
+    .string()
+    .min(10, "Description must be at least 10 characters."),
   instructor: z.string().min(1, "Instructor ID is required."),
-  difficulty: z.enum(["beginner", "intermediate", "advanced"]).default("beginner"),
-  thumbnail: z.string().url("Invalid thumbnail URL.").optional().or(z.string().length(0)),
+  difficulty: z
+    .enum(["beginner", "intermediate", "advanced"])
+    .default("beginner"),
+  thumbnail: z
+    .string()
+    .url("Invalid thumbnail URL.")
+    .optional()
+    .or(z.string().length(0)),
   tags: z.array(z.string()).optional(),
   isPublished: z.boolean().optional().default(false),
 });
@@ -39,8 +47,14 @@ export async function createCourse(data) {
       data: convertToObject(newCourse),
     };
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      return {success: false, message: error.errors[0].message};
+    if (error?.name === "ZodError") {
+      return {
+        success: false,
+        message:
+          error.issues?.[0]?.message ||
+          error.errors?.[0]?.message ||
+          "Validation error",
+      };
     }
     console.error("Error creating course:", error);
     return {
