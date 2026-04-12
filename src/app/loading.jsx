@@ -1,4 +1,4 @@
-import { Skeleton } from "@/components/ui/skeleton";
+import {Skeleton} from "@/components/ui/skeleton";
 
 export default function Loading() {
   return (
@@ -9,7 +9,7 @@ export default function Loading() {
           <Skeleton className="h-5 w-[250px] md:w-[350px]" />
           <Skeleton className="h-5 w-[200px] md:w-[300px]" />
         </div>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {[1, 2, 3, 4, 5, 6].map((i) => (
             <div key={i} className="flex flex-col space-y-4">

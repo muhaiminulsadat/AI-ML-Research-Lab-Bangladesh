@@ -13,7 +13,7 @@ export const sendWorkshopApprovalEmail = async (
   workshopTitle,
 ) => {
   try {
-    // If we don't have credentials, we shouldn't crash the server action, just warn.
+
     if (!process.env.SMTP_EMAIL || !process.env.SMTP_PASSWORD) {
       console.warn("SMTP_EMAIL or SMTP_PASSWORD is not set. Email not sent.");
       return {success: false, message: "Credentials not configured"};

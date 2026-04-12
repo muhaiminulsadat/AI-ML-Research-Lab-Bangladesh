@@ -30,6 +30,7 @@ export default function RegistrationForm({workshop, user}) {
     name: user?.name || "",
     email: user?.email || "",
     institution: user?.university || user?.institution || "",
+    department: user?.department || "",
     designation: user?.designation || "",
     student_id: user?.student_id || "",
     phone: "",
@@ -61,7 +62,11 @@ export default function RegistrationForm({workshop, user}) {
   const currentStepIsValid = () => {
     if (step === 1) {
       const isBaseValid =
-        formData.name && formData.email && formData.institution;
+        formData.name &&
+        formData.email &&
+        formData.phone &&
+        formData.institution &&
+        formData.department;
       if (formData.designation === "Student") {
         return isBaseValid && !!formData.student_id;
       }
@@ -250,6 +255,22 @@ export default function RegistrationForm({workshop, user}) {
             </div>
             <div className="space-y-2">
               <Label
+                htmlFor="department"
+                className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1 block"
+              >
+                Department *
+              </Label>
+              <Input
+                id="department"
+                value={formData.department}
+                onChange={(e) => updateForm("department", e.target.value)}
+                required
+                disabled={!!user && !!user?.department}
+                placeholder="Computer Science and Engineering"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label
                 htmlFor="designation"
                 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1 block"
               >
@@ -303,12 +324,13 @@ export default function RegistrationForm({workshop, user}) {
                 htmlFor="phone"
                 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1 block"
               >
-                Phone Number
+                Phone Number *
               </Label>
               <Input
                 id="phone"
                 value={formData.phone}
                 onChange={(e) => updateForm("phone", e.target.value)}
+                required
                 placeholder="+880 1XXX-XXXXXX"
               />
             </div>
@@ -469,6 +491,11 @@ export default function RegistrationForm({workshop, user}) {
                 <span className="text-muted-foreground">Institution:</span>
                 <span className="font-medium text-foreground break-words">
                   {formData.institution}
+                </span>
+
+                <span className="text-muted-foreground">Department:</span>
+                <span className="font-medium text-foreground break-words">
+                  {formData.department}
                 </span>
 
                 {formData.designation && (

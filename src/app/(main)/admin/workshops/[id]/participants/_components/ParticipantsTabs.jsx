@@ -207,7 +207,7 @@ export default function ParticipantsTabs({registrations}) {
     };
 
     const headers =
-      "Name,Email,Phone,Institution,Designation,Participation Type,Registration Status,Speaker Status,Presentation Title,Presentation Type,Abstract,Co-Authors,File URL,Submitted At\n";
+      "Name,Email,Phone,Institution,Department,Designation,Participation Type,Registration Status,Speaker Status,Presentation Title,Presentation Type,Abstract,Co-Authors,File URL,Submitted At\n";
 
     const rows = activeData
       .map((r) => {
@@ -216,6 +216,7 @@ export default function ParticipantsTabs({registrations}) {
           escapeCSV(r.email),
           escapeCSV(r.phone),
           escapeCSV(r.institution),
+          escapeCSV(r.department || r.user_id?.department || "N/A"),
           escapeCSV(r.designation),
           escapeCSV(r.participation_type),
           escapeCSV(r.status),
@@ -342,9 +343,15 @@ export default function ParticipantsTabs({registrations}) {
                       <div className="text-sm font-medium text-foreground line-clamp-1">
                         {p.institution}
                       </div>
+                      <div className="text-xs font-medium text-muted-foreground line-clamp-1 flex gap-1">
+                        <span className="opacity-70">Dept:</span>
+                        <span>
+                          {p.department || p.user_id?.department || "N/A"}
+                        </span>
+                      </div>
                       {p.designation && (
                         <div className="text-xs text-muted-foreground/80 mt-0.5 line-clamp-1">
-                          {p.designation}
+                          Role: {p.designation}
                         </div>
                       )}
                     </TableCell>
@@ -440,12 +447,20 @@ export default function ParticipantsTabs({registrations}) {
                       </div>
                     </TableCell>
                     <TableCell className="py-4">
-                      <div className="text-sm font-medium text-foreground">
+                      <div className="text-sm font-medium text-foreground line-clamp-1">
                         {p.institution}
                       </div>
-                      <div className="text-xs text-muted-foreground/80 mt-0.5">
-                        {p.designation}
+                      <div className="text-xs font-medium text-muted-foreground line-clamp-1 flex gap-1 mt-0.5">
+                        <span className="opacity-70">Dept:</span>
+                        <span>
+                          {p.department || p.user_id?.department || "N/A"}
+                        </span>
                       </div>
+                      {p.designation && (
+                        <div className="text-xs text-muted-foreground/80 mt-0.5 line-clamp-1">
+                          Role: {p.designation}
+                        </div>
+                      )}
                     </TableCell>
                     <TableCell className="py-4 text-sm text-muted-foreground">
                       {format(new Date(p.createdAt), "MMM d, yyyy")}
@@ -515,8 +530,14 @@ export default function ParticipantsTabs({registrations}) {
                       <div className="font-semibold text-foreground">
                         {s.name}
                       </div>
-                      <div className="text-xs text-muted-foreground mt-0.5">
+                      <div className="text-xs text-muted-foreground mt-0.5 line-clamp-1">
                         {s.institution}
+                      </div>
+                      <div className="text-xs font-medium text-muted-foreground/80 mt-0.5 flex gap-1 line-clamp-1">
+                        <span className="opacity-70">Dept:</span>
+                        <span>
+                          {s.department || s.user_id?.department || "N/A"}
+                        </span>
                       </div>
                       {s.speaker_details?.file_url && (
                         <a

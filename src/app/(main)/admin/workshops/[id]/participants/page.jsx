@@ -41,7 +41,7 @@ export default async function WorkshopParticipantsPage({params}) {
             Workshop Registrations
           </h1>
           <p className="text-muted-foreground mt-1 text-sm sm:text-base line-clamp-2">
-            Manage participants and speakers for "{workshop.title}"
+            Manage participants and speakers for &quot;{workshop.title}&quot;
           </p>
         </div>
       </div>

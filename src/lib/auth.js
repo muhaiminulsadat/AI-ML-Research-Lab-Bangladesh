@@ -6,7 +6,13 @@ import {redirect} from "next/navigation";
 import {nextCookies} from "better-auth/next-js";
 import connectDB from "./db";
 import {admin} from "better-auth/plugins";
-import {ac, memberRole, advisorRole, core_panelRole, adminRole} from "@/lib/permissions";
+import {
+  ac,
+  memberRole,
+  advisorRole,
+  core_panelRole,
+  adminRole,
+} from "@/lib/permissions";
 
 const mongooseInstance = await connectDB();
 const client = mongooseInstance.connection.getClient();
@@ -25,6 +31,10 @@ export const auth = betterAuth({
     },
     additionalFields: {
       university: {
+        type: "string",
+        input: true,
+      },
+      department: {
         type: "string",
         input: true,
       },

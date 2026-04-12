@@ -3,6 +3,7 @@ import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import {
   BookOpen,
   Building2,
+  Library,
   ExternalLink,
   GitBranch,
   GraduationCap,
@@ -169,11 +170,21 @@ export default function MemberCard({member}) {
           </div>
         </div>
 
-        {/* University */}
+        {/* University & Department */}
         {member?.university && (
-          <div className="mt-3 flex items-center gap-2 text-muted-foreground">
-            <Building2 className="h-3 w-3 shrink-0 opacity-60" />
-            <span className="text-xs truncate">{member.university}</span>
+          <div className="mt-3 flex flex-col gap-1.5 text-muted-foreground">
+            <div className="flex items-center gap-2">
+              <Building2 className="h-3 w-3 shrink-0 opacity-60" />
+              <span className="text-xs truncate">{member.university}</span>
+            </div>
+            {member?.department && (
+              <div className="flex items-center gap-2 text-muted-foreground/80 pl-[2px]">
+                <Library className="h-3 w-3 shrink-0 opacity-50" />
+                <span className="text-[11px] truncate">
+                  {member.department}
+                </span>
+              </div>
+            )}
           </div>
         )}
 

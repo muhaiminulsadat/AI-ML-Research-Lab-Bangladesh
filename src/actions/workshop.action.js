@@ -129,7 +129,7 @@ export async function updateWorkshop(id, data) {
     await connectDB();
 
     const updated = await Workshop.findByIdAndUpdate(id, validated, {
-      returnDocument: 'after',
+      returnDocument: "after",
     }).lean();
 
     if (!updated) {
@@ -180,9 +180,10 @@ const registrationSchema = z.object({
   name: z.string().min(2, "Name is required"),
   email: z.string().email("Invalid email address"),
   institution: z.string().min(2, "Institution is required"),
+  department: z.string().min(2, "Department is required"),
   designation: z.string().optional(),
   student_id: z.string().optional(),
-  phone: z.string().optional(),
+  phone: z.string().min(5, "Phone number is required"),
   participation_type: z.enum(["participant", "speaker"]),
   speaker_details: z
     .object({
@@ -230,7 +231,11 @@ export async function registerForWorkshop(formData) {
         ...dataToValidate,
         name: dbUser?.name || user.name,
         email: dbUser?.email || user.email,
-        institution: dbUser?.university || dbUser?.institution || "",
+        institution:
+          dbUser?.university ||
+          dbUser?.institution ||
+          dataToValidate.institution,
+        department: dbUser?.department || dataToValidate.department,
       };
     }
 
@@ -373,7 +378,7 @@ export async function getAllRegistrations(workshopId, type = "all") {
     if (type === "speaker") query.participation_type = "speaker";
 
     const registrations = await WorkshopRegistration.find(query)
-      .populate("user_id", "profileImage")
+      .populate("user_id", "profileImage department university")
       .sort({createdAt: -1})
       .lean();
 
@@ -400,7 +405,7 @@ export async function updateRegistrationStatus(id, status) {
         reviewed_at: new Date(),
         reviewed_by: adminCheck.user.id,
       },
-      {returnDocument: 'after'},
+      {returnDocument: "after"},
     )
       .populate("workshop_id", "title")
       .lean();
@@ -438,7 +443,7 @@ export async function updateSpeakerStatus(id, speakerStatus) {
         reviewed_at: new Date(),
         reviewed_by: adminCheck.user.id,
       },
-      {returnDocument: 'after'},
+      {returnDocument: "after"},
     ).lean();
 
     return {

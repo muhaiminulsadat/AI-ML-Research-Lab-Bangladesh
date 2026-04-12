@@ -20,6 +20,9 @@ const userSchema = new mongoose.Schema(
     university: {
       type: String,
     },
+    department: {
+      type: String,
+    },
     designation: {
       type: String,
     },

@@ -107,7 +107,7 @@ export default function AdminMembersView({initialMembers}) {
               </div>
               <h3 className="text-lg font-semibold">No members found</h3>
               <p className="text-sm text-muted-foreground mt-1 max-w-sm">
-                We couldn't find any members matching your search.
+                We couldn&apos;t find any members matching your search.
               </p>
             </div>
           ) : (
@@ -118,7 +118,9 @@ export default function AdminMembersView({initialMembers}) {
                     <TableHead className="pl-6 h-12">User</TableHead>
                     <TableHead>Contact / University</TableHead>
                     <TableHead className="w-[180px] text-right">Role</TableHead>
-                    <TableHead className="w-[80px] pr-6 text-right">Actions</TableHead>
+                    <TableHead className="w-[80px] pr-6 text-right">
+                      Actions
+                    </TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -155,13 +157,20 @@ export default function AdminMembersView({initialMembers}) {
                             <span className="text-xs font-medium">
                               {member.university || "—"}
                             </span>
+                            {member.department && (
+                              <span className="text-[10px] text-muted-foreground">
+                                {member.department}
+                              </span>
+                            )}
                           </div>
                         </TableCell>
                         <TableCell className="pr-6 py-4 text-right">
                           <Select
                             disabled={updatingId === member._id}
                             value={member.role || "member"}
-                            onValueChange={(val) => handleRoleChange(member._id, val)}
+                            onValueChange={(val) =>
+                              handleRoleChange(member._id, val)
+                            }
                           >
                             <SelectTrigger className="w-[160px] h-8 ml-auto text-xs font-medium cursor-pointer hover:bg-muted/50 transition-colors">
                               <SelectValue placeholder="Assign Role" />
@@ -180,10 +189,10 @@ export default function AdminMembersView({initialMembers}) {
                           </Select>
                         </TableCell>
                         <TableCell className="pr-6 py-4 text-right">
-                           <DeleteMemberDialog 
-                             member={member} 
-                             onDeleteSuccess={handleDeleteSuccess} 
-                           />
+                          <DeleteMemberDialog
+                            member={member}
+                            onDeleteSuccess={handleDeleteSuccess}
+                          />
                         </TableCell>
                       </TableRow>
                     );
