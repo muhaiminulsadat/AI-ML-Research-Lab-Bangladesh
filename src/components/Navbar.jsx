@@ -45,7 +45,11 @@ const publicLinks = [
   {href: "/research", label: "Research"},
   {href: "/workshops", label: "Workshops"},
   {href: "/courses", label: "Courses"},
-  {href: "/contact", label: "Contact us"},
+  {
+    href: "mailto:contact@mlai-research-bd.org",
+    label: "Contact us",
+    external: true,
+  },
   {href: "/about", label: "About us"},
 ];
 
@@ -109,6 +113,25 @@ function NavLink({href, label, icon: Icon, onClick, mobile = false}) {
         : pathname === href || pathname.startsWith(`${href}/`);
 
   if (mobile) {
+    if (href.startsWith("mailto:")) {
+      return (
+        <a
+          href={href}
+          onClick={onClick}
+          className={cn(
+            "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-150 cursor-pointer",
+            "text-muted-foreground hover:text-foreground hover:bg-muted",
+          )}
+        >
+          {Icon ? (
+            <Icon className="h-4 w-4 shrink-0 text-muted-foreground" />
+          ) : (
+            <span className="h-1.5 w-1.5 rounded-full shrink-0 transition-colors bg-border" />
+          )}
+          {label}
+        </a>
+      );
+    }
     return (
       <Link
         href={href}
@@ -137,6 +160,22 @@ function NavLink({href, label, icon: Icon, onClick, mobile = false}) {
         )}
         {label}
       </Link>
+    );
+  }
+
+  if (href.startsWith("mailto:")) {
+    return (
+      <a
+        href={href}
+        onClick={onClick}
+        className={cn(
+          "relative text-sm font-medium transition-colors duration-200 cursor-pointer",
+          "after:absolute after:-bottom-0.5 after:left-0 after:h-px after:w-0 after:bg-primary after:transition-all after:duration-300 hover:after:w-full",
+          "text-muted-foreground hover:text-foreground",
+        )}
+      >
+        {label}
+      </a>
     );
   }
 
@@ -196,7 +235,9 @@ export default function Navbar({isMobileOnly = false}) {
               <Image
                 src="/logo.png"
                 alt="ML & AI Research Lab Logo"
-                fill sizes='40px' className="object-contain brightness-0 scale-[1.15]"
+                fill
+                sizes="40px"
+                className="object-contain brightness-0 scale-[1.15]"
                 priority
               />
             </div>
@@ -387,7 +428,9 @@ export default function Navbar({isMobileOnly = false}) {
                       <Image
                         src="/logo.png"
                         alt="ML & AI Research Lab Logo"
-                        fill sizes='40px' className="object-contain brightness-0 scale-[1.15]"
+                        fill
+                        sizes="40px"
+                        className="object-contain brightness-0 scale-[1.15]"
                       />
                     </div>
                     <div className="flex flex-col leading-none text-left">

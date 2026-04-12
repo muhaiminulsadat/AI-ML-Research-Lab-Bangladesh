@@ -16,7 +16,9 @@ export default function Footer() {
                 <Image
                   src="/logo.png"
                   alt="ML & AI Research Lab Logo"
-                  fill sizes='40px' className="object-contain brightness-0 scale-[1.15]"
+                  fill
+                  sizes="40px"
+                  className="object-contain brightness-0 scale-[1.15]"
                 />
               </div>
               <div className="flex flex-col leading-none">
@@ -124,10 +126,10 @@ export default function Footer() {
               <h4 className="text-sm font-bold text-foreground">Connect</h4>
               <nav className="flex flex-col gap-3">
                 <a
-                  href="mailto:contact@aimllab.bd"
+                  href="mailto:contact@mlai-research-bd.org"
                   className="text-[13px] text-muted-foreground hover:text-primary transition-colors font-medium relative w-fit group sm:mx-0 mx-auto"
                 >
-                  <span>contact@aimllab.bd</span>
+                  <span>contact@mlai-research-bd.org</span>
                   <span className="absolute -bottom-1 left-0 w-0 h-[1.5px] bg-primary transition-all duration-300 group-hover:w-full" />
                 </a>
               </nav>

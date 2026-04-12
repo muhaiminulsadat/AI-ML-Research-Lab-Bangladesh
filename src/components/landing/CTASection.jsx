@@ -18,7 +18,7 @@ export default function CTASection() {
             We are intensely looking for brilliant theorists, scaling engineers,
             and postdocs to accelerate upcoming multimodal initiatives.
           </p>
-          <div className="pt-4">
+          <div className="pt-4 flex flex-col items-center gap-6">
             <Link href="/members">
               <Button
                 size="lg"
@@ -28,6 +28,16 @@ export default function CTASection() {
                 <ArrowRight className="w-4 h-4 ml-2 opacity-70 group-hover:translate-x-1 group-hover:opacity-100 transition-all" />
               </Button>
             </Link>
+
+            <p className="text-sm text-muted-foreground/80 font-medium">
+              Official Mail:{" "}
+              <a
+                href="mailto:contact@mlai-research-bd.org"
+                className="text-foreground hover:text-primary transition-colors underline decoration-primary/30 underline-offset-4"
+              >
+                contact@mlai-research-bd.org
+              </a>
+            </p>
           </div>
         </div>
       </div>
