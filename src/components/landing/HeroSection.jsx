@@ -51,12 +51,6 @@ export default function HeroSection() {
         Pioneering the Next Generation of{" "}
         <span className="text-transparent bg-clip-text bg-linear-to-br from-primary via-primary/80 to-primary/40 drop-shadow-sm relative inline-block">
           Machine Intelligence
-          <motion.div
-            className="absolute -bottom-2 left-0 h-1 bg-linear-to-r from-primary/0 via-primary/60 to-primary/0"
-            initial={{width: "0%"}}
-            animate={{width: "100%"}}
-            transition={{duration: 1.5, delay: 0.8, ease: "easeOut"}}
-          />
         </span>
       </motion.h1>
 
