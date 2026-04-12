@@ -1,5 +1,6 @@
 import HeroSection from "@/components/landing/HeroSection";
 import HeroBackground from "@/components/landing/HeroBackground";
+import SponsorMarquee from "@/components/landing/SponsorMarquee";
 import MissionSection from "@/components/landing/MissionSection";
 import DomainsSection from "@/components/landing/DomainsSection";
 import ProjectsShowcase from "@/components/landing/ProjectsShowcase";
@@ -16,6 +17,7 @@ export default function HomePage() {
       <main className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-20 pb-32 space-y-16">
         <HeroSection />
         <MissionSection />
+        <SponsorMarquee />
         <DomainsSection />
         <ProjectsShowcase />
         {/* <TeamSection /> */}
