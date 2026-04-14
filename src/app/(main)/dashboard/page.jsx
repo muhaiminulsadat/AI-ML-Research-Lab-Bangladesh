@@ -3,11 +3,12 @@ import {redirect} from "next/navigation";
 import {getMemberStats} from "@/actions/user.action";
 import {getUserEnrollments} from "@/actions/enrollment.action";
 import DashboardView from "./_components/DashboardView";
+import {Suspense} from "react";
+import DashboardHeader from "./_components/DashboardHeader";
+import {Skeleton} from "@/components/ui/skeleton";
+import DashboardSkeleton from "./_components/DashboardSkeleton";
 
-export default async function DashboardPage() {
-  const {user} = await getCurrentUser();
-  if (!user) redirect("/login");
-
+async function DashboardContent({user}) {
   const [statsRes, enrollmentsRes] = await Promise.all([
     getMemberStats(),
     getUserEnrollments(),
@@ -19,6 +20,13 @@ export default async function DashboardPage() {
 
   const enrollments = enrollmentsRes.success ? enrollmentsRes.data : [];
 
+  return <DashboardView user={user} stats={stats} enrollments={enrollments} />;
+}
+
+export default async function DashboardPage() {
+  const {user} = await getCurrentUser();
+  if (!user) redirect("/login");
+
   const parsedUser = {
     ...user,
     socialLinks: user.socialLinks
@@ -27,5 +35,12 @@ export default async function DashboardPage() {
     researchInterests: user.researchInterests ?? [],
   };
 
-  return <DashboardView user={parsedUser} stats={stats} enrollments={enrollments} />;
+  return (
+    <div className="w-full max-w-7xl mx-auto px-4 lg:px-8 py-8 space-y-10">
+      <DashboardHeader user={parsedUser} />
+      <Suspense fallback={<DashboardSkeleton />}>
+        <DashboardContent user={parsedUser} />
+      </Suspense>
+    </div>
+  );
 }
