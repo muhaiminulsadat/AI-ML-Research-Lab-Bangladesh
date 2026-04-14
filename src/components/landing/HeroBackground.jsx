@@ -13,9 +13,7 @@ export default function HeroBackground() {
   return (
     <>
       <div className="absolute inset-x-0 top-0 h-[80vh] w-full pointer-events-none flex justify-center overflow-hidden">
-        <div
-          className="absolute inset-0 bg-grid-subtle opacity-40"
-        />
+        <div className="absolute inset-0 bg-grid-subtle opacity-40" />
         <div
           className="absolute inset-0"
           style={{
