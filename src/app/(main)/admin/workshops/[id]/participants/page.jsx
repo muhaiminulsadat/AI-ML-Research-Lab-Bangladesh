@@ -7,21 +7,15 @@ import {ArrowLeft} from "lucide-react";
 import Link from "next/link";
 import connectDB from "@/lib/db";
 import {Workshop} from "@/models/workshop.model";
+import {Suspense} from "react";
+import ParticipantsSkeleton from "./_components/ParticipantsSkeleton";
 
-export default async function WorkshopParticipantsPage({params}) {
-  const resolvedParams = await params;
-  const {user} = await getCurrentUser();
-  if (!user || user.role !== "admin") redirect("/dashboard");
-
+async function ParticipantsFetcher({id}) {
   await connectDB();
-  const workshop = await Workshop.findById(resolvedParams.id)
-    .select("title slug")
-    .lean();
+  const workshop = await Workshop.findById(id).select("title slug").lean();
   if (!workshop) redirect("/admin/workshops");
 
-  const {data: registrations = []} = await getAllRegistrations(
-    resolvedParams.id,
-  );
+  const {data: registrations = []} = await getAllRegistrations(id);
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-6xl">
@@ -48,5 +42,17 @@ export default async function WorkshopParticipantsPage({params}) {
 
       <ParticipantsTabs registrations={registrations || []} />
     </div>
+  );
+}
+
+export default async function WorkshopParticipantsPage({params}) {
+  const resolvedParams = await params;
+  const {user} = await getCurrentUser();
+  if (!user || user.role !== "admin") redirect("/dashboard");
+
+  return (
+    <Suspense fallback={<ParticipantsSkeleton />}>
+      <ParticipantsFetcher id={resolvedParams.id} />
+    </Suspense>
   );
 }

@@ -1,3 +1,4 @@
+import {Suspense} from "react";
 import {
   getWorkshopBySlug,
   checkAlreadyRegistered,
@@ -11,10 +12,10 @@ import Image from "next/image";
 import Link from "next/link";
 import RegistrationForm from "./_components/RegistrationForm";
 import {notFound} from "next/navigation";
+import WorkshopDetailsSkeleton from "./_components/WorkshopDetailsSkeleton";
 
-export default async function WorkshopDetailPage({params}) {
-  const resolvedParams = await params;
-  const {data: workshop} = await getWorkshopBySlug(resolvedParams.slug);
+async function WorkshopDetailsFetcher({slug}) {
+  const {data: workshop} = await getWorkshopBySlug(slug);
 
   if (!workshop) {
     return notFound();
@@ -82,7 +83,7 @@ export default async function WorkshopDetailPage({params}) {
             <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight text-foreground mb-4">
               {workshop.title}
             </h1>
-            <p className="text-base md:text-lg text-muted-foreground">
+            <p className="text-base md:text-lg text-muted-foreground whitespace-pre-wrap">
               {workshop.description}
             </p>
           </div>
@@ -158,10 +159,10 @@ export default async function WorkshopDetailPage({params}) {
                 <div className="bg-green-500/10 text-green-500 w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center mx-auto mb-4 border border-green-500/20">
                   <Users className="w-5 h-5 md:w-6 md:h-6" />
                 </div>
-                <h3 className="text-base md:text-lg font-bold text-foreground mb-1">
-                  You are already registered
+                <h3 className="font-semibold text-lg md:text-xl text-green-500 mb-2">
+                  You&apos;re Registered!
                 </h3>
-                <p className="text-muted-foreground text-xs md:text-sm">
+                <p className="text-sm text-green-500/70 font-medium">
                   We look forward to seeing you at the workshop. Check{" "}
                   <Link
                     href="/dashboard/my-registrations"
@@ -177,10 +178,10 @@ export default async function WorkshopDetailPage({params}) {
                 <div className="bg-red-500/10 text-red-500 w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center mx-auto mb-4 border border-red-500/20">
                   <Info className="w-5 h-5 md:w-6 md:h-6" />
                 </div>
-                <h3 className="text-base md:text-lg font-bold text-foreground mb-1">
+                <h3 className="font-semibold text-lg md:text-xl text-foreground mb-2">
                   Registration Closed
                 </h3>
-                <p className="text-muted-foreground text-xs md:text-sm">
+                <p className="text-sm text-muted-foreground">
                   We are no longer accepting registrations for this event.
                 </p>
               </div>
@@ -190,10 +191,10 @@ export default async function WorkshopDetailPage({params}) {
                 <div className="bg-amber-500/10 text-amber-500 w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center mx-auto mb-4 border border-amber-500/20">
                   <Users className="w-5 h-5 md:w-6 md:h-6" />
                 </div>
-                <h3 className="text-base md:text-lg font-bold text-foreground mb-1">
+                <h3 className="font-semibold text-lg md:text-xl text-foreground mb-2">
                   Workshop is Full
                 </h3>
-                <p className="text-muted-foreground text-xs md:text-sm">
+                <p className="text-sm text-muted-foreground">
                   This workshop has reached its maximum capacity.
                 </p>
               </div>
@@ -204,5 +205,14 @@ export default async function WorkshopDetailPage({params}) {
         </div>
       </div>
     </div>
+  );
+}
+
+export default async function WorkshopDetailPage({params}) {
+  const resolvedParams = await params;
+  return (
+    <Suspense fallback={<WorkshopDetailsSkeleton />}>
+      <WorkshopDetailsFetcher slug={resolvedParams.slug} />
+    </Suspense>
   );
 }
