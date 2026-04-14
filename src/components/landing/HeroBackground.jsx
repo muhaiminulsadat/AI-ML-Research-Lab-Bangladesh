@@ -13,17 +13,11 @@ export default function HeroBackground() {
   return (
     <>
       <div className="absolute inset-x-0 top-0 h-[80vh] w-full pointer-events-none flex justify-center overflow-hidden">
-        <motion.div
-          initial={{opacity: 0}}
-          animate={{opacity: 0.4}}
-          transition={{duration: 1}}
-          className="absolute inset-0 bg-grid-subtle"
+        <div
+          className="absolute inset-0 bg-grid-subtle opacity-40"
         />
-        <motion.div
+        <div
           className="absolute inset-0"
-          initial={{opacity: 0, scale: 0.95}}
-          animate={{opacity: 1, scale: 1}}
-          transition={{duration: 2.5, ease: "easeOut"}}
           style={{
             backgroundImage:
               "linear-gradient(to right, oklch(1 0 0 / 0.04) 1px, transparent 1px), linear-gradient(to bottom, oklch(1 0 0 / 0.04) 1px, transparent 1px)",
