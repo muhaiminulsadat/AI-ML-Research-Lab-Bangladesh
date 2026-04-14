@@ -6,21 +6,6 @@ import Image from "next/image";
 
 const sponsors = [
   {
-    name: "Shah Cement",
-    isBrand: true,
-    renderLogo: () => (
-      <div className="relative flex items-center justify-center h-8 md:h-12 px-2 w-[100px] md:w-[160px]">
-        <Image
-          src="https://shahcement.com/assets/images/logo.png"
-          alt="Shah Cement Logo"
-          fill
-          sizes="(max-width: 768px) 100px, 160px"
-          className="object-contain drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]"
-        />
-      </div>
-    ),
-  },
-  {
     name: "Jamuna TV",
     isBrand: true,
     renderLogo: () => (
@@ -58,7 +43,7 @@ export default function SponsorMarquee() {
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/[0.03] shadow-[0_0_0_1px_rgba(255,255,255,0.05)_inset]">
             <Sparkles className="w-3.5 h-3.5 text-primary" />
             <span className="text-[10px] font-bold text-white/70 uppercase tracking-[0.25em]">
-              Our Sponsors & Media Partners
+              Our Media Partners
             </span>
           </div>
         </div>
