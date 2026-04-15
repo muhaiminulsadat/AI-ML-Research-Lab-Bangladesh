@@ -140,7 +140,7 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="mt-12 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-xs text-muted-foreground font-medium">
-            &copy; {new Date().getFullYear()} ML & AI Research Lab BD. All
+            &copy; 2026 ML & AI Research Lab BD. All
             rights reserved.
           </p>
           <div className="flex gap-6 text-xs text-muted-foreground font-medium">

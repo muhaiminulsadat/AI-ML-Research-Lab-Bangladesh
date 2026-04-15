@@ -11,7 +11,7 @@ async function AdminDataFetcher() {
   const [membersResult, coursesResult, publicationsResult] = await Promise.all([
     adminGetAllUsers(),
     getCourses(true),
-    getPublications(),
+    getPublications(true),
   ]);
 
   const stats = {

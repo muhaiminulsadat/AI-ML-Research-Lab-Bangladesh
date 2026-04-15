@@ -3,6 +3,8 @@ import {getEnrollment} from "@/actions/enrollment.action";
 import {getCurrentUser} from "@/lib/auth";
 import {redirect, notFound} from "next/navigation";
 import CourseDetailView from "./_components/CourseDetailView";
+import {Suspense} from "react";
+import CourseDetailSkeleton from "./_components/CourseDetailSkeleton";
 
 export async function generateMetadata({params}) {
   const {courseId} = await params;
@@ -12,8 +14,7 @@ export async function generateMetadata({params}) {
   return {title: `${res.data.title} | ML & AI Lab`};
 }
 
-export default async function CourseDetailPage({params}) {
-  const {courseId} = await params;
+async function CourseDetailFetcher({courseId}) {
   const userRes = await getCurrentUser();
 
   if (!userRes?.user) {
@@ -39,5 +40,14 @@ export default async function CourseDetailPage({params}) {
       course={courseRes.data}
       initialEnrollment={enrollmentRes.data || null}
     />
+  );
+}
+
+export default async function CourseDetailPage({params}) {
+  const {courseId} = await params;
+  return (
+    <Suspense fallback={<CourseDetailSkeleton />}>
+      <CourseDetailFetcher courseId={courseId} />
+    </Suspense>
   );
 }

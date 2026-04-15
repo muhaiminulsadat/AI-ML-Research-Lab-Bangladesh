@@ -3,7 +3,7 @@ import {auth, getAllUsers} from "@/lib/auth";
 import connectDB from "@/lib/db";
 import {convertToObject, requireAdmin} from "@/lib/utility";
 import {User} from "@/models/user.model";
-import {revalidatePath} from "next/cache";
+import {revalidatePath, revalidateTag, cacheTag} from "next/cache";
 import {headers} from "next/headers";
 import {getCurrentUser} from "@/lib/auth";
 import {Enrollment} from "@/models/enrollment.model";
@@ -98,6 +98,8 @@ export async function updateProfile(data) {
       },
     });
 
+    revalidateTag("members");
+    revalidateTag("members-stats");
     revalidatePath("/profile");
     return {success: true, data: response};
   } catch (error) {
@@ -112,6 +114,8 @@ export async function updateProfile(data) {
 }
 
 export async function getMemberStats() {
+  "use cache";
+  cacheTag("members-stats");
   try {
     const users = await getAllUsers();
     return {
@@ -129,6 +133,8 @@ export async function getMemberStats() {
 }
 
 export async function getMembers() {
+  "use cache";
+  cacheTag("members");
   try {
     await connectDB();
     const users = await User.find({}).sort({createdAt: -1}).lean();
@@ -170,6 +176,8 @@ export async function changeRole(userId, role) {
       headers: await headers(),
     });
 
+    revalidateTag("members");
+    revalidateTag("members-stats");
     revalidatePath("/admin/members");
     revalidatePath("/members");
 
@@ -213,6 +221,8 @@ export async function deleteUser(userId) {
     // 2. Cleanup associated enrollments (Mongoose related)
     await Enrollment.deleteMany({user: userId});
 
+    revalidateTag("members");
+    revalidateTag("members-stats");
     revalidatePath("/admin/members");
     revalidatePath("/members");
 

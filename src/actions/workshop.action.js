@@ -8,6 +8,7 @@ import {requireAdmin, convertToObject} from "@/lib/utility";
 import {getCurrentUser} from "@/lib/auth";
 import {sendWorkshopApprovalEmail} from "@/lib/mail";
 import {z} from "zod";
+import {cacheTag, revalidateTag} from "next/cache";
 
 // --- WORKSHOP SCHEMA VALIDATION ---
 
@@ -43,6 +44,8 @@ const generateSlug = (title) => {
 // --- WORKSHOP ACTIONS ---
 
 export async function getWorkshops(status) {
+  "use cache";
+  cacheTag("workshops");
   try {
     await connectDB();
     const query = status ? {status} : {};
@@ -59,6 +62,8 @@ export async function getWorkshops(status) {
 }
 
 export async function getWorkshopBySlug(slug) {
+  "use cache";
+  cacheTag(slug ? `workshops-${slug}` : "workshops-slug");
   try {
     await connectDB();
     const workshop = await Workshop.findOne({slug}).lean();
@@ -100,6 +105,8 @@ export async function createWorkshop(data) {
       created_by: adminCheck.user.id,
     });
 
+    revalidateTag("workshops");
+
     return {
       success: true,
       message: "Workshop created successfully.",
@@ -136,6 +143,9 @@ export async function updateWorkshop(id, data) {
       return {success: false, message: "Workshop not found."};
     }
 
+    revalidateTag("workshops");
+    revalidateTag(`workshops-${updated.slug}`);
+
     return {
       success: true,
       message: "Workshop updated successfully.",
@@ -162,9 +172,12 @@ export async function deleteWorkshop(id) {
     if (!adminCheck.authorized) return adminCheck.response;
 
     await connectDB();
-    await Workshop.findByIdAndDelete(id);
-    // Also delete associated registrations
-    await WorkshopRegistration.deleteMany({workshop_id: id});
+    const workshop = await Workshop.findByIdAndDelete(id);
+    if (workshop) {
+      await WorkshopRegistration.deleteMany({workshop_id: id});
+      revalidateTag("workshops");
+      revalidateTag(`workshops-${workshop.slug}`);
+    }
 
     return {success: true, message: "Workshop deleted successfully."};
   } catch (error) {
@@ -280,6 +293,9 @@ export async function registerForWorkshop(formData) {
     await Workshop.findByIdAndUpdate(validated.workshop_id, {
       $inc: {seats_filled: 1},
     });
+
+    revalidateTag("workshops");
+    revalidateTag(`workshops-${workshop.slug}`);
 
     return {
       success: true,

@@ -4,7 +4,7 @@ import connectDB from "@/lib/db";
 import {Publication} from "@/models/publication.model";
 import {getCurrentUser} from "@/lib/auth";
 import {convertToObject, requireAdmin} from "@/lib/utility";
-import {revalidatePath} from "next/cache";
+import {revalidatePath, cacheTag, revalidateTag} from "next/cache";
 
 export async function createPublication(data) {
   try {
@@ -16,6 +16,7 @@ export async function createPublication(data) {
     const newPublication = new Publication(data);
     await newPublication.save();
 
+    revalidateTag("publications");
     revalidatePath("/admin/publications");
     revalidatePath("/research");
 
@@ -30,14 +31,40 @@ export async function createPublication(data) {
   }
 }
 
-export async function getPublications(statusFilter = null) {
+async function getCachedPublications(statusFilter) {
+  "use cache";
+  cacheTag("publications");
+  try {
+    await connectDB();
+    const query = statusFilter ? {status: statusFilter} : {};
+    const publications = await Publication.find(query).sort({date: -1}).lean();
+
+    return {
+      success: true,
+      data: convertToObject(publications),
+    };
+  } catch (error) {
+    console.error("Error fetching cached publications:", error);
+    return {success: false, message: error.message};
+  }
+}
+
+export async function getPublications(
+  isAdminView = false,
+  statusFilter = null,
+) {
+  if (!isAdminView) {
+    return getCachedPublications(statusFilter);
+  }
+
   try {
     await connectDB();
 
+    const adminCheck = await requireAdmin();
+    if (!adminCheck.authorized) return adminCheck.response;
+
     const query = statusFilter ? {status: statusFilter} : {};
-    const publications = await Publication.find(query)
-      .sort({date: -1})
-      .lean();
+    const publications = await Publication.find(query).sort({date: -1}).lean();
 
     return {
       success: true,
@@ -59,13 +86,14 @@ export async function updatePublication(id, data) {
     const updated = await Publication.findByIdAndUpdate(
       id,
       {$set: data},
-      {returnDocument: 'after', runValidators: true},
+      {returnDocument: "after", runValidators: true},
     ).lean();
 
     if (!updated) {
       return {success: false, message: "Publication not found"};
     }
 
+    revalidateTag("publications");
     revalidatePath("/admin/publications");
     revalidatePath("/research");
 
@@ -93,6 +121,7 @@ export async function deletePublication(id) {
       return {success: false, message: "Publication not found"};
     }
 
+    revalidateTag("publications");
     revalidatePath("/admin/publications");
     revalidatePath("/research");
 

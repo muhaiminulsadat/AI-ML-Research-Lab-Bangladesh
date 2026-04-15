@@ -5,6 +5,7 @@ import {Course} from "@/models/course.model";
 import {User} from "@/models/user.model";
 import {requireAdmin, convertToObject} from "@/lib/utility";
 import {getCurrentUser} from "@/lib/auth";
+import {cacheTag, revalidateTag} from "next/cache";
 
 import {z} from "zod";
 
@@ -41,6 +42,8 @@ export async function createCourse(data) {
       modules: [],
     });
 
+    revalidateTag("courses");
+
     return {
       success: true,
       message: "Course created successfully.",
@@ -64,20 +67,44 @@ export async function createCourse(data) {
   }
 }
 
+async function getCachedCourses() {
+  "use cache";
+  cacheTag("courses");
+  try {
+    await connectDB();
+    const courses = await Course.find({isPublished: true})
+      .populate("instructor", "name email profileImage")
+      .sort({createdAt: -1})
+      .lean();
+
+    return {
+      success: true,
+      message: "Courses retrieved successfully.",
+      data: convertToObject(courses),
+    };
+  } catch (error) {
+    console.error("Error fetching cached courses:", error);
+    return {
+      success: false,
+      message: "Failed to fetch courses. Please try again.",
+    };
+  }
+}
+
 export async function getCourses(isAdminView = false) {
+  if (!isAdminView) {
+    return getCachedCourses();
+  }
+
   try {
     await connectDB();
 
-    if (isAdminView) {
-      const adminCheck = await requireAdmin();
-      if (!adminCheck.authorized) {
-        return adminCheck.response;
-      }
+    const adminCheck = await requireAdmin();
+    if (!adminCheck.authorized) {
+      return adminCheck.response;
     }
 
-    const query = isAdminView ? {} : {isPublished: true};
-
-    const courses = await Course.find(query)
+    const courses = await Course.find({})
       .populate("instructor", "name email profileImage")
       .sort({createdAt: -1})
       .lean();
@@ -96,23 +123,48 @@ export async function getCourses(isAdminView = false) {
   }
 }
 
-export async function getCourseById(courseId, isAdminView = false) {
+async function getCachedCourseById(courseId) {
+  "use cache";
+  cacheTag(`courses-${courseId}`);
   try {
     await connectDB();
 
-    if (isAdminView) {
-      const adminCheck = await requireAdmin();
-      if (!adminCheck.authorized) {
-        return adminCheck.response;
-      }
+    const course = await Course.findOne({_id: courseId, isPublished: true})
+      .populate("instructor", "name email profileImage")
+      .lean();
+
+    if (!course) {
+      return {success: false, message: "Course not found."};
     }
 
-    const query = {_id: courseId};
-    if (!isAdminView) {
-      query.isPublished = true;
+    return {
+      success: true,
+      message: "Course retrieved successfully.",
+      data: convertToObject(course),
+    };
+  } catch (error) {
+    console.error("Error fetching cached course by ID:", error);
+    return {
+      success: false,
+      message: "Failed to fetch course. Please try again.",
+    };
+  }
+}
+
+export async function getCourseById(courseId, isAdminView = false) {
+  if (!isAdminView) {
+    return getCachedCourseById(courseId);
+  }
+
+  try {
+    await connectDB();
+
+    const adminCheck = await requireAdmin();
+    if (!adminCheck.authorized) {
+      return adminCheck.response;
     }
 
-    const course = await Course.findOne(query)
+    const course = await Course.findOne({_id: courseId})
       .populate("instructor", "name email profileImage")
       .lean();
 
@@ -205,6 +257,9 @@ export async function toggleCoursePublish(courseId, isPublished) {
       return {success: false, message: "Course not found."};
     }
 
+    revalidateTag("courses");
+    revalidateTag(`courses-${courseId}`);
+
     return {
       success: true,
       message: `Course ${isPublished ? "published" : "unpublished"} successfully.`,
@@ -259,6 +314,9 @@ export async function addLectureToModule(courseId, moduleId, data) {
 
     await course.save();
 
+    revalidateTag("courses");
+    revalidateTag(`courses-${courseId}`);
+
     return {
       success: true,
       message: "Lecture added successfully.",
@@ -304,6 +362,9 @@ export async function updateCourse(courseId, data) {
       return {success: false, message: "Course not found."};
     }
 
+    revalidateTag("courses");
+    revalidateTag(`courses-${courseId}`);
+
     return {
       success: true,
       message: "Course updated successfully.",
@@ -327,6 +388,9 @@ export async function deleteCourse(courseId) {
     if (!deleted) {
       return {success: false, message: "Course not found."};
     }
+
+    revalidateTag("courses");
+    revalidateTag(`courses-${courseId}`);
 
     return {success: true, message: "Course deleted successfully."};
   } catch (error) {
@@ -357,6 +421,9 @@ export async function updateModule(courseId, moduleId, data) {
     module.title = title;
     await course.save();
 
+    revalidateTag("courses");
+    revalidateTag(`courses-${courseId}`);
+
     return {
       success: true,
       message: "Module updated successfully.",
@@ -383,6 +450,9 @@ export async function deleteModule(courseId, moduleId) {
 
     course.modules.pull(moduleId);
     await course.save();
+
+    revalidateTag("courses");
+    revalidateTag(`courses-${courseId}`);
 
     return {
       success: true,
@@ -423,6 +493,9 @@ export async function updateLecture(courseId, moduleId, lectureId, data) {
 
     await course.save();
 
+    revalidateTag("courses");
+    revalidateTag(`courses-${courseId}`);
+
     return {
       success: true,
       message: "Lecture updated successfully.",
@@ -449,6 +522,9 @@ export async function deleteLecture(courseId, moduleId, lectureId) {
 
     module.lectures.pull(lectureId);
     await course.save();
+
+    revalidateTag("courses");
+    revalidateTag(`courses-${courseId}`);
 
     return {
       success: true,

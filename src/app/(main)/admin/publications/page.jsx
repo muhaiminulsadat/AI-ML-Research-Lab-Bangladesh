@@ -11,7 +11,7 @@ export default async function AdminPublicationsPage() {
   const {user} = await getCurrentUser();
   if (!user || user.role !== "admin") redirect("/dashboard");
 
-  const pubResult = await getPublications();
+  const pubResult = await getPublications(true);
   const publications = pubResult.success ? pubResult.data : [];
 
   return (

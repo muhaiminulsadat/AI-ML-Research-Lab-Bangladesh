@@ -97,12 +97,12 @@ async function WorkshopsList({currentTab}) {
   );
 }
 
-export default async function WorkshopsPage({searchParams}) {
+async function WorkshopsTabs({searchParams}) {
   const params = await searchParams;
   const currentTab = params?.tab === "past" ? "past" : "upcoming";
 
   return (
-    <div className="container mx-auto px-4 py-12 max-w-7xl">
+    <>
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
         <div>
           <h1 className="text-2xl md:text-3xl font-bold tracking-tight">
@@ -130,8 +130,16 @@ export default async function WorkshopsPage({searchParams}) {
         </div>
       </div>
 
-      <Suspense fallback={<WorkshopsSkeleton />} key={currentTab}>
-        <WorkshopsList currentTab={currentTab} />
+      <WorkshopsList currentTab={currentTab} />
+    </>
+  );
+}
+
+export default function WorkshopsPage({searchParams}) {
+  return (
+    <div className="container mx-auto px-4 py-12 max-w-7xl">
+      <Suspense fallback={<WorkshopsSkeleton />}>
+        <WorkshopsTabs searchParams={searchParams} />
       </Suspense>
     </div>
   );
