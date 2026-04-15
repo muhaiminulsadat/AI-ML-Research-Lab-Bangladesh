@@ -54,17 +54,19 @@ export default function EditPublicationDialog({
 
   useEffect(() => {
     if (publication) {
-      setFormData({
-        title: publication.title || "",
-        status: publication.status || "ongoing",
-        venue: publication.venue || "",
-        abstract: publication.abstract || "",
-        paperUrl: publication.paperUrl || "",
-        codeUrl: publication.codeUrl || "",
-        authors: publication.authors || [],
-        tags: publication.tags || [],
-        date: publication.date ? new Date(publication.date) : new Date(),
-      });
+      setTimeout(() => {
+        setFormData({
+          title: publication.title || "",
+          status: publication.status || "ongoing",
+          venue: publication.venue || "",
+          abstract: publication.abstract || "",
+          paperUrl: publication.paperUrl || "",
+          codeUrl: publication.codeUrl || "",
+          authors: publication.authors || [],
+          tags: publication.tags || [],
+          date: publication.date ? new Date(publication.date) : new Date(),
+        });
+      }, 0);
     }
   }, [publication]);
 

@@ -29,7 +29,7 @@ export default function EditModuleDialog({
 
   useEffect(() => {
     if (module) {
-      setTitle(module.title || "");
+      setTimeout(() => setTitle(module.title || ""), 0);
     }
   }, [module]);
 

@@ -2,6 +2,7 @@ import {
   getMyRegistrations,
   cancelRegistration,
 } from "@/actions/workshop.action";
+import {connection} from "next/server";
 import {getCurrentUser} from "@/lib/auth";
 import {redirect} from "next/navigation";
 import {Badge} from "@/components/ui/badge";
@@ -50,14 +51,15 @@ function RegistrationsSkeleton() {
   );
 }
 
-async function RegistrationsList() {
+async function AsyncRegistrationsList() {
+  await connection(); // Fixes Next.js 16 dynamic boundary issue during static generation
   const {data: registrations = []} = await getMyRegistrations();
 
   if (registrations.length === 0) {
     return (
       <div className="text-center py-20 border border-white/5 rounded-xl bg-muted/20">
         <p className="text-muted-foreground mb-4">
-          You haven't registered for any upcoming workshops yet.
+          You haven&apos;t registered for any upcoming workshops yet.
         </p>
         <Button asChild>
           <Link href="/workshops">Browse Workshops</Link>
@@ -241,7 +243,7 @@ export default async function MyRegistrationsPage() {
       </div>
 
       <Suspense fallback={<RegistrationsSkeleton />}>
-        <RegistrationsList />
+        <AsyncRegistrationsList />
       </Suspense>
     </div>
   );

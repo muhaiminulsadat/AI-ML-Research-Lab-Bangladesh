@@ -144,15 +144,25 @@ export async function getMembers() {
   }
 }
 
-export async function adminGetAllUsers() {
+async function getCachedAllUsers() {
+  "use cache";
+  cacheTag("members");
   try {
     await connectDB();
+    const allUsers = await User.find({}).sort({createdAt: -1}).lean();
+    return {success: true, data: convertToObject(allUsers)};
+  } catch (error) {
+    console.error("getCachedAllUsers error:", error);
+    return {success: false, message: error.message || "Something went wrong."};
+  }
+}
 
+export async function adminGetAllUsers() {
+  try {
     const {authorized, response} = await requireAdmin();
     if (!authorized) return response;
 
-    const allUsers = await User.find({}).sort({createdAt: -1}).lean();
-    return {success: true, data: convertToObject(allUsers)};
+    return getCachedAllUsers();
   } catch (error) {
     console.error("adminGetAllUsers error:", error);
     return {success: false, message: error.message || "Something went wrong."};

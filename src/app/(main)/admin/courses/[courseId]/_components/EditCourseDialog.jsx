@@ -38,13 +38,15 @@ export default function EditCourseDialog({course, open, onOpenChange, onSuccess}
 
   useEffect(() => {
     if (course) {
-      setFormData({
-        title: course.title || "",
-        description: course.description || "",
-        thumbnail: course.thumbnail || "",
-        difficulty: course.difficulty || "beginner",
-        tags: course.tags || [],
-      });
+      setTimeout(() => {
+        setFormData({
+          title: course.title || "",
+          description: course.description || "",
+          thumbnail: course.thumbnail || "",
+          difficulty: course.difficulty || "beginner",
+          tags: course.tags || [],
+        });
+      }, 0);
     }
   }, [course]);
 

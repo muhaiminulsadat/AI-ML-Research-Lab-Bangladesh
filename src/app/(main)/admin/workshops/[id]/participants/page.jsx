@@ -9,8 +9,10 @@ import connectDB from "@/lib/db";
 import {Workshop} from "@/models/workshop.model";
 import {Suspense} from "react";
 import ParticipantsSkeleton from "./_components/ParticipantsSkeleton";
+import {connection} from "next/server";
 
 async function ParticipantsFetcher({id}) {
+  await connection(); // Force dynamic streaming but keep page shell static
   await connectDB();
   const workshop = await Workshop.findById(id).select("title slug").lean();
   if (!workshop) redirect("/admin/workshops");

@@ -18,7 +18,7 @@ export default function ClientAppShell({children}) {
   useEffect(() => {
     const saved = localStorage.getItem("sidebarCollapsed");
     if (saved) {
-      setIsCollapsed(JSON.parse(saved));
+      setTimeout(() => setIsCollapsed(JSON.parse(saved)), 0);
     }
   }, []);
 

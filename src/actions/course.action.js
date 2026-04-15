@@ -5,7 +5,7 @@ import {Course} from "@/models/course.model";
 import {User} from "@/models/user.model";
 import {requireAdmin, convertToObject} from "@/lib/utility";
 import {getCurrentUser} from "@/lib/auth";
-import {cacheTag, revalidateTag} from "next/cache";
+import {cacheTag, revalidateTag, revalidatePath} from "next/cache";
 
 import {z} from "zod";
 
@@ -43,6 +43,7 @@ export async function createCourse(data) {
     });
 
     revalidateTag("courses");
+    revalidatePath("/admin/courses");
 
     return {
       success: true,
@@ -91,19 +92,11 @@ async function getCachedCourses() {
   }
 }
 
-export async function getCourses(isAdminView = false) {
-  if (!isAdminView) {
-    return getCachedCourses();
-  }
-
+async function getCachedAdminCourses() {
+  "use cache";
+  cacheTag("courses");
   try {
     await connectDB();
-
-    const adminCheck = await requireAdmin();
-    if (!adminCheck.authorized) {
-      return adminCheck.response;
-    }
-
     const courses = await Course.find({})
       .populate("instructor", "name email profileImage")
       .sort({createdAt: -1})
@@ -114,6 +107,27 @@ export async function getCourses(isAdminView = false) {
       message: "Courses retrieved successfully.",
       data: convertToObject(courses),
     };
+  } catch (error) {
+    console.error("Error fetching cached admin courses:", error);
+    return {
+      success: false,
+      message: "Failed to fetch courses. Please try again.",
+    };
+  }
+}
+
+export async function getCourses(isAdminView = false) {
+  if (!isAdminView) {
+    return getCachedCourses();
+  }
+
+  try {
+    const adminCheck = await requireAdmin();
+    if (!adminCheck.authorized) {
+      return adminCheck.response;
+    }
+
+    return getCachedAdminCourses();
   } catch (error) {
     console.error("Error fetching courses:", error);
     return {

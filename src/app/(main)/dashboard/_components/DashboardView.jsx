@@ -67,6 +67,8 @@ const QuickLink = ({href, icon: Icon, label, description, color, bg}) => (
   </Link>
 );
 
+import Image from "next/image";
+
 export default function DashboardView({user, stats, enrollments = []}) {
   const role = roleConfig[user?.role] ?? roleConfig.member;
   const RoleIcon = role.icon;
@@ -118,10 +120,11 @@ export default function DashboardView({user, stats, enrollments = []}) {
               <div className="relative p-6 md:p-8 flex flex-col md:flex-row gap-8 items-center">
                 <div className="relative w-full md:w-48 aspect-video rounded-2xl overflow-hidden border shadow-inner shrink-0 bg-muted">
                   {activeEnrollment.course.thumbnail ? (
-                    <img
+                    <Image
                       src={activeEnrollment.course.thumbnail}
-                      className="w-full h-full object-cover"
-                      alt=""
+                      fill
+                      className="object-cover"
+                      alt={activeEnrollment.course.title || "Course thumbnail"}
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center">

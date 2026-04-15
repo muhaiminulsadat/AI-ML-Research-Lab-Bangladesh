@@ -34,11 +34,13 @@ export default function EditLectureDialog({
 
   useEffect(() => {
     if (lecture) {
-      setFormData({
-        title: lecture.title || "",
-        youtubeId: lecture.youtubeId || "",
-        duration: lecture.duration ? String(lecture.duration) : "",
-      });
+      setTimeout(() => {
+        setFormData({
+          title: lecture.title || "",
+          youtubeId: lecture.youtubeId || "",
+          duration: lecture.duration ? String(lecture.duration) : "",
+        });
+      }, 0);
     }
   }, [lecture]);
 

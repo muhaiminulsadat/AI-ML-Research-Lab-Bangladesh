@@ -296,6 +296,9 @@ export async function registerForWorkshop(formData) {
 
     revalidateTag("workshops");
     revalidateTag(`workshops-${workshop.slug}`);
+    if (userId) {
+      revalidateTag(`user-registrations-${userId}`); // Invalidate specific user cache
+    }
 
     return {
       success: true,
@@ -320,6 +323,25 @@ export async function registerForWorkshop(formData) {
   }
 }
 
+async function getCachedUserRegistrations(userId) {
+  "use cache";
+  cacheTag(`user-registrations-${userId}`);
+  
+  await connectDB();
+  const registrations = await WorkshopRegistration.find({user_id: userId})
+    .populate(
+      "workshop_id",
+      "title slug start_date venue banner_image accepts_speakers",
+    )
+    .sort({createdAt: -1})
+    .lean();
+
+  return {
+    success: true,
+    data: convertToObject(registrations),
+  };
+}
+
 export async function getMyRegistrations() {
   try {
     const {user} = await getCurrentUser();
@@ -327,19 +349,7 @@ export async function getMyRegistrations() {
       return {success: false, message: "Unauthorized"};
     }
 
-    await connectDB();
-    const registrations = await WorkshopRegistration.find({user_id: user.id})
-      .populate(
-        "workshop_id",
-        "title slug start_date venue banner_image accepts_speakers",
-      )
-      .sort({createdAt: -1})
-      .lean();
-
-    return {
-      success: true,
-      data: convertToObject(registrations),
-    };
+    return await getCachedUserRegistrations(user.id);
   } catch (error) {
     console.error("Error fetching user registrations:", error);
     return {success: false, message: "Failed to fetch registrations."};
@@ -373,6 +383,9 @@ export async function cancelRegistration(id) {
     });
 
     await WorkshopRegistration.findByIdAndDelete(id);
+    
+    revalidateTag(`user-registrations-${user.id}`);
+    revalidateTag("workshops");
 
     return {success: true, message: "Registration cancelled successfully"};
   } catch (error) {

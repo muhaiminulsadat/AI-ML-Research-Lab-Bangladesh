@@ -19,7 +19,7 @@ import DeleteWorkshopDialog from "./_components/DeleteWorkshopDialog";
 import AdminWorkshopsSkeleton from "./_components/AdminWorkshopsSkeleton";
 
 async function AdminWorkshopsFetcher() {
-  const {data: workshops = []} = await getWorkshops();
+  const {data: workshops = []} = await getWorkshops(true);
 
   return (
     <div className="bg-[#090A0F] border border-white/10 rounded-xl overflow-hidden shadow-2xl">

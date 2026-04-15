@@ -5,9 +5,22 @@ import {useEffect, useState} from "react";
 
 export default function HeroBackground() {
   const [mounted, setMounted] = useState(false);
+  const [particles, setParticles] = useState([]);
 
   useEffect(() => {
-    setMounted(true);
+    setTimeout(() => {
+      setMounted(true);
+      setParticles(
+        Array.from({length: 15}).map(() => ({
+          width: Math.random() * 6 + 2,
+          height: Math.random() * 6 + 2,
+          top: Math.random() * 100,
+          left: Math.random() * 100,
+          xOffset: Math.random() * 20 - 10,
+          duration: Math.random() * 5 + 5,
+        }))
+      );
+    }, 0);
   }, []);
 
   return (
@@ -49,23 +62,23 @@ export default function HeroBackground() {
       {/* Animated Floating Particles/Nodes for AI theme */}
       {mounted && (
         <div className="absolute inset-0 overflow-hidden pointer-events-none z-0 mix-blend-screen opacity-50">
-          {[...Array(15)].map((_, i) => (
+          {particles.map((p, i) => (
             <motion.div
               key={i}
               className="absolute bg-primary/30 rounded-full blur-[2px]"
               style={{
-                width: Math.random() * 6 + 2 + "px",
-                height: Math.random() * 6 + 2 + "px",
-                top: Math.random() * 100 + "%",
-                left: Math.random() * 100 + "%",
+                width: p.width + "px",
+                height: p.height + "px",
+                top: p.top + "%",
+                left: p.left + "%",
               }}
               animate={{
                 y: [0, -30, 0],
-                x: [0, Math.random() * 20 - 10, 0],
+                x: [0, p.xOffset, 0],
                 opacity: [0.2, 0.8, 0.2],
               }}
               transition={{
-                duration: Math.random() * 5 + 5,
+                duration: p.duration,
                 repeat: Infinity,
                 ease: "easeInOut",
               }}

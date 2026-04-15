@@ -1,3 +1,4 @@
+import {Suspense} from "react";
 import "./globals.css";
 import {cn} from "@/lib/utils";
 import {Toaster} from "@/components/ui/sonner";
@@ -29,7 +30,9 @@ export default function RootLayout({children}) {
       suppressHydrationWarning
     >
       <body className="min-h-screen bg-background font-sans">
-        <ClientAppShell>{children}</ClientAppShell>
+        <Suspense fallback={null}>
+          <ClientAppShell>{children}</ClientAppShell>
+        </Suspense>
         <Toaster position="top-center" richColors />
       </body>
     </html>

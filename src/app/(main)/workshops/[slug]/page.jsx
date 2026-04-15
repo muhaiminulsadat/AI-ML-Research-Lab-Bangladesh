@@ -11,10 +11,12 @@ import {Calendar, MapPin, Users, Info, Settings} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import RegistrationForm from "./_components/RegistrationForm";
+import {connection} from "next/server";
 import {notFound} from "next/navigation";
 import WorkshopDetailsSkeleton from "./_components/WorkshopDetailsSkeleton";
 
 async function WorkshopDetailsFetcher({slug}) {
+  await connection(); // Force dynamic streaming but keep page shell static
   const {data: workshop} = await getWorkshopBySlug(slug);
 
   if (!workshop) {

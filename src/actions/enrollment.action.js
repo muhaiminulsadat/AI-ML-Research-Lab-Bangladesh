@@ -3,8 +3,10 @@
 import connectDB from "@/lib/db";
 import {Enrollment} from "@/models/enrollment.model";
 import {Course} from "@/models/course.model";
-import { getCurrentUser } from "@/lib/auth";
-import { convertToObject } from "@/lib/utility";
+import {getCurrentUser} from "@/lib/auth";
+import {convertToObject} from "@/lib/utility";
+
+import {cacheTag, revalidateTag} from "next/cache";
 
 // Helper to get enrollment state
 export async function getEnrollment(courseId) {
@@ -12,7 +14,7 @@ export async function getEnrollment(courseId) {
     const session = await getCurrentUser();
     const user = session?.user;
     if (!user) {
-      return { success: false, message: "Unauthorized", data: null };
+      return {success: false, message: "Unauthorized", data: null};
     }
 
     await connectDB();
@@ -27,8 +29,46 @@ export async function getEnrollment(courseId) {
     };
   } catch (error) {
     console.error("Error fetching enrollment:", error);
-    return { success: false, message: error.message };
+    return {success: false, message: error.message};
   }
+}
+
+async function getCachedUserEnrollments(userId) {
+  "use cache";
+  cacheTag(`user-enrollments-${userId}`);
+
+  await connectDB();
+
+  const enrollments = await Enrollment.find({user: userId})
+    .populate({
+      path: "course",
+      select: "title thumbnail difficulty modules tags",
+    })
+    .sort({updatedAt: -1})
+    .lean();
+
+  const enriched = enrollments
+    .filter((e) => e.course)
+    .map((e) => {
+      const totalLectures =
+        e.course.modules?.reduce(
+          (acc, mod) => acc + (mod.lectures?.length || 0),
+          0,
+        ) || 0;
+      return {
+        ...e,
+        totalLectures,
+        progress:
+          totalLectures > 0
+            ? Math.round((e.completedLectures.length / totalLectures) * 100)
+            : 0,
+      };
+    });
+
+  return {
+    success: true,
+    data: convertToObject(enriched),
+  };
 }
 
 export async function getUserEnrollments() {
@@ -36,42 +76,13 @@ export async function getUserEnrollments() {
     const session = await getCurrentUser();
     const user = session?.user;
     if (!user) {
-      return { success: false, message: "Unauthorized", data: [] };
+      return {success: false, message: "Unauthorized", data: []};
     }
 
-    await connectDB();
-
-    const enrollments = await Enrollment.find({ user: user.id })
-      .populate({
-        path: "course",
-        select: "title thumbnail difficulty modules tags",
-      })
-      .sort({ updatedAt: -1 })
-      .lean();
-
-    const enriched = enrollments
-      .filter((e) => e.course)
-      .map((e) => {
-        const totalLectures = e.course.modules?.reduce(
-          (acc, mod) => acc + (mod.lectures?.length || 0),
-          0,
-        ) || 0;
-        return {
-          ...e,
-          totalLectures,
-          progress: totalLectures > 0
-            ? Math.round((e.completedLectures.length / totalLectures) * 100)
-            : 0,
-        };
-      });
-
-    return {
-      success: true,
-      data: convertToObject(enriched),
-    };
+    return await getCachedUserEnrollments(user.id);
   } catch (error) {
     console.error("Error fetching user enrollments:", error);
-    return { success: false, message: error.message, data: [] };
+    return {success: false, message: error.message, data: []};
   }
 }
 
@@ -81,14 +92,14 @@ export async function enrollUser(courseId) {
     const session = await getCurrentUser();
     const user = session?.user;
     if (!user) {
-      return { success: false, message: "Unauthorized" };
+      return {success: false, message: "Unauthorized"};
     }
 
     await connectDB();
-    
+
     // Check if course exists
     const course = await Course.findById(courseId);
-    if (!course) return { success: false, message: "Course not found" };
+    if (!course) return {success: false, message: "Course not found"};
 
     const existingEnrollment = await Enrollment.findOne({
       user: user.id,
@@ -96,7 +107,11 @@ export async function enrollUser(courseId) {
     });
 
     if (existingEnrollment) {
-      return { success: true, message: "Already enrolled", data: convertToObject(existingEnrollment) };
+      return {
+        success: true,
+        message: "Already enrolled",
+        data: convertToObject(existingEnrollment),
+      };
     }
 
     const newEnrollment = await Enrollment.create({
@@ -105,6 +120,8 @@ export async function enrollUser(courseId) {
       completedLectures: [],
     });
 
+    revalidateTag(`user-enrollments-${user.id}`);
+
     return {
       success: true,
       message: "Successfully enrolled in the course",
@@ -112,7 +129,7 @@ export async function enrollUser(courseId) {
     };
   } catch (error) {
     console.error("Error enrolling user:", error);
-    return { success: false, message: error.message };
+    return {success: false, message: error.message};
   }
 }
 
@@ -122,7 +139,7 @@ export async function toggleLectureComplete(courseId, lectureId) {
     const session = await getCurrentUser();
     const user = session?.user;
     if (!user) {
-      return { success: false, message: "Unauthorized" };
+      return {success: false, message: "Unauthorized"};
     }
 
     await connectDB();
@@ -133,14 +150,17 @@ export async function toggleLectureComplete(courseId, lectureId) {
     });
 
     if (!enrollment) {
-      return { success: false, message: "You must enroll in the course first to save progress." };
+      return {
+        success: false,
+        message: "You must enroll in the course first to save progress.",
+      };
     }
 
     const isCompleted = enrollment.completedLectures.includes(lectureId);
 
     if (isCompleted) {
       enrollment.completedLectures = enrollment.completedLectures.filter(
-        (id) => id.toString() !== lectureId.toString()
+        (id) => id.toString() !== lectureId.toString(),
       );
     } else {
       enrollment.completedLectures.push(lectureId);
@@ -152,20 +172,24 @@ export async function toggleLectureComplete(courseId, lectureId) {
         (acc, mod) => acc + (mod.lectures?.length || 0),
         0,
       );
-      const allDone = enrollment.completedLectures.length >= totalLectures && totalLectures > 0;
+      const allDone =
+        enrollment.completedLectures.length >= totalLectures &&
+        totalLectures > 0;
       enrollment.isCompleted = allDone;
       enrollment.completedAt = allDone ? new Date() : null;
     }
 
     await enrollment.save();
 
+    revalidateTag(`user-enrollments-${user.id}`);
+
     return {
       success: true,
       message: isCompleted ? "Marked as uncompleted" : "Marked as completed",
-      data: convertToObject(enrollment)
+      data: convertToObject(enrollment),
     };
   } catch (error) {
     console.error("Error toggling lecture completion:", error);
-    return { success: false, message: error.message };
+    return {success: false, message: error.message};
   }
 }

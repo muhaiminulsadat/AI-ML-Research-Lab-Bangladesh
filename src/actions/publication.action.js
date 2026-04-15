@@ -49,31 +49,32 @@ async function getCachedPublications(statusFilter) {
   }
 }
 
-export async function getPublications(
-  isAdminView = false,
-  statusFilter = null,
-) {
-  if (!isAdminView) {
-    return getCachedPublications(statusFilter);
-  }
-
+async function getCachedAdminPublications() {
+  "use cache";
+  cacheTag("publications");
   try {
     await connectDB();
-
-    const adminCheck = await requireAdmin();
-    if (!adminCheck.authorized) return adminCheck.response;
-
-    const query = statusFilter ? {status: statusFilter} : {};
-    const publications = await Publication.find(query).sort({date: -1}).lean();
+    const publications = await Publication.find({}).sort({date: -1}).lean();
 
     return {
       success: true,
       data: convertToObject(publications),
     };
   } catch (error) {
-    console.error("Error fetching publications:", error);
+    console.error("Error fetching cached admin publications:", error);
     return {success: false, message: error.message};
   }
+}
+
+export async function getPublications(
+  isAdminView = false,
+  statusFilter = null,
+) {
+  if (isAdminView) {
+    return getCachedAdminPublications();
+  }
+
+  return getCachedPublications(statusFilter);
 }
 
 export async function updatePublication(id, data) {

@@ -6,8 +6,10 @@ import AdminView from "./_components/AdminView";
 import AdminSkeleton from "./_components/AdminSkeleton";
 import {getCurrentUser} from "@/lib/auth";
 import {redirect} from "next/navigation";
+import {connection} from "next/server";
 
 async function AdminDataFetcher() {
+  await connection();
   const [membersResult, coursesResult, publicationsResult] = await Promise.all([
     adminGetAllUsers(),
     getCourses(true),

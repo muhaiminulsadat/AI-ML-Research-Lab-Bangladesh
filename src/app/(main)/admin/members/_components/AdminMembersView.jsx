@@ -76,15 +76,6 @@ export default function AdminMembersView({initialMembers}) {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div>
-          <h2 className="text-2xl font-bold tracking-tight">Manage Members</h2>
-          <p className="text-sm text-muted-foreground mt-1">
-            Assign leadership roles to organize your directory.
-          </p>
-        </div>
-      </div>
-
       <Card>
         <CardHeader className="py-4 px-6 border-b border-border/40 bg-muted/20">
           <div className="flex items-center">

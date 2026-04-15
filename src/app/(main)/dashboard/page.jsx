@@ -8,7 +8,10 @@ import DashboardHeader from "./_components/DashboardHeader";
 import {Skeleton} from "@/components/ui/skeleton";
 import DashboardSkeleton from "./_components/DashboardSkeleton";
 
+import {connection} from "next/server";
+
 async function DashboardContent({user}) {
+  await connection();
   const [statsRes, enrollmentsRes] = await Promise.all([
     getMemberStats(),
     getUserEnrollments(),
