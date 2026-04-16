@@ -6,6 +6,8 @@ import {toast} from "sonner";
 import {Loader2, Trash2, AlertTriangle} from "lucide-react";
 import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
+import {Checkbox} from "@/components/ui/checkbox";
+import {Label} from "@/components/ui/label";
 import {
   Dialog,
   DialogContent,
@@ -20,13 +22,24 @@ import {deleteWorkshop} from "@/actions/workshop.action";
 export default function DeleteWorkshopDialog({workshopId, workshopTitle}) {
   const [isOpen, setIsOpen] = useState(false);
   const [confirmText, setConfirmText] = useState("");
+  const [isChecked, setIsChecked] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const isMatched = confirmText === workshopTitle;
+  const canDelete = isMatched && isChecked;
+
+  const handleOpenChange = (open) => {
+    if (loading) return;
+    setIsOpen(open);
+    if (!open) {
+      setConfirmText("");
+      setIsChecked(false);
+    }
+  };
 
   const handleDelete = async () => {
-    if (!isMatched) return;
+    if (!canDelete) return;
 
     setLoading(true);
     try {
@@ -46,7 +59,7 @@ export default function DeleteWorkshopDialog({workshopId, workshopTitle}) {
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={(open) => !loading && setIsOpen(open)}>
+    <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
         <Button
           variant="ghost"
@@ -58,7 +71,7 @@ export default function DeleteWorkshopDialog({workshopId, workshopTitle}) {
           <span className="sr-only">Delete</span>
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px] overflow-hidden">
+      <DialogContent className="sm:max-w-106.25 overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-1.5 bg-destructive" />
         <DialogHeader className="pt-4">
           <div className="mx-auto bg-destructive/10 w-12 h-12 rounded-full flex items-center justify-center mb-4">
@@ -97,6 +110,22 @@ export default function DeleteWorkshopDialog({workshopId, workshopTitle}) {
             autoComplete="off"
             autoCorrect="off"
           />
+
+          <div className="flex items-center space-x-2 pt-2">
+            <Checkbox
+              id="confirm-delete"
+              checked={isChecked}
+              onCheckedChange={setIsChecked}
+              disabled={loading}
+            />
+            <Label
+              htmlFor="confirm-delete"
+              className="text-xs text-muted-foreground leading-snug font-medium cursor-pointer"
+            >
+              I understand that this action is irreversible and all associated
+              data will be lost.
+            </Label>
+          </div>
         </div>
 
         <DialogFooter className="gap-2 sm:gap-0 mt-2">
@@ -111,7 +140,7 @@ export default function DeleteWorkshopDialog({workshopId, workshopTitle}) {
           <Button
             variant="destructive"
             onClick={handleDelete}
-            disabled={!isMatched || loading}
+            disabled={!canDelete || loading}
             className="w-full sm:w-auto relative overflow-hidden transition-all"
           >
             {loading ? (
