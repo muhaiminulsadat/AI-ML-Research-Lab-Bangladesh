@@ -90,7 +90,9 @@ export default function AppSidebar({user, isCollapsed, onToggleCollapse}) {
             <Image
               src="/logo.png"
               alt="Lab Logo"
-              fill sizes='40px' className="object-contain brightness-0 scale-[1.15]"
+              fill
+              sizes="40px"
+              className="object-contain brightness-0 scale-[1.15]"
             />
           </div>
           {!isCollapsed && (
@@ -143,6 +145,7 @@ export default function AppSidebar({user, isCollapsed, onToggleCollapse}) {
             <Link
               key={link.href}
               href={link.href}
+              prefetch={true}
               title={isCollapsed ? link.label : undefined}
               className={cn(
                 "flex items-center rounded-xl text-sm font-medium transition-all duration-200 group relative cursor-pointer",

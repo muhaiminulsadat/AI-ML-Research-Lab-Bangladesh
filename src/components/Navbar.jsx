@@ -135,6 +135,7 @@ function NavLink({href, label, icon: Icon, onClick, mobile = false}) {
     return (
       <Link
         href={href}
+        prefetch={true}
         onClick={onClick}
         className={cn(
           "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-150 cursor-pointer",
@@ -182,6 +183,7 @@ function NavLink({href, label, icon: Icon, onClick, mobile = false}) {
   return (
     <Link
       href={href}
+      prefetch={true}
       onClick={onClick}
       className={cn(
         "relative text-sm font-medium transition-colors duration-200 cursor-pointer",
