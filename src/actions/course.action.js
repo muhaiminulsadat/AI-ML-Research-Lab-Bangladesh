@@ -69,7 +69,7 @@ export async function createCourse(data) {
 }
 
 async function getCachedCourses() {
-  "use cache";
+  "use cache: remote";
   cacheTag("courses");
   try {
     await connectDB();
@@ -93,7 +93,7 @@ async function getCachedCourses() {
 }
 
 async function getCachedAdminCourses() {
-  "use cache";
+  "use cache: remote";
   cacheTag("courses");
   try {
     await connectDB();
@@ -138,7 +138,7 @@ export async function getCourses(isAdminView = false) {
 }
 
 async function getCachedCourseById(courseId) {
-  "use cache";
+  "use cache: remote";
   cacheTag(`courses-${courseId}`);
   try {
     await connectDB();

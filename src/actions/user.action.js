@@ -114,7 +114,7 @@ export async function updateProfile(data) {
 }
 
 export async function getMemberStats() {
-  "use cache";
+  "use cache: remote";
   cacheTag("members-stats");
   try {
     const users = await getAllUsers();
@@ -133,7 +133,7 @@ export async function getMemberStats() {
 }
 
 export async function getMembers() {
-  "use cache";
+  "use cache: remote";
   cacheTag("members");
   try {
     await connectDB();
@@ -145,7 +145,7 @@ export async function getMembers() {
 }
 
 async function getCachedAllUsers() {
-  "use cache";
+  "use cache: remote";
   cacheTag("members");
   try {
     await connectDB();

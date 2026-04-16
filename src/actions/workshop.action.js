@@ -44,7 +44,7 @@ const generateSlug = (title) => {
 // --- WORKSHOP ACTIONS ---
 
 export async function getWorkshops(status) {
-  "use cache";
+  "use cache: remote";
   cacheTag("workshops");
   try {
     await connectDB();
@@ -62,7 +62,7 @@ export async function getWorkshops(status) {
 }
 
 export async function getWorkshopBySlug(slug) {
-  "use cache";
+  "use cache: remote";
   cacheTag(slug ? `workshops-${slug}` : "workshops-slug");
   try {
     await connectDB();
@@ -324,7 +324,7 @@ export async function registerForWorkshop(formData) {
 }
 
 async function getCachedUserRegistrations(userId) {
-  "use cache";
+  "use cache: remote";
   cacheTag(`user-registrations-${userId}`);
   
   await connectDB();

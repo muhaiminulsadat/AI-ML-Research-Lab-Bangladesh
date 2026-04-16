@@ -34,7 +34,7 @@ export async function getEnrollment(courseId) {
 }
 
 async function getCachedUserEnrollments(userId) {
-  "use cache";
+  "use cache: remote";
   cacheTag(`user-enrollments-${userId}`);
 
   await connectDB();

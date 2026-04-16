@@ -32,7 +32,7 @@ export async function createPublication(data) {
 }
 
 async function getCachedPublications(statusFilter) {
-  "use cache";
+  "use cache: remote";
   cacheTag("publications");
   try {
     await connectDB();
@@ -50,7 +50,7 @@ async function getCachedPublications(statusFilter) {
 }
 
 async function getCachedAdminPublications() {
-  "use cache";
+  "use cache: remote";
   cacheTag("publications");
   try {
     await connectDB();
