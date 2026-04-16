@@ -207,7 +207,7 @@ export default function ParticipantsTabs({registrations}) {
     };
 
     const headers =
-      "Name,Email,Phone,Institution,Department,Designation,Participation Type,Registration Status,Speaker Status,Presentation Title,Presentation Type,Abstract,Co-Authors,File URL,Submitted At\n";
+      "Name,Email,Phone,Institution,Department,Designation,Student ID,Participation Type,Registration Status,Speaker Status,Presentation Title,Presentation Type,Abstract,Co-Authors,File URL,Submitted At\n";
 
     const rows = activeData
       .map((r) => {
@@ -218,6 +218,7 @@ export default function ParticipantsTabs({registrations}) {
           escapeCSV(r.institution),
           escapeCSV(r.department || r.user_id?.department || "N/A"),
           escapeCSV(r.designation),
+          escapeCSV(r.student_id || r.user_id?.student_id || "N/A"),
           escapeCSV(r.participation_type),
           escapeCSV(r.status),
           escapeCSV(r.speaker_status || "N/A"),
