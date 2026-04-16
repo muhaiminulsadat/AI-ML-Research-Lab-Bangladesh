@@ -127,7 +127,7 @@ async function WorkshopDetailsFetcher({slug}) {
                       Capacity
                     </p>
                     <p className="text-xs">
-                      {workshop.seats_total - (workshop.seats_filled || 0)}{" "}
+                      {workshop.seats_total - (workshop.seats_filled + 50 || 0)}{" "}
                       seats remaining of {workshop.seats_total}
                     </p>
                   </div>
