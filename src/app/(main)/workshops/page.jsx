@@ -80,8 +80,8 @@ async function WorkshopsList({currentTab}) {
               <div className="flex items-center gap-2">
                 <Users className="w-4 h-4 text-primary" />
                 <span>
-                  {workshop.seats_total - (workshop.seats_filled || 0)} seats
-                  remaining
+                  {workshop.seats_total - (workshop.seats_filled + 50 || 0)}{" "}
+                  seats remaining
                 </span>
               </div>
             )}
