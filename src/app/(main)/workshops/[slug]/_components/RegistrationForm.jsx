@@ -217,7 +217,7 @@ export default function RegistrationForm({workshop, user}) {
                 onChange={(e) => updateForm("name", e.target.value)}
                 required
                 disabled={!!user}
-                placeholder="Muhaiminul Sadat"
+                placeholder="e.g., Muhaiminul Islam Sadat"
               />
             </div>
             <div className="space-y-2">
@@ -234,7 +234,7 @@ export default function RegistrationForm({workshop, user}) {
                 onChange={(e) => updateForm("email", e.target.value)}
                 required
                 disabled={!!user}
-                placeholder="muhaiminulsadat@gmail.com"
+                placeholder="e.g., you@example.com"
               />
             </div>
             <div className="space-y-2">
@@ -250,7 +250,7 @@ export default function RegistrationForm({workshop, user}) {
                 onChange={(e) => updateForm("institution", e.target.value)}
                 required
                 disabled={!!user && !!user?.university}
-                placeholder="Bangladesh University of Engineering and Technology (BUET)"
+                placeholder="e.g., Bangladesh University of Engineering and Technology (BUET)"
               />
             </div>
             <div className="space-y-2">
@@ -266,7 +266,7 @@ export default function RegistrationForm({workshop, user}) {
                 onChange={(e) => updateForm("department", e.target.value)}
                 required
                 disabled={!!user && !!user?.department}
-                placeholder="Computer Science and Engineering"
+                placeholder="e.g., Civil Engineering"
               />
             </div>
             <div className="space-y-2">
