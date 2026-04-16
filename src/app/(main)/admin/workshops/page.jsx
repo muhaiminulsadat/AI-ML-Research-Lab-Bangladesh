@@ -145,10 +145,10 @@ async function AdminWorkshopsFetcher() {
                         <span className="sr-only">View</span>
                       </Link>
                     </Button>
-                    <DeleteWorkshopDialog
+                    {/* <DeleteWorkshopDialog
                       workshopId={workshop._id}
                       workshopTitle={workshop.title}
-                    />
+                    /> */}
                   </div>
                 </TableCell>
               </TableRow>
