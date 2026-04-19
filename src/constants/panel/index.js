@@ -23,7 +23,7 @@ export const directors = [
     institution: "Islamic University Of Technology (IUT)",
     department: "Civil Engineering",
     email: "nafinaib668@gmail.com",
-    url: null,
+    url: "https://drive.google.com/thumbnail?id=129zlts1tHKu4Cms7-FiY1jgndDx7uZZs&sz=w800",
   },
 ];
 
@@ -66,7 +66,7 @@ export const administration = [
     institution: "University Of Rajshahi",
     department: "Population Science & Human Resource Development",
     email: "diponna22@gmail.com",
-    url: null,
+    url: "https://drive.google.com/thumbnail?id=1Z2ivCF0YtVABIgECIj0_ExuxDNpZxJ7p&sz=w800",
   },
   {
     designation: "IR Secretary",
@@ -157,7 +157,7 @@ export const research = [
     institution: "Bangladesh University of Engineering and Technology (BUET)",
     department: "Urban and Regional Planning",
     email: "turjo2215027@gmail.com",
-    url: "https://drive.google.com/uc?export=view&id=16Vd7N7fbMkl9vrx3VhOTMRdZ_Z96OavB",
+    url: "https://drive.google.com/thumbnail?id=16Vd7N7fbMkl9vrx3VhOTMRdZ_Z96OavB&sz=w800",
   },
   {
     designation: "Research Assistant",
@@ -281,7 +281,7 @@ export const executives = [
     institution: "Chittagong University",
     department: "Electrical & Electronic Engineering(EEE)",
     email: "arponadhikary2001@gmail.com",
-    url: null,
+    url: "https://drive.google.com/thumbnail?id=18nE2ElAeJi2JbHIUtD_5jdj1GcIKZmfO&sz=w800",
   },
   {
     designation: "Executive Member",
@@ -298,7 +298,7 @@ export const executives = [
       "Hajee Mohammad Danesh Science and Technology University (HSTU)",
     department: "Electronics and Communication Engineering (ECE)",
     email: "chayand063@gmail.com",
-    url: null,
+    url: "https://drive.google.com/thumbnail?id=1GHieuq1AU2cJZ6Sx5-MkBEVxSjSJNRW4&sz=w800",
   },
   {
     designation: "Executive Member",
