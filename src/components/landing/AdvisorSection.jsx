@@ -1,4 +1,5 @@
 import {GraduationCap, Building2, BookOpen, Mail} from "lucide-react";
+import Image from "next/image";
 
 const ADVISORS = [
   {
@@ -20,6 +21,8 @@ const ADVISORS = [
     contact: "h.devnath@uq.edu.au",
     contactIcon: Mail,
     link: "https://www.researchgate.net/profile/Hiron-Devnath",
+    image:
+      "https://i1.rgstatic.net/ii/profile.image/11431281079629459-1660803288021_Q128/Hiron-Devnath.jpg",
   },
   {
     id: "03",
@@ -30,6 +33,8 @@ const ADVISORS = [
     contact: "BS (Honors), MS (Wildlife Biology), DU",
     contactIcon: GraduationCap,
     link: "https://cu.ac.bd/public_profile/index.php?ein=6327",
+    image:
+      "https://cu.ac.bd/assets/image/faculty_staff_users/1259_ITBE6QE66D.jpg",
   },
 ];
 
@@ -65,8 +70,18 @@ export default function AdvisorSection() {
               >
                 {/* Avatar */}
                 <div className="w-20 h-20 md:w-24 md:h-24 rounded-full border border-white/10 shrink-0 bg-linear-to-br from-white/5 to-transparent flex items-center justify-center p-1 relative overflow-hidden group-hover:border-primary/30 transition-colors duration-500 mt-2 mb-4 md:mb-6">
-                  <div className="w-full h-full rounded-full bg-[#050508] border border-white/5 flex flex-col items-center justify-center text-primary/80">
-                    <GraduationCap className="w-8 h-8 md:w-10 md:h-10 opacity-50 group-hover:scale-110 transition-transform duration-500" />
+                  <div className="w-full h-full rounded-full bg-[#050508] border border-white/5 flex flex-col items-center justify-center text-primary/80 overflow-hidden relative">
+                    {advisor.image ? (
+                      <Image
+                        src={advisor.image}
+                        alt={`${advisor.name}'s profile picture`}
+                        fill
+                        className="object-cover group-hover:scale-110 transition-transform duration-500"
+                        unoptimized // Adding unoptimized to avoid loader issues with external domains
+                      />
+                    ) : (
+                      <GraduationCap className="w-8 h-8 md:w-10 md:h-10 opacity-50 group-hover:scale-110 transition-transform duration-500" />
+                    )}
                   </div>
                 </div>
 
