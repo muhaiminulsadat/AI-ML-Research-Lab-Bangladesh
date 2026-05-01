@@ -5,14 +5,12 @@ import {X, Sparkles} from "lucide-react";
 import Link from "next/link";
 import {motion, AnimatePresence} from "framer-motion";
 
-export default function AnnouncementBanner() {
+export default function AnnouncementBanner({workshopSlug}) {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    // Check if the user has previously dismissed the banner
     const dismissed = localStorage.getItem("workshopBannerDismissed-v1");
     if (!dismissed) {
-      // Delay slightly for better UX (optional)
       const timer = setTimeout(() => setIsVisible(true), 500);
       return () => clearTimeout(timer);
     }
@@ -23,6 +21,10 @@ export default function AnnouncementBanner() {
     localStorage.setItem("workshopBannerDismissed-v1", "true");
   };
 
+  if (!workshopSlug) {
+    return null;
+  }
+
   return (
     <AnimatePresence>
       {isVisible && (
@@ -30,7 +32,7 @@ export default function AnnouncementBanner() {
           initial={{y: -50, opacity: 0}}
           animate={{y: 0, opacity: 1}}
           exit={{y: -50, opacity: 0}}
-          transition={{duration: 0.4, ease: [0.16, 1, 0.3, 1]}} // smooth spring-like easing
+          transition={{duration: 0.4, ease: [0.16, 1, 0.3, 1]}}
           className="relative w-full bg-gradient-to-r from-[oklch(0.5_0.12_210)] via-[oklch(0.6_0.12_210)] to-[oklch(0.7_0.12_210)] text-white py-1.5 md:py-2 px-2 z-[100] shadow-[0_2px_15px_oklch(0.7_0.12_210_/_0.3)]"
         >
           <div className="container flex sm:flex-row items-between justify-between sm:justify-between gap-1.5 sm:gap-4 mx-auto px-2 md:px-6">
@@ -51,7 +53,7 @@ export default function AnnouncementBanner() {
 
             <div className="flex items-center gap-2 shrink-0">
               <Link
-                href="/workshops/workshop-on-machine-learning-artificial-intelligence-2026"
+                href={`/workshops/${workshopSlug}`}
                 className="group flex items-center gap-1.5 text-[10px] sm:text-xs font-bold px-4 py-1.5 rounded-full bg-white text-black hover:bg-gray-100 hover:scale-105 hover:shadow-[0_0_15px_rgba(255,255,255,0.4)] transition-all duration-300 whitespace-nowrap"
               >
                 <span>Register Now</span>

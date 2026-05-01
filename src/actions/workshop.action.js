@@ -61,6 +61,27 @@ export async function getWorkshops(status) {
   }
 }
 
+export async function getLatestWorkshop() {
+  "use cache: remote";
+  cacheTag("latest-workshop");
+  try {
+    await connectDB();
+    const workshop = await Workshop.findOne().sort({createdAt: -1}).lean();
+
+    if (!workshop) {
+      return {success: false, message: "No workshops found."};
+    }
+
+    return {
+      success: true,
+      data: convertToObject(workshop),
+    };
+  } catch (error) {
+    console.error("Error fetching latest workshop:", error);
+    return {success: false, message: "Failed to fetch latest workshop."};
+  }
+}
+
 export async function getWorkshopBySlug(slug) {
   "use cache: remote";
   cacheTag(slug ? `workshops-${slug}` : "workshops-slug");
@@ -326,7 +347,7 @@ export async function registerForWorkshop(formData) {
 async function getCachedUserRegistrations(userId) {
   "use cache: remote";
   cacheTag(`user-registrations-${userId}`);
-  
+
   await connectDB();
   const registrations = await WorkshopRegistration.find({user_id: userId})
     .populate(
@@ -383,7 +404,7 @@ export async function cancelRegistration(id) {
     });
 
     await WorkshopRegistration.findByIdAndDelete(id);
-    
+
     revalidateTag(`user-registrations-${user.id}`);
     revalidateTag("workshops");
 

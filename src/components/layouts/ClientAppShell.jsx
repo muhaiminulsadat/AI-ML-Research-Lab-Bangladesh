@@ -9,7 +9,7 @@ import AnnouncementBanner from "@/components/AnnouncementBanner";
 import {useGetCurrentUser} from "@/hooks/useAuth";
 import {cn} from "@/lib/utils";
 
-export default function ClientAppShell({children}) {
+export default function ClientAppShell({children, workshopSlug}) {
   const pathname = usePathname();
   const {user, isPending} = useGetCurrentUser();
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -42,7 +42,7 @@ export default function ClientAppShell({children}) {
   if (isAppRoute) {
     return (
       <div className="flex flex-col min-h-screen bg-background text-foreground">
-        <AnnouncementBanner />
+        <AnnouncementBanner workshopSlug={workshopSlug} />
         <div className="flex flex-1">
           <AppSidebar
             user={user}
@@ -75,7 +75,7 @@ export default function ClientAppShell({children}) {
   // Public/Marketing Layout
   return (
     <div className="min-h-screen flex flex-col">
-      {!isAuthRoute && <AnnouncementBanner />}
+      {!isAuthRoute && <AnnouncementBanner workshopSlug={workshopSlug} />}
       <Navbar />
       <main className="flex-1 container mx-auto flex flex-col">{children}</main>
       <Footer />
