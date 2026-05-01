@@ -15,7 +15,7 @@ export const directors = [
     department:
       "Civil Engineering (CE) & Data Science and Artificial Intelligence (DS&AI)",
     email: "apurbokumar1355@gmail.com",
-    url: "https://scontent.fdac181-1.fna.fbcdn.net/v/t39.30808-6/592313144_2008977396612926_5360946863699538642_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=1d70fc&_nc_eui2=AeEfykd8Z66fBRmh7UfZxUY8-LRTmjC3SJv4tFOaMLdIm6GS4abqygTqpZ36t5cEU41x67w-xwVxsW4FSh-nT7YZ&_nc_ohc=afTCiPM13MAQ7kNvwH6vAJX&_nc_oc=AdpMg9LHTroIeSpWzB7BknSzzAjh5foOS6ybeXEQgRzQnGdO_NbRXHyRU9NSWTuYCh4&_nc_zt=23&_nc_ht=scontent.fdac181-1.fna&_nc_gid=10yUiXuqfXR2Nq1XyCe-RA&_nc_ss=7a3a8&oh=00_Af3YacgBVaFbKhzu_IcgG0-dDpGVG_hLSkhEpYVHt2KRjQ&oe=69DC5E29",
+    url: "https://scontent.fdac181-1.fna.fbcdn.net/v/t39.30808-6/592313144_2008977396612926_5360946863699538642_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=1d70fc&_nc_eui2=AeEfykd8Z66fBRmh7UfZxUY8-LRTmjC3SJv4tFOaMLdIm6GS4abqygTqpZ36t5cEU41x67w-xwVxsW4FSh-nT7YZ&_nc_ohc=x8xTSlQJFiwQ7kNvwFhpQ-r&_nc_oc=Adp6wBVtLMlRoY_VNjFr_jNPI3CaH6HoeZHdv94zClgE_sK-TdPvC6gq6dFmd3z38Dg&_nc_zt=23&_nc_ht=scontent.fdac181-1.fna&_nc_gid=ccSQBVXaAllB4NAxtewP9g&_nc_ss=7b2a8&oh=00_Af6EBr2bugLiG1g5JTSkSVLr0FObWTgUSmxmyyMAbgjzig&oe=69FA4029",
   },
   {
     designation: "Co-Director",
