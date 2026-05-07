@@ -19,6 +19,7 @@ import {Loader2, Save, ArrowLeft} from "lucide-react";
 import Link from "next/link";
 import {toast} from "sonner";
 import {format} from "date-fns";
+import ImageUploadField from "@/components/uploads/ImageUploadField";
 
 export default function WorkshopForm({initialData = null, isEdit = false}) {
   const router = useRouter();
@@ -173,17 +174,26 @@ export default function WorkshopForm({initialData = null, isEdit = false}) {
             </div>
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="banner_image">Banner Image URL</Label>
-            <Input
-              id="banner_image"
-              name="banner_image"
-              type="url"
-              value={formData.banner_image}
-              onChange={handleChange}
-              placeholder="https://example.com/image.jpg"
-            />
-          </div>
+          <ImageUploadField
+            label="Workshop Banner"
+            description="Upload a wide banner image for the workshop listing and detail page."
+            buttonText="Choose Banner"
+            initialPreviewUrl={formData.banner_image}
+            folder="ML-AI-Research-Lab/workshops"
+            fileName={
+              initialData?._id
+                ? `workshop-banner-${initialData._id}`
+                : `workshop-banner-${formData.title || "new"}`
+            }
+            useUniqueFileName={false}
+            disabled={loading}
+            onUploaded={(response) =>
+              setFormData((prev) => ({
+                ...prev,
+                banner_image: response?.url || "",
+              }))
+            }
+          />
         </div>
 
         {/* Configuration */}
