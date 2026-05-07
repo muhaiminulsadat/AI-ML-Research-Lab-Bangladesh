@@ -9,16 +9,12 @@ export default function AnnouncementBanner({workshopSlug}) {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    const dismissed = localStorage.getItem("workshopBannerDismissed-v1");
-    if (!dismissed) {
-      const timer = setTimeout(() => setIsVisible(true), 500);
-      return () => clearTimeout(timer);
-    }
+    const timer = setTimeout(() => setIsVisible(true), 500);
+    return () => clearTimeout(timer);
   }, []);
 
   const handleDismiss = () => {
     setIsVisible(false);
-    localStorage.setItem("workshopBannerDismissed-v1", "true");
   };
 
   if (!workshopSlug) {
@@ -33,14 +29,14 @@ export default function AnnouncementBanner({workshopSlug}) {
           animate={{y: 0, opacity: 1}}
           exit={{y: -50, opacity: 0}}
           transition={{duration: 0.4, ease: [0.16, 1, 0.3, 1]}}
-          className="relative w-full bg-gradient-to-r from-[oklch(0.5_0.12_210)] via-[oklch(0.6_0.12_210)] to-[oklch(0.7_0.12_210)] text-white py-1.5 md:py-2 px-2 z-[100] shadow-[0_2px_15px_oklch(0.7_0.12_210_/_0.3)]"
+          className="relative w-full bg-linear-to-r from-[oklch(0.5_0.12_210)] via-[oklch(0.6_0.12_210)] to-[oklch(0.7_0.12_210)] text-white py-1.5 md:py-2 px-2 z-100 shadow-[0_2px_15px_oklch(0.7_0.12_210/0.3)]"
         >
           <div className="container flex sm:flex-row items-between justify-between sm:justify-between gap-1.5 sm:gap-4 mx-auto px-2 md:px-6">
             <div className="flex items-center gap-1.5 text-[11px] sm:text-sm font-medium text-center flex-1 justify-between sm:justify-start leading-snug">
               <span>
-                <span className="inline-block animate-bounce mr-1 text-sm sm:text-base">
+                {/* <span className="inline-block animate-bounce mr-1 text-sm sm:text-base">
                   🚀
-                </span>{" "}
+                </span>{" "} */}
                 <span className="font-extrabold tracking-wide text-white">
                   NATIONAL WORKSHOP:{" "}
                   <span className="hidden sm:inline">
