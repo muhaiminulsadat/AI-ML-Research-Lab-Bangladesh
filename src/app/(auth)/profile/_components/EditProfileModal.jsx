@@ -24,7 +24,8 @@ import {Badge} from "@/components/ui/badge";
 import {toast} from "sonner";
 import {updateProfile} from "@/actions/user.action";
 import {authClient} from "@/lib/auth-client";
-import { useRouter } from "next/navigation";
+import {useRouter} from "next/navigation";
+import ImageUploadField from "@/components/uploads/ImageUploadField";
 
 export default function EditProfileModal({open, onClose, user}) {
   const [loading, setLoading] = useState(false);
@@ -43,7 +44,6 @@ export default function EditProfileModal({open, onClose, user}) {
   });
 
   const router = useRouter();
-
 
   const handleChange = (e) => {
     setForm((prev) => ({...prev, [e.target.name]: e.target.value}));
@@ -77,6 +77,43 @@ export default function EditProfileModal({open, onClose, user}) {
     }));
   };
 
+  const handleImageUploaded = async (response) => {
+    const uploadedUrl = response?.url || "";
+    setForm((prev) => ({
+      ...prev,
+      profileImage: uploadedUrl,
+    }));
+
+    setLoading(true);
+
+    try {
+      const updatedForm = {
+        name: form.name,
+        bio: form.bio,
+        university: form.university,
+        profileImage: uploadedUrl,
+        researchInterests: form.researchInterests,
+        socialLinks: form.socialLinks,
+      };
+
+      const res = await updateProfile(updatedForm);
+      if (!res.success) {
+        toast.error(res.error);
+        setLoading(false);
+        return;
+      }
+
+      await authClient.getSession({fetchOptions: {cache: "no-store"}});
+      toast.success("Profile image updated successfully!");
+      setLoading(false);
+      router.refresh();
+    } catch (error) {
+      console.error("Error saving profile image:", error);
+      toast.error("Failed to save profile image");
+      setLoading(false);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -88,7 +125,6 @@ export default function EditProfileModal({open, onClose, user}) {
       return;
     }
 
-  
     await authClient.getSession({fetchOptions: {cache: "no-store"}});
     toast.success("Profile updated!");
     setLoading(false);
@@ -103,9 +139,11 @@ export default function EditProfileModal({open, onClose, user}) {
           <DialogTitle className="flex items-center gap-2 font-bold text-xl">
             <User className="h-4 w-4" />
             Edit Profile
-          </DialogTitle>          <DialogDescription className="sr-only">
+          </DialogTitle>{" "}
+          <DialogDescription className="sr-only">
             Edit your profile details
-          </DialogDescription>        </DialogHeader>
+          </DialogDescription>{" "}
+        </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4 mt-2">
           {/* Name */}
@@ -123,20 +161,14 @@ export default function EditProfileModal({open, onClose, user}) {
             />
           </div>
 
-          {/* Profile Image URL */}
-          <div className="space-y-2">
-            <Label htmlFor="profileImage" className="flex items-center gap-1.5">
-              <Link2 className="h-3.5 w-3.5" /> Profile Image URL
-            </Label>
-            <Input
-              id="profileImage"
-              name="profileImage"
-              placeholder="https://..."
-              value={form.profileImage}
-              onChange={handleChange}
-              disabled={loading}
-            />
-          </div>
+          <ImageUploadField
+            initialPreviewUrl={user?.profileImage ?? ""}
+            folder="ML-AI-Research-Lab/profiles"
+            fileName={`profile-${user?.id}`}
+            useUniqueFileName={false}
+            disabled={loading}
+            onUploaded={handleImageUploaded}
+          />
 
           {/* University */}
           <div className="space-y-2">
