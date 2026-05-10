@@ -36,6 +36,18 @@ const ADVISORS = [
     image:
       "https://cu.ac.bd/assets/image/faculty_staff_users/1259_ITBE6QE66D.jpg",
   },
+  {
+    id: "04",
+    name: "Juty Singha",
+    designation: "Lecturer",
+    institution: "Daffodil International University",
+    department: "Computer Science and Engineering (CSE)",
+    // contact: "ID: 721500624",
+    contactIcon: Mail,
+    link: "https://www.linkedin.com/in/juty-singha-1748571b4/",
+    image:
+      "https://media.licdn.com/dms/image/v2/D5603AQH099eRaD8QSQ/profile-displayphoto-scale_400_400/B56ZyqY3JaIYAg-/0/1772385176423?e=1779926400&v=beta&t=-2_dva6JViWqL2b7jLUdkIECKp43zIJ6YR204xWXMPw",
+  },
 ];
 
 export default function AdvisorSection() {
