@@ -1,22 +1,39 @@
 import nodemailer from "nodemailer";
 
-/**
- * Sends a workshop approval email using Nodemailer.
- *
- * @param {string} toEmail - The recipient's email address
- * @param {string} userName - The recipient's name
- * @param {string} workshopTitle - The title of the approved workshop
- */
 export const sendWorkshopApprovalEmail = async (
   toEmail,
   userName,
-  workshopTitle,
+  workshop,
 ) => {
   try {
     if (!process.env.SMTP_EMAIL || !process.env.SMTP_PASSWORD) {
       console.warn("SMTP_EMAIL or SMTP_PASSWORD is not set. Email not sent.");
       return {success: false, message: "Credentials not configured"};
     }
+
+    const formatWorkshopDate = (value) => {
+      if (!value) return "To be announced";
+
+      const date = new Date(value);
+      if (Number.isNaN(date.getTime())) return "To be announced";
+
+      return new Intl.DateTimeFormat("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      }).format(date);
+    };
+
+    const workshopTitle = workshop?.title || "ML & AI Research Lab Workshop";
+    const workshopVenue =
+      workshop?.venue || workshop?.university || "To be announced";
+    const workshopDate = workshop?.start_date
+      ? workshop?.end_date &&
+        new Date(workshop.end_date).getTime() !==
+          new Date(workshop.start_date).getTime()
+        ? `${formatWorkshopDate(workshop.start_date)} - ${formatWorkshopDate(workshop.end_date)}`
+        : formatWorkshopDate(workshop.start_date)
+      : "To be announced";
 
     const transporter = nodemailer.createTransport({
       service: "gmail",
@@ -72,7 +89,7 @@ export const sendWorkshopApprovalEmail = async (
               <td style="padding: 0 0 16px 0;">
                 <p style="margin: 0; font-size: 15px; color: #f8fafc; font-weight: 500;">
                   <span style="color: #94a3b8; display: block; font-size: 12px; font-weight: 400; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px;">Date</span>
-                  Apr 22, 2026
+                  ${workshopDate}
                 </p>
               </td>
             </tr>
@@ -81,7 +98,7 @@ export const sendWorkshopApprovalEmail = async (
               <td style="padding: 0;">
                 <p style="margin: 0; font-size: 15px; color: #f8fafc; font-weight: 500;">
                   <span style="color: #94a3b8; display: block; font-size: 12px; font-weight: 400; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px;">Venue</span>
-                  Engineering Faculty, Chittagong University
+                  ${workshopVenue}
                 </p>
               </td>
             </tr>

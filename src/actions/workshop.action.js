@@ -457,7 +457,7 @@ export async function updateRegistrationStatus(id, status) {
       },
       {returnDocument: "after"},
     )
-      .populate("workshop_id", "title")
+      .populate("workshop_id", "title venue university start_date end_date")
       .lean();
 
     if (updated && status === "approved" && updated.email) {
@@ -465,7 +465,7 @@ export async function updateRegistrationStatus(id, status) {
       sendWorkshopApprovalEmail(
         updated.email,
         updated.name || "Participant",
-        updated.workshop_id?.title || "ML & AI Research Lab Workshop",
+        updated.workshop_id,
       );
     }
 
