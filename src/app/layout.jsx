@@ -18,7 +18,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata = {
-  title: "ML & AI  Lab | Research & Education",
+  title: "ML & AI Research Lab | Research & Education",
   description:
     "A unified ML and AI research lab working with universities across research, innovation, and education.",
   openGraph: {
@@ -33,13 +33,13 @@ export const metadata = {
         url: "https://ik.imagekit.io/muhaiminulsadat/ML-AI-Research-Lab/Vivid/ML%20AI%20Lab%20Logo.PNG",
         width: 1200,
         height: 630,
-        alt: "ML & AI Lab logo",
+        alt: "ML & AI Research Lab logo",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "ML & AI  Lab | Research & Education",
+    title: "ML & AI Research Lab | Research & Education",
     description:
       "A unified ML and AI research lab working with universities across research, innovation, and education.",
     images: [
