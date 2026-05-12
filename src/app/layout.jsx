@@ -20,14 +20,14 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata = {
   title: "ML & AI  Lab | Research & Education",
   description:
-    "Advanced Platform for Machine Learning and AI Research and Education",
+    "A unified ML and AI research lab working with universities across research, innovation, and education.",
   openGraph: {
     type: "website",
     siteName: "ML & AI Research Lab, Bangladesh.",
     locale: "en_US",
-    title: "ML & AI  Lab | Research & Education",
+    title: "ML & AI Research Lab | Research & Education",
     description:
-      "Advanced Platform for Machine Learning and AI Research and Education",
+      "A unified ML and AI research lab working with universities across research, innovation, and education.",
     images: [
       {
         url: "https://ik.imagekit.io/muhaiminulsadat/ML-AI-Research-Lab/Vivid/ML%20AI%20Lab%20Logo.PNG",
@@ -41,7 +41,7 @@ export const metadata = {
     card: "summary_large_image",
     title: "ML & AI  Lab | Research & Education",
     description:
-      "Advanced Platform for Machine Learning and AI Research and Education",
+      "A unified ML and AI research lab working with universities across research, innovation, and education.",
     images: [
       "https://ik.imagekit.io/muhaiminulsadat/ML-AI-Research-Lab/Vivid/ML%20AI%20Lab%20Logo.PNG",
     ],
