@@ -1,4 +1,4 @@
-import nodemailer from "nodemailer";
+import {EmailFactory} from "./email/EmailFactory.js";
 
 export const sendWorkshopApprovalEmail = async (
   toEmail,
@@ -6,11 +6,6 @@ export const sendWorkshopApprovalEmail = async (
   workshop,
 ) => {
   try {
-    if (!process.env.SMTP_EMAIL || !process.env.SMTP_PASSWORD) {
-      console.warn("SMTP_EMAIL or SMTP_PASSWORD is not set. Email not sent.");
-      return {success: false, message: "Credentials not configured"};
-    }
-
     const formatWorkshopDate = (value) => {
       if (!value) return "To be announced";
 
@@ -35,16 +30,14 @@ export const sendWorkshopApprovalEmail = async (
         : formatWorkshopDate(workshop.start_date)
       : "To be announced";
 
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: process.env.SMTP_EMAIL,
-        pass: process.env.SMTP_PASSWORD,
-      },
-    });
+    const emailService = EmailFactory.getInstance();
 
-    const mailOptions = {
-      from: `"ML & AI Research Lab" <${process.env.SMTP_EMAIL}>`,
+    const fromAddress =
+      process.env.EMAIL_FROM ||
+      `"ML & AI Research Lab" <${process.env.SMTP_EMAIL}>`;
+
+    const result = await emailService.sendEmail({
+      from: fromAddress,
       to: toEmail,
       subject: `Registration Approved: ${workshopTitle}`,
       html: `
@@ -124,11 +117,18 @@ export const sendWorkshopApprovalEmail = async (
 
     </div>
   `,
-    };
+    });
 
-    const info = await transporter.sendMail(mailOptions);
+    if (result.error) {
+      console.error("Error from email provider:", result.error);
+      return {success: false, error: result.error};
+    }
+
     console.log("Approval email sent to:", toEmail);
-    return {success: true, messageId: info.messageId};
+    return {
+      success: true,
+      messageId: result.data?.id || result.data?.messageId,
+    };
   } catch (error) {
     console.error("Error sending workshop approval email:", error);
     return {success: false, error};
